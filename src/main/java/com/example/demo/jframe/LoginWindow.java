@@ -1,7 +1,6 @@
 package com.example.demo.jframe;
 
-import com.example.demo.domain.Role;
-import com.example.demo.domain.Student;
+import com.example.demo.domain.*;
 import com.example.demo.repository.StudentRepository;
 
 import javax.swing.*;
@@ -66,16 +65,16 @@ public class LoginWindow extends JFrame {
                     System.out.println("------ Repository에 저장되어 있는 유저 정보 -------");
                     System.out.println("Student in Repository - ID : " + studentList.get(i).getStudentId());
                     System.out.println("Student in Repository - Password : " + studentList.get(i).getPassword());
+                    System.out.println("Student in Repository - LibraryID : " + studentList.get(i).getLibraryId());
 
                     if(studentList.get(i).getStudentId() == studentId) {
                         isRegistered = true;
 
                         if (studentList.get(i).getPassword().equals(password)) {
-                            //Todo : login 성공 팝업 띄우기 -> 확인 -> search 페이지로 이동
+                            //Todo : search 페이지로 이동
                             JOptionPane.showMessageDialog(null, "로그인 성공");
                             System.out.println("성공");
                         } else {
-                            //Todo : login 실패(비밀번호 틀림) 팝업 띄우기 -> 확인 -> login 페이지 유지
                             JOptionPane.showMessageDialog(null, "로그인 실패 : 비밀번호를 다시 입력하세요.");
                             System.out.println("실패 - 비밀번호 틀림");
                             studentIdField.setText("");
@@ -87,7 +86,6 @@ public class LoginWindow extends JFrame {
             }
 
             if(isRegistered == false){
-                //Todo : login 실패(회원가입 필요) 팝업 띄우기 -> 확인 -> login 페이지 유지
                 JOptionPane.showMessageDialog(null, "로그인 실패 : 회원가입된 유저가 아닙니다.");
                 System.out.println("실패 - 회원가입 필요");
                 studentIdField.setText("");
@@ -98,7 +96,9 @@ public class LoginWindow extends JFrame {
 
 
     public static void main(String[] args) {
-        Student student = new Student(1L, "yujin", Role.STUDENT, "slsddbwls4421", 1L, 22000630);
+        Library library = new Library(1L, "Handong Global University Library", 200);
+        Book book = new Book(1L, "Introduction to Metaverse", 8972805491L, "510.32 지 474", "좋은 생각", 1L);
+        Student student = new Student(1L, "yujin", Role.STUDENT, "slsddbwls4421", library.getLibraryId(), 22000630);
         studentRepository.getStudentList().add(student);
         new LoginWindow(); //생성자 호출
     }
