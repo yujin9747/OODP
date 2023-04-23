@@ -35,13 +35,33 @@ public class SearchWindow extends JFrame {
         this.loginedMember = (indexOfMember == -1) ? null : studentRepository.getStudentList().get(indexOfMember);
         this.searchedBook = bookRepository.getBookList().get(indexOfBook);
 
-        setTitle("Search 결"); //창 제목
+        setTitle("Search 결과창"); //창 제목
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(null);
         Container c = getContentPane();
 
-        c.setLayout(new FlowLayout());
+        c.setLayout(new GridLayout(8, 1));
+
+        JLabel title = new JLabel();
+        JLabel position = new JLabel();
+        JLabel status = new JLabel();
+        JLabel isbn = new JLabel();
+        JLabel publisher = new JLabel();
+
+        title.setText("Title : " + searchedBook.getTitle());
+        position.setText("Position : " + searchedBook.getPosition());
+        if(searchedBook.isBorrowed()) status.setText("Status : 대출중");
+        else if(searchedBook.isReserved()) status.setText("Status : 예약중");
+        else status.setText("Status : 이용가능");
+        isbn.setText("ISBN : " + searchedBook.getIsbn());
+        publisher.setText("Publisdher : " + searchedBook.getPublisher());
+
+        add(title);
+        add(position);
+        add(status);
+        add(isbn);
+        add(publisher);
 
         if(indexOfMember != -1 && loginedMember.getRole() != Role.ADMIN){
             checkoutBTN = new Button("대출하기");
@@ -109,6 +129,10 @@ public class SearchWindow extends JFrame {
                     studentRepository.getStudentList().stream().forEach(s -> System.out.println("Student lastModifiedDate " + s.getLastModifiedDate()));
                     bookRepository.getBookList().stream().forEach(b -> System.out.println("Book Borrowed status : " + b.isBorrowed()));
                     rentalInfoRepository.getRentalInfoList().stream().forEach(i -> System.out.println("Rental Info (memberId, bookId): " + i.getMemberId() + ", " + i.getBookId()));
+
+                    JOptionPane.showMessageDialog(null, "대출이 완료되었습니다.");
+
+                    // Todo: 화면 refresh하기
                 } else if (loginedMember.getRole() == Role.PROFESSOR) {
 
                 }
@@ -144,6 +168,10 @@ public class SearchWindow extends JFrame {
                     studentRepository.getStudentList().stream().forEach(s -> System.out.println("Student lastModifiedDate " + s.getLastModifiedDate()));
                     bookRepository.getBookList().stream().forEach(b -> System.out.println("Book borrowed status(기댓값 : false) : " + b.isBorrowed()));
                     rentalInfoRepository.getRentalInfoList().stream().forEach(ri -> System.out.println("Return Info (memberId, bookId): " + ri.getMemberId() + ", " + ri.getBookId()));
+
+                    JOptionPane.showMessageDialog(null, "반납이 완료되었습니다.");
+
+                    // Todo: 화면 refresh하기
                 }
                 else if(loginedMember.getRole() == Role.PROFESSOR){
 
