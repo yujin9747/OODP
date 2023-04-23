@@ -17,6 +17,8 @@ public abstract class Member {
     private Enum<Role> role;
     private String password;
     private Long libraryId;
+    private boolean disabled;
+
 
     public Member(long memberId, String name, Role role, String pw, long libraryId) {
         this.memberId = memberId;
@@ -24,5 +26,6 @@ public abstract class Member {
         this.role = role;
         this.password = pw;
         this.libraryId = libraryId;
+        this.disabled = false;
     }
 }
