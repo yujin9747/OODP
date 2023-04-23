@@ -32,6 +32,7 @@ public class MainWindow extends JFrame{
 
     public MainWindow(int indexOfMember) { //생성자를 만든다.
         this.indexOfMember = indexOfMember;
+
         this.loginedMember = (indexOfMember == -1) ? null : studentRepository.getStudentList().get(indexOfMember);
 
         setTitle("Main"); //창 제목
@@ -61,7 +62,7 @@ public class MainWindow extends JFrame{
             logoutBTN.setBounds(300, 300, 70, 30);
             logoutBTN.addActionListener(new LogoutActionListener());
             add(logoutBTN);
-            if(loginedMember.getRole() != Role.ADMIN){
+            if(loginedMember.getRole() == Role.ADMIN){
                 adminPageBTN = new Button("Admin Page");
                 adminPageBTN.setBounds(300, 350, 70, 30);
                 add(adminPageBTN);
@@ -109,7 +110,7 @@ public class MainWindow extends JFrame{
     }
     public static void main(String[] args) {
 
-        new MainWindow(-1); //생성자 호출
+        new MainWindow(0); //생성자 호출
     }
 
 }

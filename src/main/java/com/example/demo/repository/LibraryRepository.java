@@ -11,5 +11,4 @@ import java.util.List;
 @Setter
 public class LibraryRepository {
     private List<Library> libraryList = new ArrayList<>();
-
 }
