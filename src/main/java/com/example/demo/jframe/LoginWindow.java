@@ -1,6 +1,7 @@
 package com.example.demo.jframe;
 
 import com.example.demo.domain.*;
+import com.example.demo.repository.BookRepository;
 import com.example.demo.repository.StudentRepository;
 
 import javax.swing.*;
@@ -11,16 +12,17 @@ import java.util.List;
 
 public class LoginWindow extends JFrame {
 
-    static StudentRepository studentRepository = new StudentRepository();
+    static StudentRepository studentRepository;
+    static BookRepository bookRepository;
 
     Button loginBTN;
     JTextField studentIdField = new JTextField("22000630", 20);
     JTextField passwordField = new JTextField("slsddbwls4421", 20);
 
-    public LoginWindow() { //생성자를 만든다.
-
+    public LoginWindow(StudentRepository studentRepository, BookRepository bookRepository) { //생성자를 만든다.
         setTitle("Login"); //창 제목
-
+        this.studentRepository = studentRepository;
+        this.bookRepository = bookRepository;
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(null);
         Container c = getContentPane();
@@ -72,6 +74,9 @@ public class LoginWindow extends JFrame {
 
                         if (studentList.get(i).getPassword().equals(password)) {
                             //Todo : search 페이지로 이동
+                            new MainWindow(i, studentRepository,bookRepository);
+                            setVisible(false);
+                            
                             JOptionPane.showMessageDialog(null, "로그인 성공");
                             System.out.println("성공");
                         } else {
@@ -96,11 +101,11 @@ public class LoginWindow extends JFrame {
 
 
     public static void main(String[] args) {
-        Library library = new Library(1L, "Handong Global University Library", 200);
-        Book book = new Book(1L, "Introduction to Metaverse", 8972805491L, "510.32 지 474", "좋은 생각", 1L);
-        Student student = new Student(1L, "yujin", Role.STUDENT, "slsddbwls4421", library.getLibraryId(), 22000630);
-        studentRepository.getStudentList().add(student);
-        new LoginWindow(); //생성자 호출
+//        Library library = new Library(1L, "Handong Global University Library", 200);
+//        Book book = new Book(1L, "Introduction to Metaverse", 8972805491L, "510.32 지 474", "좋은 생각", 1L);
+//        Student student = new Student(1L, "yujin", Role.STUDENT, "slsddbwls4421", library.getLibraryId(), 22000630);
+//        studentRepository.getStudentList().add(student);
+//        new LoginWindow(); //생성자 호출
     }
 }
 

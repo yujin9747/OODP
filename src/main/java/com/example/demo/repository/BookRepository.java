@@ -10,5 +10,5 @@ import java.util.List;
 @Getter
 @Setter
 public class BookRepository {
-    private List<Book> bookList = new ArrayList<>();
+    private final List<Book> bookList = new ArrayList<>();
 }
