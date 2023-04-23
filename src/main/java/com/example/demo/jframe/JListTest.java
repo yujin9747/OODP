@@ -1,5 +1,7 @@
 package com.example.demo.jframe;
 
+import com.example.demo.domain.Book;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -17,12 +19,12 @@ public class JListTest extends JFrame implements MouseListener,KeyListener,ListS
     private DefaultListModel model;	//JList에 보이는 실제 데이터
     private JScrollPane scrolled;
 
-    public JListTest(String title) {
-        super(title);
-        init();
+    public JListTest(Book book) {
+        setTitle("AdminManagement");
+        init(book);
     }
 
-    public void init() {
+    public void init(Book book) {
         model=new DefaultListModel();
         list=new JList(model);
         inputField=new JTextField(35);
@@ -122,6 +124,7 @@ public class JListTest extends JFrame implements MouseListener,KeyListener,ListS
     }
 
         public static void main(String[] ar) {
-            JListTest frame=new JListTest("JList Test");
+        Book book = new Book(1L, "Introduction to Metaverse", 8972805491L, "510.32 지 474", "좋은 생각", 1L);
+        JListTest frame=new JListTest(book);
         }
 }
