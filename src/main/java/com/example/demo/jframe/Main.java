@@ -24,7 +24,9 @@ public class Main extends JFrame {
         Book book = new Book(1L, "Introduction to Metaverse", 8972805491L, "510.32 지 474", "좋은 생각", 1L);
         bookRepository.getBookList().add(book);
         Student student = new Student(1L, "yujin", Role.STUDENT, "slsddbwls4421", library.getLibraryId(), 22000630);
+        Student admin = new Student(2L, "admin", Role.ADMIN, "admin123", library.getLibraryId(), 21500683);
         studentRepository.getStudentList().add(student);
+        studentRepository.getStudentList().add(admin);
     }
     public static void main(String[] args){
         initializeRepositories();
