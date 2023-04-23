@@ -14,9 +14,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class SearchWindow extends JFrame {
-    static LibraryRepository libraryRepository = new LibraryRepository();
-    static BookRepository bookRepository = new BookRepository();
-    static StudentRepository studentRepository = new StudentRepository();
+//    static LibraryRepository libraryRepository = new LibraryRepository();
+    static BookRepository bookRepository;
+    static StudentRepository studentRepository;
     static RentalInfoRepository rentalInfoRepository = new RentalInfoRepository();
 
     Button checkoutBTN;
@@ -28,12 +28,17 @@ public class SearchWindow extends JFrame {
     int indexOfMember;
     int indexOfBook;
 
-    public SearchWindow(int indexOfMember, int indexOfBook){
+    public SearchWindow(int indexOfMember, int indexOfBook, StudentRepository studentRepository, BookRepository bookRepository){
         this.indexOfMember = indexOfMember;
         this.indexOfBook = indexOfBook;
 
+
+
         this.loginedMember = (indexOfMember == -1) ? null : studentRepository.getStudentList().get(indexOfMember);
         this.searchedBook = bookRepository.getBookList().get(indexOfBook);
+
+        this.studentRepository = studentRepository;
+        this.bookRepository = bookRepository;
 
         setTitle("Search 결과창"); //창 제목
 
@@ -184,12 +189,12 @@ public class SearchWindow extends JFrame {
 
     }
     public static void main(String[] args) {
-        Library library = new Library(1L, "Handong Global University Library", 200);
-        libraryRepository.getLibraryList().add(library);
-        Book book = new Book(1L, "Introduction to Metaverse", 8972805491L, "510.32 지 474", "좋은 생각", 1L);
-        bookRepository.getBookList().add(book);
-        Student student = new Student(1L, "yujin", Role.STUDENT, "slsddbwls4421", library.getLibraryId(), 22000630);
-        studentRepository.getStudentList().add(student);
-        new SearchWindow(0, 0);
+//        Library library = new Library(1L, "Handong Global University Library", 200);
+//        libraryRepository.getLibraryList().add(library);
+//        Book book = new Book(1L, "Introduction to Metaverse", 8972805491L, "510.32 지 474", "좋은 생각", 1L);
+//        bookRepository.getBookList().add(book);
+//        Student student = new Student(1L, "yujin", Role.STUDENT, "slsddbwls4421", library.getLibraryId(), 22000630);
+//        studentRepository.getStudentList().add(student);
+//        new SearchWindow(0, 0);
     }
 }

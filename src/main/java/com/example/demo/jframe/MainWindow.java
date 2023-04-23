@@ -7,6 +7,7 @@ import com.example.demo.domain.Student;
 import com.example.demo.domain.Member;
 import com.example.demo.repository.BookRepository;
 import com.example.demo.repository.StudentRepository;
+import com.example.demo.repository.LibraryRepository;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,8 +18,9 @@ import java.util.List;
 public class MainWindow extends JFrame{
 
     final int GUEST = -1;
-    static BookRepository bookRepository = new BookRepository();
-    static StudentRepository studentRepository = new StudentRepository();
+    static BookRepository bookRepository;
+    static StudentRepository studentRepository;
+    static LibraryRepository libraryRepository;
 
     Button searchBTN;
     Button loginBTN;
@@ -30,8 +32,11 @@ public class MainWindow extends JFrame{
     int indexOfMember;
     Member loginedMember;
 
-    public MainWindow(int indexOfMember) { //생성자를 만든다.
+    public MainWindow(int indexOfMember, StudentRepository studentRepository, BookRepository bookRepository) { //생성자를 만든다.
         this.indexOfMember = indexOfMember;
+
+        this.studentRepository = studentRepository;
+        this.bookRepository = bookRepository;
 
         this.loginedMember = (indexOfMember == -1) ? null : studentRepository.getStudentList().get(indexOfMember);
 
@@ -88,7 +93,7 @@ public class MainWindow extends JFrame{
                 }
             }
             System.out.println("book index: " + indexOfBook);
-            new SearchWindow(indexOfMember, indexOfBook);
+            new SearchWindow(indexOfMember, indexOfBook, studentRepository, bookRepository);
             setVisible(false);
         }
     }
@@ -96,7 +101,7 @@ public class MainWindow extends JFrame{
     private class LoginActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            new LoginWindow();
+            new LoginWindow(studentRepository, bookRepository);
             setVisible(false);
         }
     }
@@ -104,13 +109,19 @@ public class MainWindow extends JFrame{
     private class LogoutActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            new MainWindow(-1);
+            new MainWindow(-1, studentRepository, bookRepository);
             setVisible(false);
         }
     }
     public static void main(String[] args) {
-
-        new MainWindow(0); //생성자 호출
+//        Library library = new Library(1L, "Handong Global University Library", 200);
+//        libraryRepository.getLibraryList().add(library);
+//        Book book = new Book(1L, "Introduction to Metaverse", 8972805491L, "510.32 지 474", "좋은 생각", 1L);
+//        bookRepository.getBookList().add(book);
+//        Student student = new Student(1L, "yujin", Role.STUDENT, "slsddbwls4421", library.getLibraryId(), 22000630);
+//        studentRepository.getStudentList().add(student);
+//        new MainWindow(0); //생성자 호출
     }
+
 
 }

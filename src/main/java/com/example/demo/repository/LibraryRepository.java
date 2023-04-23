@@ -10,5 +10,5 @@ import java.util.List;
 @Getter
 @Setter
 public class LibraryRepository {
-    private List<Library> libraryList = new ArrayList<>();
+    private final List<Library> libraryList = new ArrayList<>();
 }
