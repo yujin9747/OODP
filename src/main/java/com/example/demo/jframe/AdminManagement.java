@@ -13,7 +13,7 @@ import javax.swing.event.*;
 
 public class AdminManagement extends JFrame implements MouseListener,KeyListener,ListSelectionListener{
 
-    static BookRepository bookRepository = new BookRepository();
+    static BookRepository bookRepository;
     private JList list;				//리스트
     private JTextField inputField;	//테스트 입력 Field
     private JButton addBtn;		//추가 버튼
@@ -22,12 +22,13 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
     private DefaultListModel model;	//JList에 보이는 실제 데이터
     private JScrollPane scrolled;
 
-    public AdminManagement() {
+    public AdminManagement(BookRepository bookRepository) {
         setTitle("AdminManagement");
-        init();
+        init(bookRepository);
     }
 
-    public void init() {
+    public void init(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
         model=new DefaultListModel();
         list=new JList(model);
         inputField=new JTextField(35);
@@ -136,8 +137,8 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
     }
 
         public static void main(String[] ar) {
-        Book book = new Book(1L, "Introduction to Metaverse", 8972805491L, "510.32 지 474", "좋은 생각", 1L);
-        bookRepository.getBookList().add(book);
-        AdminManagement frame = new AdminManagement();
+//        Book book = new Book(1L, "Introduction to Metaverse", 8972805491L, "510.32 지 474", "좋은 생각", 1L);
+//        bookRepository.getBookList().add(book);
+//        AdminManagement frame = new AdminManagement();
         }
 }
