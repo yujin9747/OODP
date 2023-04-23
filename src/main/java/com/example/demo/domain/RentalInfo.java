@@ -38,4 +38,15 @@ public class RentalInfo {
         this.overDueDays = 0;
     }
 
+    public RentalInfo returnInfo(){
+        this.returnedDate = LocalDateTime.now();
+        if(this.returnedDate.isAfter(this.returnDueDate)){
+            this.isOverdue = true;
+//            this.overDueDays = this.returnedDate - this.returnDueDate;
+        }
+        else this.isOverdue = false;
+        this.isReturned = true;
+        return this;
+    }
+
 }

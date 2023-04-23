@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 public class Student extends Member{
 
     private int studentId;
-    private boolean disabled;
     private LocalDateTime enableDate;
     private LocalDateTime enrolledDate;
     private LocalDateTime lastModifiedDate;
