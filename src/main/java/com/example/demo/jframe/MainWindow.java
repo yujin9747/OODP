@@ -71,7 +71,7 @@ public class MainWindow extends JFrame{
                 adminPageBTN = new Button("Admin Page");
                 adminPageBTN.setBounds(300, 350, 70, 30);
                 add(adminPageBTN);
-                // TODO: adminPage direction
+                adminPageBTN.addActionListener(new AdminPageActionListener());
             }
         }
 
@@ -94,6 +94,14 @@ public class MainWindow extends JFrame{
             }
             System.out.println("book index: " + indexOfBook);
             new SearchWindow(indexOfMember, indexOfBook, studentRepository, bookRepository);
+            setVisible(false);
+        }
+    }
+
+    private class AdminPageActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new AdminManagement(bookRepository);
             setVisible(false);
         }
     }
