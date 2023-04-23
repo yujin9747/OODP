@@ -1,16 +1,19 @@
 package com.example.demo.jframe;
 
 import com.example.demo.domain.Book;
+import com.example.demo.domain.Student;
+import com.example.demo.repository.BookRepository;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
 
 
-public class JListTest extends JFrame implements MouseListener,KeyListener,ListSelectionListener{
+public class AdminManagement extends JFrame implements MouseListener,KeyListener,ListSelectionListener{
 
-
+    static BookRepository bookRepository = new BookRepository();
     private JList list;				//리스트
     private JTextField inputField;	//테스트 입력 Field
     private JButton addBtn;		//추가 버튼
@@ -19,12 +22,12 @@ public class JListTest extends JFrame implements MouseListener,KeyListener,ListS
     private DefaultListModel model;	//JList에 보이는 실제 데이터
     private JScrollPane scrolled;
 
-    public JListTest(Book book) {
+    public AdminManagement() {
         setTitle("AdminManagement");
-        init(book);
+        init();
     }
 
-    public void init(Book book) {
+    public void init() {
         model=new DefaultListModel();
         list=new JList(model);
         inputField=new JTextField(35);
@@ -58,6 +61,15 @@ public class JListTest extends JFrame implements MouseListener,KeyListener,ListS
         this.setSize(600,600);
         this.setLocationRelativeTo(null);	//창 가운데 위치
         this.setVisible(true);
+
+        List<Book> studentList = bookRepository.getBookList();
+        for(int i=0; i<studentList.size(); i++){
+            String inputText=studentList.get(i).getTitle();
+            if(inputText==null||inputText.length()==0) return;
+            model.addElement(inputText);
+            inputField.setText("");		//내용 지우기
+            inputField.requestFocus();	//다음 입력을 편하게 받기 위해서 TextField에 포커스 요청
+        }
 
     }
 
@@ -125,6 +137,7 @@ public class JListTest extends JFrame implements MouseListener,KeyListener,ListS
 
         public static void main(String[] ar) {
         Book book = new Book(1L, "Introduction to Metaverse", 8972805491L, "510.32 지 474", "좋은 생각", 1L);
-        JListTest frame=new JListTest(book);
+        bookRepository.getBookList().add(book);
+        AdminManagement frame = new AdminManagement();
         }
 }
