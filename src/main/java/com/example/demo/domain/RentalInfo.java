@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.time.temporal.TemporalAmount;
 
 @Getter
 @Setter
@@ -37,6 +36,17 @@ public class RentalInfo {
         this.returnDueDate = this.rentalDate.plusDays(14L);
         this.returnedDate = null;
         this.overDueDays = 0;
+    }
+
+    public RentalInfo returnInfo(){
+        this.returnedDate = LocalDateTime.now();
+        if(this.returnedDate.isAfter(this.returnDueDate)){
+            this.isOverdue = true;
+//            this.overDueDays = this.returnedDate - this.returnDueDate;
+        }
+        else this.isOverdue = false;
+        this.isReturned = true;
+        return this;
     }
 
 }

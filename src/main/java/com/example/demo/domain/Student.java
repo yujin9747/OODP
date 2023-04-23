@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 public class Student extends Member{
 
     private int studentId;
-    private boolean disabled;
     private LocalDateTime enableDate;
     private LocalDateTime enrolledDate;
     private LocalDateTime lastModifiedDate;
@@ -24,7 +23,6 @@ public class Student extends Member{
     public Student(long memberId, String name, Role role, String pw, long libraryId, int sid) {
         super(memberId, name, role, pw, libraryId);
         studentId = sid;
-        disabled = false;
         enrolledDate = LocalDateTime.now();
         enableDate = null;
         lastModifiedDate = LocalDateTime.now();
