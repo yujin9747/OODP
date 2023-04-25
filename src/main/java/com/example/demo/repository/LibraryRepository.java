@@ -8,10 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
-
-@Repository
 @RequiredArgsConstructor
 public class LibraryRepository {
     private final EntityManager em;

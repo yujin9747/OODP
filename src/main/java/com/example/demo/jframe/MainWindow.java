@@ -1,10 +1,10 @@
 package com.example.demo.jframe;
 
+import com.example.demo.BeanUtil;
 import com.example.demo.domain.Book;
 import com.example.demo.domain.Role;
 import com.example.demo.domain.Member;
 import com.example.demo.service.*;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -17,28 +17,22 @@ public class MainWindow extends JFrame{
 
     private final MemberService memberService;
     private final BookService bookService;
-    private final LibraryService libraryService;
-    private final RentalInfoService rentalInfoService;
-    private final ReservationInfoService reservationInfoService;
 
     final int GUEST = -1;
     Button searchBTN;
     Button loginBTN;
     Button adminPageBTN;
     Button logoutBTN;
+    Button registerBTN;
 
     JTextField searchBoxField = new JTextField("책 제목을 입력하세요", 20);
 
     Long memberId;
     Optional<Member> loginedMember = null;
 
-    public MainWindow(MemberService memberService, BookService bookService, LibraryService libraryService, RentalInfoService rentalInfoService, ReservationInfoService reservationInfoService) {
-
-        this.memberService = memberService;
-        this.bookService = bookService;
-        this.libraryService = libraryService;
-        this.rentalInfoService = rentalInfoService;
-        this.reservationInfoService = reservationInfoService;
+    public MainWindow() {
+        this.memberService = BeanUtil.get(MemberService.class);
+        this.bookService = BeanUtil.get(BookService.class);
 
         setTitle("Main"); //창 제목
         setSize(600, 600); //창 사이즈
@@ -62,6 +56,11 @@ public class MainWindow extends JFrame{
             loginBTN.setBounds(300, 300, 70, 30);
             add(loginBTN);
             loginBTN.addActionListener(new LoginActionListener());
+
+            registerBTN = new Button("Register");
+            registerBTN.setBounds(300, 300, 70, 30);
+            add(registerBTN);
+            registerBTN.addActionListener(new RegisterActionListener());
         } else {
             logoutBTN = new Button("Logout");
             logoutBTN.setBounds(300, 300, 70, 30);
@@ -71,7 +70,7 @@ public class MainWindow extends JFrame{
                 adminPageBTN = new Button("Admin Page");
                 adminPageBTN.setBounds(300, 350, 70, 30);
                 add(adminPageBTN);
-                //adminPageBTN.addActionListener(new AdminPageActionListener());
+                adminPageBTN.addActionListener(new AdminPageActionListener());
             }
         }
 
@@ -93,7 +92,7 @@ public class MainWindow extends JFrame{
                 }
             }
             System.out.println("book index: " + indexOfBook);
-            //new SearchWindow(memberId, indexOfBook, memberRepository, bookRepository);
+            new SearchWindow(1, indexOfBook);
             setVisible(false);
         }
     }
@@ -101,7 +100,7 @@ public class MainWindow extends JFrame{
     private class AdminPageActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            new AdminManagement(bookService);
+            new AdminManagement();
             setVisible(false);
         }
     }
@@ -109,27 +108,24 @@ public class MainWindow extends JFrame{
     private class LoginActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            new LoginWindow(memberService);
+            new LoginWindow(0);
             setVisible(false);
         }
     }
-//
+    private class RegisterActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new LoginWindow(1);
+            setVisible(false);
+        }
+    }
+
     private class LogoutActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            new MainWindow(memberService, bookService, libraryService, rentalInfoService, reservationInfoService);
+            new MainWindow();
             setVisible(false);
         }
     }
-    public static void main(String[] args) {
-//        Library library = new Library(1L, "Handong Global University Library", 200);
-//        libraryRepository.getLibraryList().add(library);
-//        Book book = new Book(1L, "Introduction to Metaverse", 8972805491L, "510.32 지 474", "좋은 생각", 1L);
-//        bookRepository.getBookList().add(book);
-//        Student student = new Student(1L, "yujin", Role.STUDENT, "slsddbwls4421", library.getLibraryId(), 22000630);
-//        studentRepository.getStudentList().add(student);
-//        new MainWindow(0); //생성자 호출
-    }
-
 
 }

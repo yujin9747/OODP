@@ -1,9 +1,6 @@
 package com.example.demo.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -12,6 +9,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@Entity
 @RequiredArgsConstructor
 public class RentalInfo {
 

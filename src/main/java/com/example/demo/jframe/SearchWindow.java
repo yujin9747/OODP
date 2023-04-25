@@ -1,5 +1,6 @@
 package com.example.demo.jframe;
 
+import com.example.demo.BeanUtil;
 import com.example.demo.domain.*;
 import com.example.demo.service.BookService;
 import com.example.demo.service.MemberService;
@@ -24,12 +25,12 @@ public class SearchWindow extends JFrame {
     int indexOfMember;
     int indexOfBook;
 
-    public SearchWindow(int indexOfMember, int indexOfBook, MemberService memberService, BookService bookService){
+    public SearchWindow(int indexOfMember, int indexOfBook){
         this.indexOfMember = indexOfMember;
         this.indexOfBook = indexOfBook;
 
-        this.memberService = memberService;
-        this.bookService = bookService;
+        this.memberService = BeanUtil.get(MemberService.class);
+        this.bookService = BeanUtil.get(BookService.class);
 
 
         this.loginedMember = memberService.findOne((long)indexOfMember);

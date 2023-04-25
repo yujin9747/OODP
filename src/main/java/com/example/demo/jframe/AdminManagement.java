@@ -1,5 +1,6 @@
 package com.example.demo.jframe;
 
+import com.example.demo.BeanUtil;
 import com.example.demo.domain.Book;
 import com.example.demo.domain.Student;
 import com.example.demo.repository.BookRepository;
@@ -23,8 +24,8 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
     private DefaultListModel model;	//JList에 보이는 실제 데이터
     private JScrollPane scrolled;
 
-    public AdminManagement(BookService bookService) {
-        this.bookService = bookService;
+    public AdminManagement() {
+        this.bookService = BeanUtil.get(BookService.class);
         setTitle("AdminManagement");
         init();
     }

@@ -24,8 +24,7 @@ public abstract class Member {
     private boolean disabled;
 
 
-    public Member(long id, String name, Role role, String pw, long libraryId) {
-        this.id = id;
+    public Member(String name, Role role, String pw, long libraryId) {
         this.name = name;
         this.role = role;
         this.password = pw;
