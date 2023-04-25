@@ -2,16 +2,15 @@ package com.example.demo.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @RequiredArgsConstructor
+@DiscriminatorValue("Student")
 public class Student extends Member{
 
     private int studentId;

@@ -9,6 +9,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn
 public abstract class Member {
 
     @Id

@@ -7,9 +7,6 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Admin {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "admin_id", nullable = false)
-    private Long id;
+@DiscriminatorValue("Admin")
+public class Admin extends Member{
 }

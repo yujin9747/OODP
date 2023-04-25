@@ -1,8 +1,7 @@
 package com.example.demo.jframe;
 
 import com.example.demo.domain.*;
-import com.example.demo.repository.BookRepository;
-import com.example.demo.repository.StudentRepository;
+import com.example.demo.service.MemberService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,17 +11,16 @@ import java.util.List;
 
 public class LoginWindow extends JFrame {
 
-    static StudentRepository studentRepository;
-    static BookRepository bookRepository;
+    private final MemberService memberService;
 
     Button loginBTN;
     JTextField studentIdField = new JTextField("22000630", 20);
     JTextField passwordField = new JTextField("slsddbwls4421", 20);
 
-    public LoginWindow(StudentRepository studentRepository, BookRepository bookRepository) { //생성자를 만든다.
+    public LoginWindow(MemberService memberService) { //생성자를 만든다.
+        this.memberService = memberService;
+
         setTitle("Login"); //창 제목
-        this.studentRepository = studentRepository;
-        this.bookRepository = bookRepository;
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(null);
         Container c = getContentPane();
@@ -61,34 +59,34 @@ public class LoginWindow extends JFrame {
             System.out.println("Password : " + password);
             System.out.println();
 
-            if(command.equals("Login")){
-                List<Student> studentList = studentRepository.getStudentList();
-                for(int i=0; i<studentList.size(); i++){
-                    System.out.println("------ Repository에 저장되어 있는 유저 정보 -------");
-                    System.out.println("Student in Repository - ID : " + studentList.get(i).getStudentId());
-                    System.out.println("Student in Repository - Password : " + studentList.get(i).getPassword());
-                    System.out.println("Student in Repository - LibraryID : " + studentList.get(i).getLibraryId());
-
-                    if(studentList.get(i).getStudentId() == studentId) {
-                        isRegistered = true;
-
-                        if (studentList.get(i).getPassword().equals(password)) {
-                            //Todo : search 페이지로 이동
-                            new MainWindow(i, studentRepository,bookRepository);
-                            setVisible(false);
-                            
-                            JOptionPane.showMessageDialog(null, "로그인 성공");
-                            System.out.println("성공");
-                        } else {
-                            JOptionPane.showMessageDialog(null, "로그인 실패 : 비밀번호를 다시 입력하세요.");
-                            System.out.println("실패 - 비밀번호 틀림");
-                            studentIdField.setText("");
-                            passwordField.setText("");
-                        }
-                        break;
-                    }
-                }
-            }
+//            if(command.equals("Login")){
+//                List<Student> studentList = memberRepository.getStudentList();
+//                for(int i=0; i<studentList.size(); i++){
+//                    System.out.println("------ Repository에 저장되어 있는 유저 정보 -------");
+//                    System.out.println("Student in Repository - ID : " + studentList.get(i).getStudentId());
+//                    System.out.println("Student in Repository - Password : " + studentList.get(i).getPassword());
+//                    System.out.println("Student in Repository - LibraryID : " + studentList.get(i).getLibraryId());
+//
+//                    if(studentList.get(i).getStudentId() == studentId) {
+//                        isRegistered = true;
+//
+//                        if (studentList.get(i).getPassword().equals(password)) {
+//                            //Todo : search 페이지로 이동
+//                            new MainWindow();
+//                            setVisible(false);
+//
+//                            JOptionPane.showMessageDialog(null, "로그인 성공");
+//                            System.out.println("성공");
+//                        } else {
+//                            JOptionPane.showMessageDialog(null, "로그인 실패 : 비밀번호를 다시 입력하세요.");
+//                            System.out.println("실패 - 비밀번호 틀림");
+//                            studentIdField.setText("");
+//                            passwordField.setText("");
+//                        }
+//                        break;
+//                    }
+//                }
+//            }
 
             if(isRegistered == false){
                 JOptionPane.showMessageDialog(null, "로그인 실패 : 회원가입된 유저가 아닙니다.");

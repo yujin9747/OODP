@@ -3,6 +3,7 @@ package com.example.demo.jframe;
 import com.example.demo.domain.Book;
 import com.example.demo.domain.Student;
 import com.example.demo.repository.BookRepository;
+import com.example.demo.service.BookService;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -13,7 +14,7 @@ import javax.swing.event.*;
 
 public class AdminManagement extends JFrame implements MouseListener,KeyListener,ListSelectionListener{
 
-    static BookRepository bookRepository;
+    private final BookService bookService;
     private JList list;				//리스트
     private JTextField inputField;	//테스트 입력 Field
     private JButton addBtn;		//추가 버튼
@@ -22,13 +23,13 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
     private DefaultListModel model;	//JList에 보이는 실제 데이터
     private JScrollPane scrolled;
 
-    public AdminManagement(BookRepository bookRepository) {
+    public AdminManagement(BookService bookService) {
+        this.bookService = bookService;
         setTitle("AdminManagement");
-        init(bookRepository);
+        init();
     }
 
-    public void init(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
+    public void init() {
         model=new DefaultListModel();
         list=new JList(model);
         inputField=new JTextField(35);
@@ -63,7 +64,7 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
         this.setLocationRelativeTo(null);	//창 가운데 위치
         this.setVisible(true);
 
-        List<Book> studentList = bookRepository.getBookList();
+        List<Book> studentList = bookService.findBooks();
         for(int i=0; i<studentList.size(); i++){
             String inputText=studentList.get(i).getTitle();
             if(inputText==null||inputText.length()==0) return;
