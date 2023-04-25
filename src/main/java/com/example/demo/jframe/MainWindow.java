@@ -121,15 +121,15 @@ public class MainWindow extends JFrame{
             setVisible(false);
         }
     }
-    public static void main(String[] args) {
-//        Library library = new Library(1L, "Handong Global University Library", 200);
-//        libraryRepository.getLibraryList().add(library);
-//        Book book = new Book(1L, "Introduction to Metaverse", 8972805491L, "510.32 지 474", "좋은 생각", 1L);
-//        bookRepository.getBookList().add(book);
-//        Student student = new Student(1L, "yujin", Role.STUDENT, "slsddbwls4421", library.getLibraryId(), 22000630);
-//        studentRepository.getStudentList().add(student);
-//        new MainWindow(0); //생성자 호출
-    }
+//    public static void main(String[] args) {
+////        Library library = new Library(1L, "Handong Global University Library", 200);
+////        libraryRepository.getLibraryList().add(library);
+////        Book book = new Book(1L, "Introduction to Metaverse", 8972805491L, "510.32 지 474", "좋은 생각", 1L);
+////        bookRepository.getBookList().add(book);
+////        Student student = new Student(1L, "yujin", Role.STUDENT, "slsddbwls4421", library.getLibraryId(), 22000630);
+////        studentRepository.getStudentList().add(student);
+////        new MainWindow(0); //생성자 호출
+//    }
 
 
 }

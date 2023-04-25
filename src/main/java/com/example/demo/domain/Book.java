@@ -1,5 +1,6 @@
 package com.example.demo.domain;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -8,9 +9,14 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@Entity
 @RequiredArgsConstructor
 public class Book {
-    private Long bookId;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "book_id", nullable = false)
+    private Long id;
     private String title;
     private LocalDateTime enrolledDate;
     private LocalDateTime lastModifiedDate;
@@ -21,8 +27,8 @@ public class Book {
     private String publisher;
     private Long libraryId;
 
-    public Book(Long bookId, String title, Long isbn, String position, String publisher, Long libraryId){
-        this.bookId = bookId;
+    public Book(Long id, String title, Long isbn, String position, String publisher, Long libraryId){
+        this.id = id;
         this.title = title;
         this.isbn = isbn;
         this.position = position;

@@ -11,7 +11,6 @@ import com.example.demo.repository.StudentRepository;
 
 import javax.swing.*;
 
-
 public class Main extends JFrame {
     static LibraryRepository libraryRepository = new LibraryRepository();
     static BookRepository bookRepository = new BookRepository();
@@ -23,8 +22,8 @@ public class Main extends JFrame {
         libraryRepository.getLibraryList().add(library);
         Book book = new Book(1L, "Introduction to Metaverse", 8972805491L, "510.32 지 474", "좋은 생각", 1L);
         bookRepository.getBookList().add(book);
-        Student student = new Student(1L, "yujin", Role.STUDENT, "slsddbwls4421", library.getLibraryId(), 22000630);
-        Student admin = new Student(2L, "admin", Role.ADMIN, "admin123", library.getLibraryId(), 21500683);
+        Student student = new Student(1L, "yujin", Role.STUDENT, "slsddbwls4421", library.getId(), 22000630);
+        Student admin = new Student(2L, "admin", Role.ADMIN, "admin123", library.getId(), 21500683);
         studentRepository.getStudentList().add(student);
         studentRepository.getStudentList().add(admin);
     }
