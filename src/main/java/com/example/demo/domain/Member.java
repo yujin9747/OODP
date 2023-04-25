@@ -1,9 +1,6 @@
 package com.example.demo.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,8 +8,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
+@Entity
 public abstract class Member {
-    private Long memberId;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "member_id", nullable = false)
+    private Long id;
     private String name;
     private Enum<Role> role;
     private String password;
@@ -20,8 +22,8 @@ public abstract class Member {
     private boolean disabled;
 
 
-    public Member(long memberId, String name, Role role, String pw, long libraryId) {
-        this.memberId = memberId;
+    public Member(long id, String name, Role role, String pw, long libraryId) {
+        this.id = id;
         this.name = name;
         this.role = role;
         this.password = pw;

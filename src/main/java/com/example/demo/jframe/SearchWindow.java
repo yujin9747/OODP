@@ -2,7 +2,6 @@ package com.example.demo.jframe;
 
 import com.example.demo.domain.*;
 import com.example.demo.repository.BookRepository;
-import com.example.demo.repository.LibraryRepository;
 import com.example.demo.repository.RentalInfoRepository;
 import com.example.demo.repository.StudentRepository;
 
@@ -107,7 +106,7 @@ public class SearchWindow extends JFrame {
                 if (loginedMember.getRole() == Role.STUDENT) {
                     Student loginedStudent = (Student) loginedMember;
 
-                    Student editedMember = new Student(loginedStudent.getMemberId(), loginedStudent.getName(), Role.STUDENT, loginedStudent.getPassword(), loginedStudent.getLibraryId(), loginedStudent.getStudentId());
+                    Student editedMember = new Student(loginedStudent.getId(), loginedStudent.getName(), Role.STUDENT, loginedStudent.getPassword(), loginedStudent.getLibraryId(), loginedStudent.getStudentId());
 
                     editedMember.setLastModifiedDate(LocalDateTime.now());
 //                    LocalDateTime longestDueDate = null;
@@ -121,10 +120,10 @@ public class SearchWindow extends JFrame {
                     studentRepository.getStudentList().add(editedMember);
                     studentRepository.getStudentList().remove(loginedMember);
 
-                    RentalInfo rentalInfo = new RentalInfo((long) rentalInfoRepository.getRentalInfoList().size(), Role.STUDENT, loginedStudent.getMemberId(), searchedBook.getBookId());
+                    RentalInfo rentalInfo = new RentalInfo((long) rentalInfoRepository.getRentalInfoList().size(), Role.STUDENT, loginedStudent.getId(), searchedBook.getId());
                     rentalInfoRepository.getRentalInfoList().add(rentalInfo);
 
-                    Book editiedBook = new Book(searchedBook.getBookId(), searchedBook.getTitle(), searchedBook.getIsbn(), searchedBook.getPosition(), searchedBook.getPublisher(), searchedBook.getLibraryId());
+                    Book editiedBook = new Book(searchedBook.getId(), searchedBook.getTitle(), searchedBook.getIsbn(), searchedBook.getPosition(), searchedBook.getPublisher(), searchedBook.getLibraryId());
                     editiedBook.setEnrolledDate(searchedBook.getEnrolledDate());
                     editiedBook.setBorrowed(true);
                     editiedBook.setLastModifiedDate(LocalDateTime.now());
@@ -146,7 +145,7 @@ public class SearchWindow extends JFrame {
                 if (loginedMember.getRole() == Role.STUDENT) {
                     Student loginedStudent = (Student) loginedMember;
 
-                    Student editedMember = new Student(loginedStudent.getMemberId(), loginedStudent.getName(), Role.STUDENT, loginedStudent.getPassword(), loginedStudent.getLibraryId(), loginedStudent.getStudentId());
+                    Student editedMember = new Student(loginedStudent.getId(), loginedStudent.getName(), Role.STUDENT, loginedStudent.getPassword(), loginedStudent.getLibraryId(), loginedStudent.getStudentId());
 
                     editedMember.setLastModifiedDate(LocalDateTime.now());
                     studentRepository.getStudentList().add(editedMember);
@@ -155,7 +154,7 @@ public class SearchWindow extends JFrame {
                     RentalInfo rentalInfo = null;
                     List<RentalInfo> rentalInfoList = rentalInfoRepository.getRentalInfoList();
                     for (int i = 0; i < rentalInfoList.size(); i++){
-                        if (rentalInfoList.get(i).getMemberId() == loginedStudent.getMemberId() && rentalInfoList.get(i).getBookId() == searchedBook.getBookId()) {
+                        if (rentalInfoList.get(i).getMemberId() == loginedStudent.getId() && rentalInfoList.get(i).getBookId() == searchedBook.getId()) {
                             rentalInfo = rentalInfoList.get(i);
                         }
                     }
@@ -163,7 +162,7 @@ public class SearchWindow extends JFrame {
                     rentalInfoRepository.getRentalInfoList().add(returnInfo);
                     rentalInfoRepository.getRentalInfoList().remove(rentalInfo);
 
-                    Book editiedBook = new Book(searchedBook.getBookId(), searchedBook.getTitle(), searchedBook.getIsbn(), searchedBook.getPosition(), searchedBook.getPublisher(), searchedBook.getLibraryId());
+                    Book editiedBook = new Book(searchedBook.getId(), searchedBook.getTitle(), searchedBook.getIsbn(), searchedBook.getPosition(), searchedBook.getPublisher(), searchedBook.getLibraryId());
                     editiedBook.setEnrolledDate(searchedBook.getEnrolledDate());
                     editiedBook.setBorrowed(false);
                     editiedBook.setLastModifiedDate(LocalDateTime.now());

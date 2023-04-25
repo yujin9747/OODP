@@ -1,5 +1,9 @@
 package com.example.demo.domain;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -10,7 +14,11 @@ import java.time.LocalDateTime;
 @Setter
 @RequiredArgsConstructor
 public class RentalInfo {
-    private Long rentalInfoId;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "rentalInfo_id", nullable = false)
+    private Long id;
     private LocalDateTime rentalDate;
     private Enum<Role> userType;
     private Long memberId;
@@ -23,8 +31,8 @@ public class RentalInfo {
     private LocalDateTime returnedDate;
     private int overDueDays;
 
-    public RentalInfo(Long rentalInfoId, Role userType, Long memberId, Long bookId){
-        this.rentalInfoId = rentalInfoId;
+    public RentalInfo(Long id, Role userType, Long memberId, Long bookId){
+        this.id = id;
         this.rentalDate = LocalDateTime.now();
         this.userType = userType;
         this.memberId = memberId;
