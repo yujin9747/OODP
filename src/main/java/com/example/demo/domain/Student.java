@@ -21,8 +21,8 @@ public class Student extends Member{
     private LocalDateTime lastModifiedDate;
 
 
-    public Student(String name, Role role, String pw, long libraryId, int sid) {
-        super(name, role, pw, libraryId);
+    public Student(String name, Role role, String pw, Library library, int sid) {
+        super(name, role, pw, library);
         studentId = sid;
         enrolledDate = LocalDateTime.now();
         enableDate = null;

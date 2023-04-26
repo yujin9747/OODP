@@ -18,15 +18,20 @@ public class ReservationInfo {
     @Column(name = "reservation_id", nullable = false)
     private Long id;
     private LocalDateTime reservationDate;
-    private Enum<Role> userType;
-    private Long memberId;
-    private Long bookId;
+    private Role userType;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
-    public ReservationInfo(Long id, Role userType, Long memberId, Long bookId){
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "book_id")
+    private Book book;
+
+    public ReservationInfo(Long id, Role userType, Member member, Book book){
         this.id = id;
         this.reservationDate = LocalDateTime.now();
         this.userType = userType;
-        this.memberId = memberId;
-        this.bookId = bookId;
+        this.member = member;
+        this.book = book;
     }
 }

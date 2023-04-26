@@ -18,9 +18,15 @@ public class RentalInfo {
     @Column(name = "rentalInfo_id", nullable = false)
     private Long id;
     private LocalDateTime rentalDate;
-    private Enum<Role> userType;
-    private Long memberId;
-    private Long bookId;
+    private Role userType;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "book_id")
+    private Book book;
     private boolean isReserved;
     private boolean isOverdue;
     private boolean isReturned;
@@ -29,12 +35,12 @@ public class RentalInfo {
     private LocalDateTime returnedDate;
     private int overDueDays;
 
-    public RentalInfo(Long id, Role userType, Long memberId, Long bookId){
+    public RentalInfo(Long id, Role userType, Member member, Book book){
         this.id = id;
         this.rentalDate = LocalDateTime.now();
         this.userType = userType;
-        this.memberId = memberId;
-        this.bookId = bookId;
+        this.member = member;
+        this.book = book;
         this.isReserved = false;
         this.isOverdue = false;
         this.isReserved = false;

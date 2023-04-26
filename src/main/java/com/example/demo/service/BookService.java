@@ -28,4 +28,8 @@ public class BookService {
     public Optional<Book> findOne(Long id){
         return bookRepository.findOne(id);
     }
+    public Book findBookByTitle(String title){
+        return bookRepository.findByTitle(title);
+    }
+
 }

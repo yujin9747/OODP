@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @NoArgsConstructor
 @Getter
 @Setter
@@ -18,17 +21,26 @@ public abstract class Member {
     @Column(name = "member_id", nullable = false)
     private Long id;
     private String name;
-    private Enum<Role> role;
+    private Role role;
     private String password;
-    private Long libraryId;
+
+    @ManyToOne
+    @JoinColumn(name = "library_id")
+    private Library library;
     private boolean disabled;
 
+    @OneToMany(mappedBy = "member")
+    private List<RentalInfo> rentalInfoLsit = new ArrayList<>();
 
-    public Member(String name, Role role, String pw, long libraryId) {
+    @OneToMany(mappedBy = "member")
+    private List<ReservationInfo> reservationInfoList = new ArrayList<>();
+
+
+    public Member(String name, Role role, String pw, Library library) {
         this.name = name;
         this.role = role;
         this.password = pw;
-        this.libraryId = libraryId;
+        this.library = library;
         this.disabled = false;
     }
 }

@@ -33,4 +33,12 @@ public class BookRepository {
         return em.createQuery("select b from Book b", Book.class)
                 .getResultList();
     }
+
+    public Book findByTitle(String title){
+        List<Book> resultList = em.createQuery("select b from Book b where b.title = :title", Book.class)
+                .setParameter("title", title)
+                .getResultList();
+        if(resultList.size() == 0) return null;
+        return resultList.get(0);
+    }
 }

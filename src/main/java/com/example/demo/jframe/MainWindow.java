@@ -28,11 +28,12 @@ public class MainWindow extends JFrame{
     JTextField searchBoxField = new JTextField("책 제목을 입력하세요", 20);
 
     Long memberId;
-    Optional<Member> loginedMember = null;
+    Member loginedMember = null;
 
-    public MainWindow() {
+    public MainWindow(Member loginedMember) {
         this.memberService = BeanUtil.get(MemberService.class);
         this.bookService = BeanUtil.get(BookService.class);
+        this.loginedMember = loginedMember;
 
         setTitle("Main"); //창 제목
         setSize(600, 600); //창 사이즈
@@ -66,7 +67,7 @@ public class MainWindow extends JFrame{
             logoutBTN.setBounds(300, 300, 70, 30);
             logoutBTN.addActionListener(new LogoutActionListener());
             add(logoutBTN);
-            if(loginedMember.get().getRole() == Role.ADMIN){
+            if(loginedMember.getRole() == Role.ADMIN){
                 adminPageBTN = new Button("Admin Page");
                 adminPageBTN.setBounds(300, 350, 70, 30);
                 add(adminPageBTN);
@@ -83,17 +84,16 @@ public class MainWindow extends JFrame{
         public void actionPerformed(ActionEvent e) {
             String command = e.getActionCommand();
             String bookTitle = searchBoxField.getText();
-            int indexOfBook = -1;
 
-            List<Book> bookList = bookService.findBooks();
-            for(int i=0; i<bookList.size(); i++) {
-                if(bookList.get(i).getTitle().equals(bookTitle)) {
-                    indexOfBook = i;
-                }
+            Book searchedBook = bookService.findBookByTitle(bookTitle);
+            if(searchedBook != null) {
+                new SearchWindow(searchedBook, loginedMember);
+                setVisible(false);
             }
-            System.out.println("book index: " + indexOfBook);
-            new SearchWindow(1, indexOfBook);
-            setVisible(false);
+            else {
+                JOptionPane.showMessageDialog(null, "일치하는 책 정보가 없습니다.");
+                System.out.println("실패 - 일치하는 제목의 책 없음");
+            }
         }
     }
 
@@ -123,7 +123,7 @@ public class MainWindow extends JFrame{
     private class LogoutActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            new MainWindow();
+            new MainWindow(null);
             setVisible(false);
         }
     }

@@ -2,40 +2,26 @@ package com.example.demo.jframe;
 
 import com.example.demo.BeanUtil;
 import com.example.demo.domain.*;
-import com.example.demo.service.BookService;
 import com.example.demo.service.MemberService;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Optional;
 
 public class SearchWindow extends JFrame {
 
     private final MemberService memberService;
-    private final BookService bookService;
 
     Button checkoutBTN;
     Button returnBTN;
     Button reservationBTN;
 
-    Optional<Member> loginedMember;
-    Optional<Book> searchedBook;
-    int indexOfMember;
-    int indexOfBook;
+    Member loginedMember;
 
-    public SearchWindow(int indexOfMember, int indexOfBook){
-        this.indexOfMember = indexOfMember;
-        this.indexOfBook = indexOfBook;
-
+    public SearchWindow(Book searchedBook, Member loginedMember){
         this.memberService = BeanUtil.get(MemberService.class);
-        this.bookService = BeanUtil.get(BookService.class);
-
-
-        this.loginedMember = memberService.findOne((long)indexOfMember);
-        this.searchedBook = bookService.findOne((long)indexOfBook);
-
+        this.loginedMember = loginedMember;
 
         setTitle("Search 결과창"); //창 제목
 
@@ -50,48 +36,41 @@ public class SearchWindow extends JFrame {
         JLabel status = new JLabel();
         JLabel isbn = new JLabel();
         JLabel publisher = new JLabel();
+        title.setText("Title : " + searchedBook.getTitle());
+        position.setText("Position : " + searchedBook.getPosition());
+        if (searchedBook.isBorrowed()) status.setText("Status : 대출중");
+        else if (searchedBook.isReserved()) status.setText("Status : 예약중");
+        else status.setText("Status : 이용가능");
+        isbn.setText("ISBN : " + searchedBook.getIsbn());
+        publisher.setText("Publisdher : " + searchedBook.getPublisher());
 
-        if(searchedBook.isPresent()) {
-            title.setText("Title : " + searchedBook.get().getTitle());
-            position.setText("Position : " + searchedBook.get().getPosition());
-            if (searchedBook.get().isBorrowed()) status.setText("Status : 대출중");
-            else if (searchedBook.get().isReserved()) status.setText("Status : 예약중");
-            else status.setText("Status : 이용가능");
-            isbn.setText("ISBN : " + searchedBook.get().getIsbn());
-            publisher.setText("Publisdher : " + searchedBook.get().getPublisher());
+        add(title);
+        add(position);
+        add(status);
+        add(isbn);
+        add(publisher);
 
-            add(title);
-            add(position);
-            add(status);
-            add(isbn);
-            add(publisher);
+        if (loginedMember != null && loginedMember.getRole() != Role.ADMIN) {
+            checkoutBTN = new Button("대출하기");
+            checkoutBTN.setBounds(20, 5, 70, 30);
+            returnBTN = new Button("반납하기");
+            returnBTN.setBounds(20, 5, 70, 30);
 
-            if (indexOfMember != -1 && loginedMember.get().getRole() != Role.ADMIN) {
-                checkoutBTN = new Button("대출하기");
-                checkoutBTN.setBounds(20, 5, 70, 30);
-                returnBTN = new Button("반납하기");
-                returnBTN.setBounds(20, 5, 70, 30);
+            checkoutBTN.addActionListener(new SearchActionListener());
+            returnBTN.addActionListener(new SearchActionListener());
 
-                checkoutBTN.addActionListener(new SearchWindow.SearchActionListener());
-                returnBTN.addActionListener(new SearchWindow.SearchActionListener());
+            add(checkoutBTN);
+            add(returnBTN);
 
-                add(checkoutBTN);
-                add(returnBTN);
+            // Todo : Role.STUDENT, disabled=true인 상태에서 버튼 안나와야 하는데 나옴.
+            if (loginedMember.isDisabled() == false) {
+                reservationBTN = new Button("예약하기");
+                reservationBTN.setBounds(20, 5, 70, 30);
+                reservationBTN.addActionListener(new SearchActionListener());
 
-                // Todo : Role.STUDENT, disabled=true인 상태에서 버튼 안나와야 하는데 나옴.
-                if (loginedMember.get().isDisabled() == false) {
-                    reservationBTN = new Button("예약하기");
-                    reservationBTN.setBounds(20, 5, 70, 30);
-                    reservationBTN.addActionListener(new SearchWindow.SearchActionListener());
-
-                    add(reservationBTN);
-                }
+                add(reservationBTN);
             }
         }
-        else{
-            // Todo : 검색 결과 없는 화면도 그리기
-        }
-
 
         setSize(600, 600); //창 사이즈
 
@@ -107,11 +86,11 @@ public class SearchWindow extends JFrame {
             String command = e.getActionCommand();
 
             if (command.equals("대출하기")) {
-                if (loginedMember.get().getRole() == Role.STUDENT) {
-//                    Student loginedStudent = (Student) loginedMember;
-//
-//                    Student editedMember = new Student(loginedStudent.getId(), loginedStudent.getName(), Role.STUDENT, loginedStudent.getPassword(), loginedStudent.getLibraryId(), loginedStudent.getStudentId());
-//
+                if (loginedMember.getRole() == Role.STUDENT) {
+                    Student loginedStudent = (Student) loginedMember;
+
+                    //Student editedMember = new Student(loginedStudent.getId(), loginedStudent.getName(), Role.STUDENT, loginedStudent.getPassword(), loginedStudent.getLibraryId(), loginedStudent.getStudentId());
+
 //                    editedMember.setLastModifiedDate(LocalDateTime.now());
 //                    LocalDateTime longestDueDate = null;
 //                    List<RentalInfo> rentalInfoList = rentalInfoRepository.getRentalInfoList();
@@ -120,10 +99,10 @@ public class SearchWindow extends JFrame {
 //                            longestDueDate = (longestDueDate.isAfter(rentalInfoList.get(i).getReturnDueDate())) ? rentalInfoList.get(i).getReturnDueDate(): longestDueDate;
 //                        }
 //                    }
-
+//
 //                    memberRepository.getStudentList().add(editedMember);
 //                    memberRepository.getStudentList().remove(loginedMember);
-
+//
 //                    RentalInfo rentalInfo = new RentalInfo((long) rentalInfoRepository.getRentalInfoList().size(), Role.STUDENT, loginedStudent.getId(), searchedBook.getId());
 //                    rentalInfoRepository.getRentalInfoList().add(rentalInfo);
 //
@@ -133,20 +112,20 @@ public class SearchWindow extends JFrame {
 //                    editiedBook.setLastModifiedDate(LocalDateTime.now());
 //                    bookRepository.getBookList().add(editiedBook);
 //                    bookRepository.getBookList().remove(searchedBook);
-//
-//                    //memberRepository.getStudentList().stream().forEach(s -> System.out.println("Student lastModifiedDate " + s.getLastModifiedDate()));
+
+                    //memberRepository.getStudentList().stream().forEach(s -> System.out.println("Student lastModifiedDate " + s.getLastModifiedDate()));
 //                    bookRepository.getBookList().stream().forEach(b -> System.out.println("Book Borrowed status : " + b.isBorrowed()));
 //                    rentalInfoRepository.getRentalInfoList().stream().forEach(i -> System.out.println("Rental Info (memberId, bookId): " + i.getMemberId() + ", " + i.getBookId()));
 
                     JOptionPane.showMessageDialog(null, "대출이 완료되었습니다.");
 
                     // Todo: 화면 refresh하기
-                } else if (loginedMember.get().getRole() == Role.PROFESSOR) {
+                } else if (loginedMember.getRole() == Role.PROFESSOR) {
 
                 }
 
             } else if (command.equals("반납하기")) {
-                if (loginedMember.get().getRole() == Role.STUDENT) {
+                if (loginedMember.getRole() == Role.STUDENT) {
 //                    Student loginedStudent = (Student) loginedMember;
 //
 //                    Student editedMember = new Student(loginedStudent.getId(), loginedStudent.getName(), Role.STUDENT, loginedStudent.getPassword(), loginedStudent.getLibraryId(), loginedStudent.getStudentId());
@@ -181,7 +160,7 @@ public class SearchWindow extends JFrame {
 
                     // Todo: 화면 refresh하기
                 }
-                else if(loginedMember.get().getRole() == Role.PROFESSOR){
+                else if(loginedMember.getRole() == Role.PROFESSOR){
 
                 }
             } else if (command.equals("예약하기")) {
