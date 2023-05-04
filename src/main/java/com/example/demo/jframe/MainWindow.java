@@ -1,44 +1,37 @@
 package com.example.demo.jframe;
 
+import com.example.demo.BeanUtil;
 import com.example.demo.domain.Book;
-import com.example.demo.domain.Library;
 import com.example.demo.domain.Role;
-import com.example.demo.domain.Student;
 import com.example.demo.domain.Member;
-import com.example.demo.repository.BookRepository;
-import com.example.demo.repository.StudentRepository;
-import com.example.demo.repository.LibraryRepository;
-
+import com.example.demo.service.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
+import java.util.Optional;
 
 public class MainWindow extends JFrame{
 
-    final int GUEST = -1;
-    static BookRepository bookRepository;
-    static StudentRepository studentRepository;
-    static LibraryRepository libraryRepository;
+    private final MemberService memberService;
+    private final BookService bookService;
 
+    final int GUEST = -1;
     Button searchBTN;
     Button loginBTN;
     Button adminPageBTN;
     Button logoutBTN;
+    Button registerBTN;
 
     JTextField searchBoxField = new JTextField("책 제목을 입력하세요", 20);
 
-    int indexOfMember;
-    Member loginedMember;
+    Long memberId;
+    Member loginedMember = null;
 
-    public MainWindow(int indexOfMember, StudentRepository studentRepository, BookRepository bookRepository) { //생성자를 만든다.
-        this.indexOfMember = indexOfMember;
-
-        this.studentRepository = studentRepository;
-        this.bookRepository = bookRepository;
-
-        this.loginedMember = (indexOfMember == -1) ? null : studentRepository.getStudentList().get(indexOfMember);
+    public MainWindow(Member loginedMember) {
+        this.memberService = BeanUtil.get(MemberService.class);
+        this.bookService = BeanUtil.get(BookService.class);
+        this.loginedMember = loginedMember;
 
         setTitle("Main"); //창 제목
         setSize(600, 600); //창 사이즈
@@ -57,11 +50,16 @@ public class MainWindow extends JFrame{
 
         searchBTN.addActionListener(new SearchActionListener());
 
-        if (indexOfMember == -1) {
+        if (loginedMember == null) {
             loginBTN = new Button("Login");
             loginBTN.setBounds(300, 300, 70, 30);
             add(loginBTN);
             loginBTN.addActionListener(new LoginActionListener());
+
+            registerBTN = new Button("Register");
+            registerBTN.setBounds(300, 300, 70, 30);
+            add(registerBTN);
+            registerBTN.addActionListener(new RegisterActionListener());
         } else {
             logoutBTN = new Button("Logout");
             logoutBTN.setBounds(300, 300, 70, 30);
@@ -84,24 +82,21 @@ public class MainWindow extends JFrame{
         public void actionPerformed(ActionEvent e) {
             String command = e.getActionCommand();
             String bookTitle = searchBoxField.getText();
-            int indexOfBook = -1;
 
-            List<Book> bookList = bookRepository.getBookList();
-            for(int i=0; i<bookList.size(); i++) {
-                if(bookList.get(i).getTitle().equals(bookTitle)) {
-                    indexOfBook = i;
-                }
+            Optional<Book> searchedBook = bookService.findBookByTitle(bookTitle);
+            if(searchedBook.isPresent() == false) {
+                JOptionPane.showMessageDialog(null, "일치하는 책 정보가 없습니다.");
             }
-            System.out.println("book index: " + indexOfBook);
-            new SearchWindow(indexOfMember, indexOfBook, studentRepository, bookRepository);
-            setVisible(false);
+            else{
+                new SearchWindow(searchedBook.get(), loginedMember);
+            }
         }
     }
 
     private class AdminPageActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            new AdminManagement(bookRepository);
+            new AdminManagement();
             setVisible(false);
         }
     }
@@ -109,7 +104,14 @@ public class MainWindow extends JFrame{
     private class LoginActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            new LoginWindow(studentRepository, bookRepository);
+            new LoginWindow(0);
+            setVisible(false);
+        }
+    }
+    private class RegisterActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new LoginWindow(1);
             setVisible(false);
         }
     }
@@ -117,19 +119,9 @@ public class MainWindow extends JFrame{
     private class LogoutActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            new MainWindow(-1, studentRepository, bookRepository);
+            new MainWindow(null);
             setVisible(false);
         }
     }
-//    public static void main(String[] args) {
-////        Library library = new Library(1L, "Handong Global University Library", 200);
-////        libraryRepository.getLibraryList().add(library);
-////        Book book = new Book(1L, "Introduction to Metaverse", 8972805491L, "510.32 지 474", "좋은 생각", 1L);
-////        bookRepository.getBookList().add(book);
-////        Student student = new Student(1L, "yujin", Role.STUDENT, "slsddbwls4421", library.getLibraryId(), 22000630);
-////        studentRepository.getStudentList().add(student);
-////        new MainWindow(0); //생성자 호출
-//    }
-
 
 }

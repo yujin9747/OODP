@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -18,9 +21,14 @@ public class Library {
     private String name;
     private int totalBook;
 
-    public Library(Long id, String name, int totalBook){
-        this.id = id;
+    @OneToMany(mappedBy = "library")
+    private List<Book> books = new ArrayList<>();
+
+    @OneToMany(mappedBy = "library")
+    private List<Member> members = new ArrayList<>();
+
+    public Library(String name){
         this.name = name;
-        this.totalBook = totalBook;
+        this.totalBook = 0;
     }
 }
