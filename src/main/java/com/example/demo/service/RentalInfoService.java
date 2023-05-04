@@ -1,16 +1,16 @@
 package com.example.demo.service;
 
-import com.example.demo.domain.Book;
-import com.example.demo.domain.Member;
-import com.example.demo.domain.RentalInfo;
-import com.example.demo.domain.Student;
+import com.example.demo.domain.*;
 import com.example.demo.repository.BookRepository;
 import com.example.demo.repository.MemberRepository;
 import com.example.demo.repository.RentalInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.temporal.TemporalAmount;
 import java.util.List;
 import java.util.Optional;
 import java.util.List;
@@ -50,6 +50,25 @@ public class RentalInfoService {
         book.get().setLastModifiedDate(LocalDateTime.now());
 
         RentalInfo rentalInfo = rentalInfoRepository.findOneByMemberIdAndBookId(memberId, bookId);
-        rentalInfoRepository.delete(rentalInfo);
+        rentalInfo.setReturned(true);
+        rentalInfo.setReturnedDate(LocalDateTime.now());
+
+        if(rentalInfo.getReturnedDate().isAfter(rentalInfo.getReturnDueDate())){
+            rentalInfo.setOverdue(true);
+            rentalInfo.setOverDueDays(Period.between(rentalInfo.getReturnDueDate().toLocalDate(), rentalInfo.getReturnedDate().toLocalDate()).getDays());
+
+            if(member.get().getRole() == Role.STUDENT){
+                Student student = (Student) member.get();
+                student.setLastModifiedDate(LocalDateTime.now());
+                student.setDisabled(true);
+                student.setEnableDate(LocalDateTime.now().plusDays(rentalInfo.getOverDueDays()));
+            }
+            else if(member.get().getRole() == Role.PROFESSOR){
+
+            }
+
+        }
+
+        //rentalInfoRepository.delete(rentalInfo);
     }
 }
