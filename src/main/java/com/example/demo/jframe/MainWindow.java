@@ -22,6 +22,7 @@ public class MainWindow extends JFrame{
     Button adminPageBTN;
     Button logoutBTN;
     Button registerBTN;
+    Button userPageBTN;
 
     JTextField searchBoxField = new JTextField("책 제목을 입력하세요", 20);
 
@@ -70,6 +71,11 @@ public class MainWindow extends JFrame{
                 adminPageBTN.setBounds(300, 350, 70, 30);
                 add(adminPageBTN);
                 adminPageBTN.addActionListener(new AdminPageActionListener());
+            } else {
+                userPageBTN = new Button("User Page");
+                userPageBTN.setBounds(300, 350, 70, 30);
+                add(userPageBTN);
+                userPageBTN.addActionListener(new UserPageActionListener());
             }
         }
 
@@ -97,6 +103,14 @@ public class MainWindow extends JFrame{
         @Override
         public void actionPerformed(ActionEvent e) {
             new AdminManagement();
+            setVisible(false);
+        }
+    }
+
+    private class UserPageActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new UserPageWindow();
             setVisible(false);
         }
     }
