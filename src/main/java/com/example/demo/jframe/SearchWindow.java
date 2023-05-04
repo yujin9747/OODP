@@ -118,11 +118,11 @@ public class SearchWindow extends JFrame {
                 }
             } else if (command.equals("예약하기")) {
 
-                } else if (loginedMember.getRole() == Role.PROFESSOR) {
+            } else if (loginedMember.getRole() == Role.PROFESSOR) {
 
-                }
             }
-
         }
 
     }
+
+}
