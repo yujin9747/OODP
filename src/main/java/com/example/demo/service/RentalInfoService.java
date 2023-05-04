@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.domain.Book;
 import com.example.demo.domain.Member;
 import com.example.demo.domain.RentalInfo;
+import com.example.demo.domain.Student;
 import com.example.demo.repository.BookRepository;
 import com.example.demo.repository.MemberRepository;
 import com.example.demo.repository.RentalInfoRepository;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Transactional(readOnly = true)
@@ -23,12 +25,13 @@ public class RentalInfoService {
 
 
     @Transactional
-    public void saveRentalInfo(Long memberId, Long bookId){
+    public RentalInfo saveRentalInfo(Long memberId, Long bookId){
         Optional<Member> member = memberRepository.findOne(memberId);
         Optional<Book> book = bookRepository.findOne(bookId);
 
         RentalInfo rentalInfo = new RentalInfo(member.get(), book.get());
         rentalInfoRepository.save(rentalInfo);
+        return rentalInfo;
     }
 
     public RentalInfo findOne(Long rentalInfoId){ return rentalInfoRepository.findOne(rentalInfoId);}
