@@ -2,6 +2,7 @@ package com.example.demo.jframe;
 
 import com.example.demo.BeanUtil;
 import com.example.demo.domain.*;
+
 import com.example.demo.service.BookService;
 import com.example.demo.service.MemberService;
 import com.example.demo.service.RentalInfoService;
@@ -117,9 +118,11 @@ public class SearchWindow extends JFrame {
                 }
             } else if (command.equals("예약하기")) {
 
+                } else if (loginedMember.getRole() == Role.PROFESSOR) {
+
+                }
             }
 
         }
 
     }
-}
