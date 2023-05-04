@@ -18,6 +18,13 @@ public class BookService {
     public void saveBook(Book book){
         bookRepository.save(book);
     }
+    @Transactional
+//    public void deleteBook(Book book){
+//        bookRepository.delete(book);
+//    }
+    public void deleteBook(String name){
+        bookRepository.delete(bookRepository.findByTitle(name));
+    }
 
     public List<Book> findBooks(){
         return bookRepository.findAll();

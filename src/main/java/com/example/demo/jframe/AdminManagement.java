@@ -2,10 +2,14 @@ package com.example.demo.jframe;
 
 import com.example.demo.BeanUtil;
 import com.example.demo.domain.Book;
+import com.example.demo.domain.Library;
 import com.example.demo.domain.Member;
 import com.example.demo.domain.Student;
 import com.example.demo.repository.BookRepository;
 import com.example.demo.service.BookService;
+import com.example.demo.service.MemberService;
+import com.example.demo.service.LibraryService;
+import java.util.Optional;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -18,6 +22,8 @@ import javax.swing.event.*;
 public class AdminManagement extends JFrame implements MouseListener,KeyListener,ListSelectionListener{
 
     private final BookService bookService;
+    private final MemberService memberService;
+    private final LibraryService libraryService;
     private JList list;				//리스트
     private JTextField inputField;	//테스트 입력 Field
     private JButton addBtn;		//추가 버튼
@@ -29,6 +35,9 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
 
     public AdminManagement() {
         this.bookService = BeanUtil.get(BookService.class);
+        this.memberService = BeanUtil.get(MemberService.class);
+        this.libraryService = BeanUtil.get(LibraryService.class);
+
         setTitle("AdminManagement");
         init();
     }
@@ -71,9 +80,9 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
         this.setLocationRelativeTo(null);	//창 가운데 위치
         this.setVisible(true);
 
-        List<Book> studentList = bookService.findBooks();
-        for(int i=0; i<studentList.size(); i++){
-            String inputText=studentList.get(i).getTitle();
+        List<Book> bookList = bookService.findBooks();
+        for(int i=0; i<bookList.size(); i++){
+            String inputText=bookList.get(i).getTitle();
             if(inputText==null||inputText.length()==0) return;
             model.addElement(inputText);
             inputField.setText("");		//내용 지우기
@@ -102,13 +111,19 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
             if(model.size()==0) return;	//아무것도 저장되어 있지 않으면 return
             index=0;	//그 이상이면 가장 상위 list index
         }
-
+        List<Book> bookList = bookService.findBooks();
+            bookService.deleteBook(bookList.get(index).getTitle());
         model.remove(index);
     }
 
     public void addItem() {
         String inputText=inputField.getText();
         if(inputText==null||inputText.length()==0) return;
+
+        Optional<Library> handongLibrary = libraryService.findOne(1L);
+        Book book = new Book(inputText, 23412534L, "530.32 지 474", "Unkown", handongLibrary.get());
+        bookService.saveBook(book);
+
         model.addElement(inputText);
         inputField.setText("");		//내용 지우기
         inputField.requestFocus();	//다음 입력을 편하게 받기 위해서 TextField에 포커스 요청

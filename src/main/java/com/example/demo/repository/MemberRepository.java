@@ -1,9 +1,6 @@
 package com.example.demo.repository;
 
-import com.example.demo.domain.Admin;
-import com.example.demo.domain.Member;
-import com.example.demo.domain.Professor;
-import com.example.demo.domain.Student;
+import com.example.demo.domain.*;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -46,6 +43,11 @@ public class MemberRepository {
 
     public List<Admin> findAllAdmins() {
         return em.createQuery("select a from Admin a", Admin.class)
+                .getResultList();
+    }
+
+    public List<Student> findAllOverdueStudents() {
+        return em.createQuery("select s from Student s left join RentalInfo r on s.id = r.member.id where r.isOverdue = true", Student.class)
                 .getResultList();
     }
 }

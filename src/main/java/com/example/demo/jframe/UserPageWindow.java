@@ -2,6 +2,7 @@ package com.example.demo.jframe;
 
 import com.example.demo.BeanUtil;
 import com.example.demo.domain.Member;
+import com.example.demo.domain.Role;
 import com.example.demo.service.BookService;
 import com.example.demo.service.LibraryService;
 import com.example.demo.service.MemberService;
@@ -29,13 +30,17 @@ public class UserPageWindow extends JFrame {
     private final RentalInfoService rentalInfoService;
 
     private Member loginedMember;
+    private Book searchedBook;
+    private Object[][] data;
 
     public UserPageWindow (Member loginedMember) {
         this.memberService = BeanUtil.get(MemberService.class);
         this.libraryService = BeanUtil.get(LibraryService.class);
         this.bookService = BeanUtil.get(BookService.class);
         this.rentalInfoService = BeanUtil.get(RentalInfoService.class);
+
         this.loginedMember = loginedMember;
+
         setTitle("User Page");
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,6 +53,7 @@ public class UserPageWindow extends JFrame {
         returnBTN = new Button("return");
         renewBTN = new Button("renew");
         renewBTN.addActionListener(new renewActionListener());
+        returnBTN.addActionListener(new returnActionListener());
 
         JPanel topPanel=new JPanel(new FlowLayout(10,10,FlowLayout.LEFT));
         topPanel.add(returnBTN);
@@ -60,7 +66,7 @@ public class UserPageWindow extends JFrame {
 
         rentalInfoList = rentalInfoService.findRentalInfosByMemberId(loginedMember.getId());
 
-        Object[][] data = new Object[rentalInfoList.size()][];
+        data = new Object[rentalInfoList.size()][];
         for (int i = 0; i < rentalInfoList.size(); i++) {
             RentalInfo rentalInfo = rentalInfoList.get(i);
 
@@ -103,5 +109,29 @@ public class UserPageWindow extends JFrame {
         }
     }
 
+    private class returnActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+//            String command = e.getActionCommand();
+//            Object o = data[bookList.getSelectedIndex() - 1];
+//            String title = o.toString();
+//            searchedBook = bookService.findBookByTitle(title).get();
+//
+//            if (command.equals("return")) {
+//                if (loginedMember.getRole() == Role.STUDENT) {
+//                    rentalInfoService.returnBook(loginedMember.getId(), searchedBook.getId());
+//                    JOptionPane.showMessageDialog(null, "반납이 완료되었습니다.");
+//
+//                    new MainWindow(loginedMember);
+//                    setVisible(false);
+//                }
+//                else if(loginedMember.getRole() == Role.PROFESSOR){
+//
+//                }
+//
+//            }
+        }
+
+    }
 
 }

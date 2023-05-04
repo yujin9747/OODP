@@ -4,6 +4,7 @@ import com.example.demo.BeanUtil;
 import com.example.demo.domain.Admin;
 import com.example.demo.domain.Student;
 import com.example.demo.service.MemberService;
+import com.example.demo.service.RentalInfoService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,8 +17,11 @@ public class UserManageWindow extends JFrame {
     private JScrollPane scrolled;
     private Button findStudentsBTN;   // 전체 학생 조회
     private Button findAdminsBTN;   // 전체 관리자 조회
+    private Button findOverduedStudentsBTN;   // 전체 관리자 조회
+
 
     private MemberService memberService;
+
 
     private JList<Student> studentList;
 
@@ -52,6 +56,11 @@ public class UserManageWindow extends JFrame {
         findAdminsBTN.addActionListener(new ActionListener());
         buttonPanel.add(findAdminsBTN);
 
+        findOverduedStudentsBTN = new Button("반납 연기된 학생 조회");
+        findOverduedStudentsBTN.setBounds(20, 5, 70, 30);
+        findOverduedStudentsBTN.addActionListener(new ActionListener());
+        buttonPanel.add(findOverduedStudentsBTN);
+
         JLabel desc = new JLabel(description);
 
         northPanel.add(buttonPanel);
@@ -85,6 +94,14 @@ public class UserManageWindow extends JFrame {
                     addItem(admins.get(i).getAdminId());
                 }
                 new UserManageWindow(model, "< 관리자 전체 조회 결과 >");
+                setVisible(false);
+            }
+            else if(command.equals("반납 연기된 학생 조회")){
+                List<Student> overdueStudents = memberService.findOverdueStudents();
+                for (int i = 0; i < overdueStudents.size(); i++) {
+                    addItem(overdueStudents.get(i).getStudentId());
+                }
+                new UserManageWindow(model, "< 반납 연기된 학생 조회 결과 >");
                 setVisible(false);
             }
         }
