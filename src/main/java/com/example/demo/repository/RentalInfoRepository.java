@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +38,13 @@ public class RentalInfoRepository {
         return em.createQuery("select r from RentalInfo r where member.id = :memberId", RentalInfo.class)
                 .setParameter("memberId", memberId)
                 .getResultList();
+    }
+
+    public int updateRentalInfoDueDate(Long rentalInfoId, LocalDateTime dueDate) {
+        return em.createQuery("update RentalInfo r set r.returnDueDate = :dueDate where r.id = :id")
+                .setParameter("dueDate", dueDate)
+                .setParameter("id", rentalInfoId)
+                .executeUpdate();
     }
 
     public Long delete(RentalInfo rentalInfo) {

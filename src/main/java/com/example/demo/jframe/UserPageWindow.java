@@ -25,6 +25,7 @@ public class UserPageWindow extends JFrame {
 //    private JList bookList;
     private JTable bookTable;
     private DefaultListModel<String> model;
+    private List<RentalInfo> rentalInfoList;
 
     private final RentalInfoService rentalInfoService;
 
@@ -63,7 +64,7 @@ public class UserPageWindow extends JFrame {
 
         String[] columnNames = {"title", "Estimated return date"};
 
-        List<RentalInfo> rentalInfoList = rentalInfoService.findRentalInfosByMemberId(loginedMember.getId());
+        rentalInfoList = rentalInfoService.findRentalInfosByMemberId(loginedMember.getId());
 
         data = new Object[rentalInfoList.size()][];
         for (int i = 0; i < rentalInfoList.size(); i++) {
@@ -89,7 +90,22 @@ public class UserPageWindow extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             int selected=bookTable.getSelectedRow();
-            System.out.println("selected "+selected);
+
+            RentalInfo rentalInfo = rentalInfoList.get(selected);
+
+            boolean isExtensionAllowed = rentalInfo.isExtensionAllowed();
+
+            if (isExtensionAllowed) {
+                //modify due date
+                int updatedCount = rentalInfoService.updateRentalInfoDueDate(rentalInfo.getId());
+                System.out.println("성공 - 연장");
+                setVisible(false);
+                new UserPageWindow(loginedMember);
+            } else {
+                JOptionPane.showMessageDialog(null, "연장이 불가능합니다.");
+                System.out.println("실패 - 연장불가");
+            }
+
         }
     }
 

@@ -41,6 +41,11 @@ public class RentalInfoService {
         return rentalInfoRepository.findRentalInfosByMemberId(memberId);
     }
 
+    public int updateRentalInfoDueDate(Long rentalInfoId) {
+        LocalDateTime dueDate = findOne(rentalInfoId).getReturnDueDate().plusDays(5);
+        return rentalInfoRepository.updateRentalInfoDueDate(rentalInfoId, dueDate);
+    }
+
 
     @Transactional
     public void returnBook(Long memberId, Long bookId) {
