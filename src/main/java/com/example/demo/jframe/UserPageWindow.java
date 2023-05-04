@@ -11,12 +11,16 @@ import com.example.demo.domain.RentalInfo;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 public class UserPageWindow extends JFrame {
     private final MemberService memberService;
     private final LibraryService libraryService;
     private final BookService bookService;
+    private Button returnBTN;
+    private Button renewBTN;
     private JList bookList;
     private DefaultListModel<String> model;
 
@@ -37,7 +41,20 @@ public class UserPageWindow extends JFrame {
         bookList = new JList<>();
         model = new DefaultListModel<>();
 
-        String[] columnNames = {"title", "Estimated return date", " ", " "};
+        bookList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);	//하나만 선택 될 수 있도록
+
+        returnBTN = new Button("return");
+        renewBTN = new Button("renew");
+        renewBTN.addActionListener(new renewActionListener());
+
+        JPanel topPanel=new JPanel(new FlowLayout(10,10,FlowLayout.LEFT));
+        topPanel.add(returnBTN);
+        topPanel.add(renewBTN);
+        topPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+
+        this.add(topPanel,"North");
+
+        String[] columnNames = {"title", "Estimated return date"};
 
         List<RentalInfo> rentalInfoList = rentalInfoService.findRentalInfosByMemberId(loginedMember.getId());
 
@@ -47,7 +64,8 @@ public class UserPageWindow extends JFrame {
 
             Book book = rentalInfo.getBook();
             String returnDueDate = rentalInfo.getReturnDueDate().toString();
-            data[i] = new Object[]{book.getTitle(), returnDueDate, new JButton("return"), new JButton("renew")};
+
+            data[i] = new Object[]{book.getTitle(), returnDueDate};
         }
 
         JTable bookTable = new JTable(data, columnNames);
@@ -58,5 +76,14 @@ public class UserPageWindow extends JFrame {
 
         setVisible(true); //보이기
     }
+
+    private class renewActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int selected=bookList.getSelectedIndex();
+           // System.out.println("selected "+selected);
+        }
+    }
+
 
 }
