@@ -3,6 +3,7 @@ package com.example.demo.jframe;
 import com.example.demo.domain.*;
 import com.example.demo.repository.BookRepository;
 import com.example.demo.repository.RentalInfoRepository;
+import com.example.demo.repository.ReservationInfoRepository;
 import com.example.demo.repository.StudentRepository;
 
 import javax.swing.*;
@@ -17,6 +18,7 @@ public class SearchWindow extends JFrame {
     static BookRepository bookRepository;
     static StudentRepository studentRepository;
     static RentalInfoRepository rentalInfoRepository = new RentalInfoRepository();
+    static ReservationInfoRepository reservationInfoRepository = new ReservationInfoRepository();
 
     Button checkoutBTN;
     Button returnBTN;
@@ -181,7 +183,46 @@ public class SearchWindow extends JFrame {
 
                 }
             } else if (command.equals("예약하기")) {
+                if (loginedMember.getRole() == Role.STUDENT) {
+                    Student loginedStudent = (Student) loginedMember;
 
+                    Student editedMember = new Student(loginedStudent.getId(), loginedStudent.getName(), Role.STUDENT, loginedStudent.getPassword(), loginedStudent.getLibraryId(), loginedStudent.getStudentId());
+
+                    editedMember.setLastModifiedDate(LocalDateTime.now());
+//                    LocalDateTime longestDueDate = null;
+//                    List<RentalInfo> rentalInfoList = rentalInfoRepository.getRentalInfoList();
+//                    for(int i=0; i<rentalInfoList.size(); i++){
+//                        if(rentalInfoList.get(i).getMemberId() == loginedStudent.getMemberId() && rentalInfoList.get(i).isReturned() == false){
+//                            longestDueDate = (longestDueDate.isAfter(rentalInfoList.get(i).getReturnDueDate())) ? rentalInfoList.get(i).getReturnDueDate(): longestDueDate;
+//                        }
+//                    }
+
+                    studentRepository.getStudentList().add(editedMember);
+                    studentRepository.getStudentList().remove(loginedMember);
+
+//                    RentalInfo rentalInfo = new RentalInfo((long) rentalInfoRepository.getRentalInfoList().size(), Role.STUDENT, loginedStudent.getId(), searchedBook.getId());
+//                    rentalInfoRepository.getRentalInfoList().add(rentalInfo);
+
+                    Book editiedBook = new Book(searchedBook.getId(), searchedBook.getTitle(), searchedBook.getIsbn(), searchedBook.getPosition(), searchedBook.getPublisher(), searchedBook.getLibraryId());
+                    editiedBook.setEnrolledDate(searchedBook.getEnrolledDate());
+                    editiedBook.setReserved(true);
+                    editiedBook.setLastModifiedDate(LocalDateTime.now());
+                    bookRepository.getBookList().add(editiedBook);
+                    bookRepository.getBookList().remove(searchedBook);
+
+                    ReservationInfo reservationInfo = new ReservationInfo((long) reservationInfoRepository.getReservationInfoList().size(), Role.STUDENT, editedMember.getId(), editiedBook.getId());
+                    reservationInfoRepository.getReservationInfoList().add(reservationInfo);
+
+                    studentRepository.getStudentList().stream().forEach(s -> System.out.println("Student lastModifiedDate " + s.getLastModifiedDate()));
+                    bookRepository.getBookList().stream().forEach(b -> System.out.println("Book Reserved status : " + b.isReserved()));
+                    reservationInfoRepository.getReservationInfoList().stream().forEach(i -> System.out.println("Reservation Info (memberId, bookId): " + i.getMemberId() + ", " + i.getBookId()));
+
+                    JOptionPane.showMessageDialog(null, "예약이 완료되었습니다.");
+
+                    // Todo: 화면 refresh하기
+                } else if (loginedMember.getRole() == Role.PROFESSOR) {
+
+                }
             }
 
         }

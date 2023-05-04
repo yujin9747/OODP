@@ -8,6 +8,7 @@ import com.example.demo.repository.BookRepository;
 import com.example.demo.repository.LibraryRepository;
 import com.example.demo.repository.RentalInfoRepository;
 import com.example.demo.repository.StudentRepository;
+import com.example.demo.repository.ReservationInfoRepository;
 
 import javax.swing.*;
 
@@ -16,6 +17,7 @@ public class Main extends JFrame {
     static BookRepository bookRepository = new BookRepository();
     static StudentRepository studentRepository = new StudentRepository();
     static RentalInfoRepository rentalInfoRepository = new RentalInfoRepository();
+    static ReservationInfoRepository reservationInfoRepository = new ReservationInfoRepository();
 
     private static void initializeRepositories() {
         Library library = new Library(1L, "Handong Global University Library", 200);
