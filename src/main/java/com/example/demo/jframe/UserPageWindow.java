@@ -21,7 +21,8 @@ public class UserPageWindow extends JFrame {
     private final BookService bookService;
     private Button returnBTN;
     private Button renewBTN;
-    private JList bookList;
+//    private JList bookList;
+    private JTable bookTable;
     private DefaultListModel<String> model;
 
     private final RentalInfoService rentalInfoService;
@@ -38,10 +39,8 @@ public class UserPageWindow extends JFrame {
         Container c = getContentPane();
         c.setLayout(new FlowLayout());
 
-        bookList = new JList<>();
-        model = new DefaultListModel<>();
-
-        bookList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);	//하나만 선택 될 수 있도록
+//        bookList = new JList<>();
+//        model = new DefaultListModel<>();
 
         returnBTN = new Button("return");
         renewBTN = new Button("renew");
@@ -68,7 +67,8 @@ public class UserPageWindow extends JFrame {
             data[i] = new Object[]{book.getTitle(), returnDueDate};
         }
 
-        JTable bookTable = new JTable(data, columnNames);
+        bookTable = new JTable(data, columnNames);
+        bookTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);	//하나만 선택 될 수 있도록
         JScrollPane scrollPane = new JScrollPane(bookTable);
         c.add(scrollPane);
 
@@ -80,8 +80,8 @@ public class UserPageWindow extends JFrame {
     private class renewActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            int selected=bookList.getSelectedIndex();
-           // System.out.println("selected "+selected);
+            int selected=bookTable.getSelectedRow();
+            System.out.println("selected "+selected);
         }
     }
 
