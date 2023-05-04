@@ -96,24 +96,24 @@ public class UserPageWindow extends JFrame {
     private class returnActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-//            String command = e.getActionCommand();
-//            Object o = data[bookList.getSelectedIndex() - 1];
-//            String title = o.toString();
-//            searchedBook = bookService.findBookByTitle(title).get();
-//
-//            if (command.equals("return")) {
-//                if (loginedMember.getRole() == Role.STUDENT) {
-//                    rentalInfoService.returnBook(loginedMember.getId(), searchedBook.getId());
-//                    JOptionPane.showMessageDialog(null, "반납이 완료되었습니다.");
-//
-//                    new MainWindow(loginedMember);
-//                    setVisible(false);
-//                }
-//                else if(loginedMember.getRole() == Role.PROFESSOR){
-//
-//                }
-//
-//            }
+            String command = e.getActionCommand();
+            Object o = data[bookTable.getSelectedRow()][0];
+            System.out.println("ReturnBook title  : " + o);
+            searchedBook = bookService.findBookByTitle(o.toString()).get();
+
+            if (command.equals("return")) {
+                if (loginedMember.getRole() == Role.STUDENT) {
+                    rentalInfoService.returnBook(loginedMember.getId(), searchedBook.getId());
+                    JOptionPane.showMessageDialog(null, "반납이 완료되었습니다.");
+
+                    new MainWindow(loginedMember);
+                    setVisible(false);
+                }
+                else if(loginedMember.getRole() == Role.PROFESSOR){
+
+                }
+
+            }
         }
 
     }
