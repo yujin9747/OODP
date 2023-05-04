@@ -64,4 +64,5 @@ public class SpringConfig {
     public ReservationInfoService reservationInfoService(){
         return new ReservationInfoService(reservationInfoRepository());
     }
+
 }
