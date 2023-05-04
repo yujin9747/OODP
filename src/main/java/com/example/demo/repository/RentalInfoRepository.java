@@ -1,5 +1,6 @@
 package com.example.demo.repository;
 
+import com.example.demo.domain.Book;
 import com.example.demo.domain.Member;
 import com.example.demo.domain.RentalInfo;
 import jakarta.persistence.EntityManager;
@@ -30,6 +31,12 @@ public class RentalInfoRepository {
                 .setParameter("memberId", memberId)
                 .setParameter("bookId", bookId)
                 .getSingleResult();
+    }
+
+    public List<RentalInfo> findRentalInfosByMemberId(Long memberId){
+        return em.createQuery("select r from RentalInfo r where member.id = :memberId", RentalInfo.class)
+                .setParameter("memberId", memberId)
+                .getResultList();
     }
 
     public Long delete(RentalInfo rentalInfo) {

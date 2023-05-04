@@ -110,7 +110,7 @@ public class MainWindow extends JFrame{
     private class UserPageActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            new UserPageWindow();
+            new UserPageWindow(loginedMember);
             setVisible(false);
         }
     }

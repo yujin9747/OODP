@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.List;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -32,6 +33,11 @@ public class RentalInfoService {
     }
 
     public RentalInfo findOne(Long rentalInfoId){ return rentalInfoRepository.findOne(rentalInfoId);}
+    public RentalInfo findOneByMemberIdAndBookId(Long memberId, Long bookId){return rentalInfoRepository.findOneByMemberIdAndBookId(memberId, bookId);}
+    public List<RentalInfo> findRentalInfosByMemberId(Long memberId){
+        return rentalInfoRepository.findRentalInfosByMemberId(memberId);
+    }
+
 
     @Transactional
     public void returnBook(Long memberId, Long bookId) {
