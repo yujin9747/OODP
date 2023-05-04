@@ -2,12 +2,14 @@ package com.example.demo.jframe;
 
 import com.example.demo.BeanUtil;
 import com.example.demo.domain.Book;
+import com.example.demo.domain.Member;
 import com.example.demo.domain.Student;
 import com.example.demo.repository.BookRepository;
 import com.example.demo.service.BookService;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -20,6 +22,7 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
     private JTextField inputField;	//테스트 입력 Field
     private JButton addBtn;		//추가 버튼
     private JButton delBtn;		//삭제 버튼
+    private Button userManageBTN;
 
     private DefaultListModel model;	//JList에 보이는 실제 데이터
     private JScrollPane scrolled;
@@ -33,15 +36,17 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
     public void init() {
         model=new DefaultListModel();
         list=new JList(model);
-        inputField=new JTextField(35);
+        inputField=new JTextField(20);
         addBtn=new JButton("추가");
         delBtn=new JButton("삭제");
+        userManageBTN = new Button("학생 정보 관리");
 
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);	//하나만 선택 될 수 있도록
 
         inputField.addKeyListener(this);	//엔터 처리
         addBtn.addMouseListener(this);		//아이템 추가
         delBtn.addMouseListener(this);		//아이템 삭제
+        userManageBTN.addMouseListener(this);
         list.addListSelectionListener(this);	//항목 선택시
 
         this.setLayout(new BorderLayout());
@@ -51,6 +56,7 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
         topPanel.add(inputField);
         topPanel.add(addBtn);
         topPanel.add(delBtn);		//위쪽 패널 [textfield]  [add] [del]
+        topPanel.add(userManageBTN);
         topPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));	//상, 좌, 하, 우 공백(Padding)
 
         scrolled=new JScrollPane(list);
@@ -84,6 +90,10 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
         if(e.getSource() == delBtn) {
             int selected=list.getSelectedIndex();
             removeItem(selected);
+        }
+        if(e.getSource() == userManageBTN){
+            new UserManageWindow(new DefaultListModel(), "");
+            setVisible(false);
         }
     }
 
