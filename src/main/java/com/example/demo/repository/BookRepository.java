@@ -20,9 +20,12 @@ public class BookRepository {
         em.persist(book);
     }
 
-    public Long delete(Book book) {
+//    public Long delete(Book book) {
+//        em.remove(book);
+//        return book.getId();
+//    }
+    public void delete(Book book) {
         em.remove(book);
-        return book.getId();
     }
 
     public Optional<Book> findOne(Long bookId) {
