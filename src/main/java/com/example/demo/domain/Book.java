@@ -29,7 +29,7 @@ public class Book {
     private boolean isReserved;
     private String publisher;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "library_id")
     private Library library;
 
@@ -50,5 +50,11 @@ public class Book {
 
         this.enrolledDate = LocalDateTime.now();
         this.lastModifiedDate = null;
+    }
+
+    public void rentBook(RentalInfo rentalInfo){
+        this.isBorrowed = true;
+//        this.rentalInfoList.add(rentalInfo);
+        rentalInfo.setBook(this);
     }
 }

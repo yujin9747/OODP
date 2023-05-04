@@ -18,4 +18,22 @@ public class RentalInfoRepository {
     public void save(RentalInfo rentalInfo) {
         em.persist(rentalInfo);
     }
+
+    public RentalInfo findOne(Long rentalInfoId) {
+        return em.createQuery("select r from RentalInfo r where id = :id", RentalInfo.class)
+                .setParameter("id", rentalInfoId)
+                .getSingleResult();
+    }
+
+    public RentalInfo findOneByMemberIdAndBookId(Long memberId, Long bookId) {
+        return em.createQuery("select r from RentalInfo r where member.id = :memberId and book.id = :bookId", RentalInfo.class)
+                .setParameter("memberId", memberId)
+                .setParameter("bookId", bookId)
+                .getSingleResult();
+    }
+
+    public Long delete(RentalInfo rentalInfo) {
+        em.remove(rentalInfo);
+        return rentalInfo.getId();
+    }
 }

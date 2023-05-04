@@ -30,7 +30,7 @@ public abstract class Member {
     private boolean disabled;
 
     @OneToMany(mappedBy = "member")
-    private List<RentalInfo> rentalInfoLsit = new ArrayList<>();
+    private List<RentalInfo> rentalInfoList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
     private List<ReservationInfo> reservationInfoList = new ArrayList<>();
@@ -42,5 +42,10 @@ public abstract class Member {
         this.password = pw;
         this.library = library;
         this.disabled = false;
+    }
+
+    public void rentBook(RentalInfo rentalInfo){
+//        this.rentalInfoList.add(rentalInfo);
+        rentalInfo.setMember(this);
     }
 }

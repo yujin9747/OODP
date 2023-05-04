@@ -52,7 +52,7 @@ public class SpringConfig {
 
     @Bean
     public RentalInfoService rentalInfoService(){
-        return new RentalInfoService(rentalInfoRepository());
+        return new RentalInfoService(rentalInfoRepository(), memberRepository(), bookRepository());
     }
 
     @Bean

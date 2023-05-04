@@ -1,6 +1,7 @@
 package com.example.demo.domain;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -20,11 +21,11 @@ public class RentalInfo {
     private LocalDateTime rentalDate;
     private Role userType;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "book_id")
     private Book book;
     private boolean isReserved;
@@ -35,19 +36,24 @@ public class RentalInfo {
     private LocalDateTime returnedDate;
     private int overDueDays;
 
-    public RentalInfo(Long id, Role userType, Member member, Book book){
-        this.id = id;
+    public RentalInfo(Member member, Book book){
         this.rentalDate = LocalDateTime.now();
-        this.userType = userType;
-        this.member = member;
-        this.book = book;
+        this.userType = member.getRole();
         this.isReserved = false;
         this.isOverdue = false;
-        this.isReserved = false;
+        this.isReturned = false;
         this.isExtensionAllowed = true;
         this.returnDueDate = this.rentalDate.plusDays(14L);
         this.returnedDate = null;
         this.overDueDays = 0;
+
+        this.member = member;
+        member.getRentalInfoList().add(this);
+
+        this.book = book;
+        book.getRentalInfoList().add(this);
+        book.setBorrowed(true);
+        book.setLastModifiedDate(LocalDateTime.now());
     }
 
     public RentalInfo returnInfo(){

@@ -58,8 +58,10 @@ public class DemoApplication {
         bookService.saveBook(book5);
 
         this.memberService = BeanUtil.get(MemberService.class);
-        Member member1 = new Student("yujin", Role.STUDENT, "slsddbwls4421", handongLibrary,22000630);
+        Member member1 = new Student("yujin", Role.STUDENT, "slsddbwls4421", handongLibrary,"22000630");
         memberService.saveMember(member1);
+        Member admin = new Admin("adminName", Role.ADMIN, "admin1234", handongLibrary, "1130403", 19);
+        memberService.saveMember(admin);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.example.demo.repository;
 
+import com.example.demo.domain.Admin;
 import com.example.demo.domain.Member;
 import com.example.demo.domain.Professor;
 import com.example.demo.domain.Student;
@@ -40,6 +41,11 @@ public class MemberRepository {
 
     public List<Student> findAllStudents(){
         return em.createQuery("select s from Student s", Student.class)
+                .getResultList();
+    }
+
+    public List<Admin> findAllAdmins() {
+        return em.createQuery("select a from Admin a", Admin.class)
                 .getResultList();
     }
 }

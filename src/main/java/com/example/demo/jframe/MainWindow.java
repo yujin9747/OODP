@@ -11,8 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Optional;
 
-import java.util.List;
-
 public class MainWindow extends JFrame{
 
     private final MemberService memberService;
@@ -85,14 +83,12 @@ public class MainWindow extends JFrame{
             String command = e.getActionCommand();
             String bookTitle = searchBoxField.getText();
 
-            Book searchedBook = bookService.findBookByTitle(bookTitle);
-            if(searchedBook != null) {
-                new SearchWindow(searchedBook, loginedMember);
-                setVisible(false);
-            }
-            else {
+            Optional<Book> searchedBook = bookService.findBookByTitle(bookTitle);
+            if(searchedBook.isPresent() == false) {
                 JOptionPane.showMessageDialog(null, "일치하는 책 정보가 없습니다.");
-                System.out.println("실패 - 일치하는 제목의 책 없음");
+            }
+            else{
+                new SearchWindow(searchedBook.get(), loginedMember);
             }
         }
     }

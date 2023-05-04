@@ -1,12 +1,11 @@
 package com.example.demo.service;
 
+import com.example.demo.domain.Admin;
 import com.example.demo.domain.Member;
 import com.example.demo.domain.Professor;
 import com.example.demo.domain.Student;
 import com.example.demo.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -33,5 +32,13 @@ public class MemberService {
 
     public Optional<Member> findOne(Long id){
         return memberRepository.findOne(id);
+    }
+
+    public List<Admin> findAdmins() {
+        return memberRepository.findAllAdmins();
+    }
+
+    public List<Member> findAll() {
+        return memberRepository.findAll();
     }
 }

@@ -19,11 +19,11 @@ public class ReservationInfo {
     private Long id;
     private LocalDateTime reservationDate;
     private Role userType;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "book_id")
     private Book book;
 
