@@ -2,10 +2,13 @@ package com.example.demo.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,19 +28,33 @@ public class Book {
     private boolean isBorrowed;
     private boolean isReserved;
     private String publisher;
-    private Long libraryId;
 
-    public Book(Long id, String title, Long isbn, String position, String publisher, Long libraryId){
-        this.id = id;
+    @ManyToOne
+    @JoinColumn(name = "library_id")
+    private Library library;
+
+    @OneToMany(mappedBy = "book")
+    private List<RentalInfo> rentalInfoList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "book")
+    private List<ReservationInfo> reservationInfoList = new ArrayList<>();
+
+    public Book(String title, Long isbn, String position, String publisher, Library library){
         this.title = title;
         this.isbn = isbn;
         this.position = position;
         this.isBorrowed = false;
         this.isReserved = false;
         this.publisher = publisher;
-        this.libraryId = libraryId;
+        this.library = library;
 
         this.enrolledDate = LocalDateTime.now();
         this.lastModifiedDate = null;
+    }
+
+    public void rentBook(RentalInfo rentalInfo){
+        this.isBorrowed = true;
+//        this.rentalInfoList.add(rentalInfo);
+        rentalInfo.setBook(this);
     }
 }

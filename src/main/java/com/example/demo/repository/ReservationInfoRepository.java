@@ -1,14 +1,16 @@
 package com.example.demo.repository;
 
+import com.example.demo.domain.RentalInfo;
 import com.example.demo.domain.ReservationInfo;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
-
-@Getter
-@Setter
+@RequiredArgsConstructor
 public class ReservationInfoRepository {
-    List<ReservationInfo> reservationInfoList = new ArrayList<>();
+    private final EntityManager em;
+
+    public void save(ReservationInfo reservationInfo) {
+        em.persist(reservationInfo);
+    }
 }

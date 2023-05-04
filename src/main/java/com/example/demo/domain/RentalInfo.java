@@ -1,9 +1,7 @@
 package com.example.demo.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -12,6 +10,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@Entity
 @RequiredArgsConstructor
 public class RentalInfo {
 
@@ -20,9 +19,15 @@ public class RentalInfo {
     @Column(name = "rentalInfo_id", nullable = false)
     private Long id;
     private LocalDateTime rentalDate;
-    private Enum<Role> userType;
-    private Long memberId;
-    private Long bookId;
+    private Role userType;
+
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    @ManyToOne
+    @JoinColumn(name = "book_id")
+    private Book book;
     private boolean isReserved;
     private boolean isOverdue;
     private boolean isReturned;
@@ -31,19 +36,24 @@ public class RentalInfo {
     private LocalDateTime returnedDate;
     private int overDueDays;
 
-    public RentalInfo(Long id, Role userType, Long memberId, Long bookId){
-        this.id = id;
+    public RentalInfo(Member member, Book book){
         this.rentalDate = LocalDateTime.now();
-        this.userType = userType;
-        this.memberId = memberId;
-        this.bookId = bookId;
+        this.userType = member.getRole();
         this.isReserved = false;
         this.isOverdue = false;
-        this.isReserved = false;
+        this.isReturned = false;
         this.isExtensionAllowed = true;
         this.returnDueDate = this.rentalDate.plusDays(14L);
         this.returnedDate = null;
         this.overDueDays = 0;
+
+        this.member = member;
+        member.getRentalInfoList().add(this);
+
+        this.book = book;
+        book.getRentalInfoList().add(this);
+        book.setBorrowed(true);
+        book.setLastModifiedDate(LocalDateTime.now());
     }
 
     public RentalInfo returnInfo(){

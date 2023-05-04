@@ -6,22 +6,23 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@Entity
 @RequiredArgsConstructor
+@DiscriminatorValue("Student")
 public class Student extends Member{
 
-    private int studentId;
+    private String studentId;
     private LocalDateTime enableDate;
     private LocalDateTime enrolledDate;
     private LocalDateTime lastModifiedDate;
 
 
-    public Student(long memberId, String name, Role role, String pw, long libraryId, int sid) {
-        super(memberId, name, role, pw, libraryId);
+    public Student(String name, Role role, String pw, Library library, String sid) {
+        super(name, role, pw, library);
         studentId = sid;
         enrolledDate = LocalDateTime.now();
         enableDate = null;
