@@ -97,8 +97,9 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
             addItem();
         }
         if(e.getSource() == delBtn) {
-            int selected=list.getSelectedIndex();
-            removeItem(selected);
+            String title = list.getSelectedValue().toString();
+            int index = list.getSelectedIndex();
+            removeItem(title, index);
         }
         if(e.getSource() == userManageBTN){
             new UserManageWindow(new DefaultListModel(), "");
@@ -106,13 +107,12 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
         }
     }
 
-    public void removeItem(int index) {
+    public void removeItem(String title, int index) {
         if(index<0) {
             if(model.size()==0) return;	//아무것도 저장되어 있지 않으면 return
             index=0;	//그 이상이면 가장 상위 list index
         }
-        List<Book> bookList = bookService.findBooks();
-            bookService.deleteBook(bookList.get(index).getTitle());
+        bookService.deleteBook(title);
         model.remove(index);
     }
 
@@ -160,6 +160,7 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
     public void valueChanged(ListSelectionEvent e) {
         if(!e.getValueIsAdjusting()) {	//이거 없으면 mouse 눌릴때, 뗄때 각각 한번씩 호출되서 총 두번 호출
             System.out.println("selected :"+list.getSelectedValue());
+            System.out.println("selected index : " + list.getSelectedIndex());
         }
     }
 
