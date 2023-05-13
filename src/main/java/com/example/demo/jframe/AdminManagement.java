@@ -29,15 +29,17 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
     private JButton addBtn;		//추가 버튼
     private JButton delBtn;		//삭제 버튼
     private Button userManageBTN;
+    private Button backBTN;
 
     private DefaultListModel model;	//JList에 보이는 실제 데이터
     private JScrollPane scrolled;
+    private Member loginedMember;
 
-    public AdminManagement() {
+    public AdminManagement(Member loginedMember) {
         this.bookService = BeanUtil.get(BookService.class);
         this.memberService = BeanUtil.get(MemberService.class);
         this.libraryService = BeanUtil.get(LibraryService.class);
-
+        this.loginedMember = loginedMember;
         setTitle("AdminManagement");
         init();
     }
@@ -49,6 +51,9 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
         addBtn=new JButton("추가");
         delBtn=new JButton("삭제");
         userManageBTN = new Button("학생 정보 관리");
+
+        backBTN = new Button("<"); //뒤로가기 버튼
+        backBTN.addActionListener(new AdminManagement.backActionListener());
 
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);	//하나만 선택 될 수 있도록
 
@@ -62,6 +67,7 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
 
 
         JPanel topPanel=new JPanel(new FlowLayout(10,10,FlowLayout.LEFT));
+        topPanel.add(backBTN);
         topPanel.add(inputField);
         topPanel.add(addBtn);
         topPanel.add(delBtn);		//위쪽 패널 [textfield]  [add] [del]
@@ -89,6 +95,14 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
             inputField.requestFocus();	//다음 입력을 편하게 받기 위해서 TextField에 포커스 요청
         }
 
+    }
+
+    private class backActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new MainWindow(loginedMember);
+            setVisible(false);
+        }
     }
 
     @Override

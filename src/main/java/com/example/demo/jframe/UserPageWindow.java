@@ -22,6 +22,7 @@ public class UserPageWindow extends JFrame {
     private final BookService bookService;
     private Button returnBTN;
     private Button renewBTN;
+    private Button backBTN;
 //    private JList bookList;
     private JTable bookTable;
     private DefaultListModel<String> model;
@@ -50,12 +51,15 @@ public class UserPageWindow extends JFrame {
 //        bookList = new JList<>();
 //        model = new DefaultListModel<>();
 
+        backBTN = new Button("<");
         returnBTN = new Button("return");
         renewBTN = new Button("renew");
+        backBTN.addActionListener(new backActionListener());
         renewBTN.addActionListener(new renewActionListener());
         returnBTN.addActionListener(new returnActionListener());
 
         JPanel topPanel=new JPanel(new FlowLayout(10,10,FlowLayout.LEFT));
+        topPanel.add(backBTN);
         topPanel.add(returnBTN);
         topPanel.add(renewBTN);
         topPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
@@ -67,13 +71,20 @@ public class UserPageWindow extends JFrame {
         rentalInfoList = rentalInfoService.findRentalInfosByMemberId(loginedMember.getId());
 
         data = new Object[rentalInfoList.size()][];
+        int j = 0;
         for (int i = 0; i < rentalInfoList.size(); i++) {
             RentalInfo rentalInfo = rentalInfoList.get(i);
 
-            Book book = rentalInfo.getBook();
-            String returnDueDate = rentalInfo.getReturnDueDate().toString();
+            if(!rentalInfo.isReturned()) {
+                Book book = rentalInfo.getBook();
+                String returnDueDate = rentalInfo.getReturnDueDate().toString();
 
-            data[i] = new Object[]{book.getTitle(), returnDueDate};
+                data[j] = new Object[]{book.getTitle(), returnDueDate};
+                j += 1;
+            }
+        }
+        for (int i = j; i < rentalInfoList.size(); i++) {
+            data[i] = new Object[]{"", ""};
         }
 
         bookTable = new JTable(data, columnNames);
@@ -85,8 +96,13 @@ public class UserPageWindow extends JFrame {
 
         setVisible(true); //보이기
     }
-
-    // book renew
+    private class backActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new MainWindow(loginedMember);
+            setVisible(false);
+        }
+    }
     private class renewActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
