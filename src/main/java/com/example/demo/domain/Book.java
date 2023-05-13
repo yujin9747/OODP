@@ -43,46 +43,48 @@ public class Book {
 
 //    public Book(String title, Long isbn, String position, String publisher, Library library){
     public Book(BookBuilder builder){
-        this.title = title;
-        this.isbn = isbn;
-        this.position = position;
+        this.title = builder.title;
+        this.isbn = builder.isbn;
+        this.position = builder.position;
 //        this.isBorrowed = false;
 //        this.isReserved = false;
-        this.publisher = publisher;
-//         this.library = library;
+        this.publisher = builder.publisher;
+        this.library = builder.library;
 
 
-//        this.enrolledDate = LocalDateTime.now();
-//        this.lastModifiedDate = null;
+        this.enrolledDate = LocalDateTime.now();
+        this.lastModifiedDate = null;
     }
 
     //builder class
     public static class BookBuilder{
         // required parameters
-       // private Long id;
-       // private LocalDateTime enrolledDate;
-       // private LocalDateTime lastModifiedDate;
+        private Long id;
+        private LocalDateTime enrolledDate;
+        private LocalDateTime lastModifiedDate;
         private String title;
         private Long isbn;
         private String position;
         private String publisher;
+
+        private Library library;
 
         // boolean parameters
         private boolean isBorrowed;
         private boolean isReserved;
 
 
-        public BookBuilder(String title, Long isbn, String position, String publisher){
+        public BookBuilder(String title, Long isbn, String position, String publisher, Library library){
             this.title = title;
             this.isbn = isbn;
             this.position = position;
 //            this.isBorrowed = false; //아래에 해당 변수 별도 함수로 만듦
 //            this.isReserved = false;
             this.publisher = publisher;
-            //this.library = Library;
+            this.library = library;
 
-//            this.enrolledDate = LocalDateTime.now();
-//            this.lastModifiedDate = null;
+            this.enrolledDate = LocalDateTime.now();
+            this.lastModifiedDate = null;
 
         }
 
