@@ -22,6 +22,7 @@ public class UserPageWindow extends JFrame {
     private final BookService bookService;
     private Button returnBTN;
     private Button renewBTN;
+    private Button backBTN;
 //    private JList bookList;
     private JTable bookTable;
     private DefaultListModel<String> model;
@@ -50,12 +51,15 @@ public class UserPageWindow extends JFrame {
 //        bookList = new JList<>();
 //        model = new DefaultListModel<>();
 
+        backBTN = new Button("<");
         returnBTN = new Button("return");
         renewBTN = new Button("renew");
+        backBTN.addActionListener(new backActionListener());
         renewBTN.addActionListener(new renewActionListener());
         returnBTN.addActionListener(new returnActionListener());
 
         JPanel topPanel=new JPanel(new FlowLayout(10,10,FlowLayout.LEFT));
+        topPanel.add(backBTN);
         topPanel.add(returnBTN);
         topPanel.add(renewBTN);
         topPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
@@ -93,6 +97,13 @@ public class UserPageWindow extends JFrame {
         setVisible(true); //보이기
     }
 
+    private class backActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new MainWindow(loginedMember);
+            setVisible(false);
+        }
+    }
     private class renewActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
