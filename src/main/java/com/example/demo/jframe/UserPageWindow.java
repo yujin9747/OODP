@@ -67,13 +67,20 @@ public class UserPageWindow extends JFrame {
         rentalInfoList = rentalInfoService.findRentalInfosByMemberId(loginedMember.getId());
 
         data = new Object[rentalInfoList.size()][];
+        int j = 0;
         for (int i = 0; i < rentalInfoList.size(); i++) {
             RentalInfo rentalInfo = rentalInfoList.get(i);
 
-            Book book = rentalInfo.getBook();
-            String returnDueDate = rentalInfo.getReturnDueDate().toString();
+            if(!rentalInfo.isReturned()) {
+                Book book = rentalInfo.getBook();
+                String returnDueDate = rentalInfo.getReturnDueDate().toString();
 
-            data[i] = new Object[]{book.getTitle(), returnDueDate};
+                data[j] = new Object[]{book.getTitle(), returnDueDate};
+                j += 1;
+            }
+        }
+        for (int i = j; i < rentalInfoList.size(); i++) {
+            data[i] = new Object[]{"", ""};
         }
 
         bookTable = new JTable(data, columnNames);
