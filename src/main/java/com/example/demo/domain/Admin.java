@@ -1,5 +1,7 @@
 package com.example.demo.domain;
 
+// admin으로 로그인 시, id : 1130403, Pw : admin1234 
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

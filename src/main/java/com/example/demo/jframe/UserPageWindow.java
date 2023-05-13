@@ -86,6 +86,7 @@ public class UserPageWindow extends JFrame {
         setVisible(true); //보이기
     }
 
+    // book renew
     private class renewActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
