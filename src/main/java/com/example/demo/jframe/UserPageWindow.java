@@ -1,19 +1,17 @@
 package com.example.demo.jframe;
 
 import com.example.demo.BeanUtil;
-import com.example.demo.domain.Member;
-import com.example.demo.domain.Role;
+import com.example.demo.domain.*;
 import com.example.demo.service.BookService;
 import com.example.demo.service.LibraryService;
 import com.example.demo.service.MemberService;
 import com.example.demo.service.RentalInfoService;
-import com.example.demo.domain.Book;
-import com.example.demo.domain.RentalInfo;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
 import java.util.List;
 
 public class UserPageWindow extends JFrame {
@@ -70,20 +68,22 @@ public class UserPageWindow extends JFrame {
 
         rentalInfoList = rentalInfoService.findRentalInfosByMemberId(loginedMember.getId());
 
-        data = new Object[rentalInfoList.size()][];
-        int j = 0;
-        for (int i = 0; i < rentalInfoList.size(); i++) {
-            RentalInfo rentalInfo = rentalInfoList.get(i);
+        //iterator pattern 적용
+        RentalInfoContainer rentalInfoContainer = new RentalInfoContainer(rentalInfoList);
 
+        data = new Object[rentalInfoList.size()][];
+        int i = 0;
+        for (Iterator it = rentalInfoContainer.getIterator(); it.hasNext();) {
+            RentalInfo rentalInfo = (RentalInfo) it.next();
             if(!rentalInfo.isReturned()) {
                 Book book = rentalInfo.getBook();
                 String returnDueDate = rentalInfo.getReturnDueDate().toString();
 
-                data[j] = new Object[]{book.getTitle(), returnDueDate};
-                j += 1;
+                data[i] = new Object[]{book.getTitle(), returnDueDate};
+                i += 1;
             }
         }
-        for (int i = j; i < rentalInfoList.size(); i++) {
+        for (; i < rentalInfoList.size(); i++) {
             data[i] = new Object[]{"", ""};
         }
 
