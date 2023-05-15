@@ -12,6 +12,10 @@ public class RentalInfoIterator implements Iterator {
         this.rentalInfoList = rentalInfoList;
     }
 
+    public void remove() {
+        this.rentalInfoList.remove(index);
+    }
+
     @Override
     public boolean hasNext() {
         return index < rentalInfoList.size();

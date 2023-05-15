@@ -81,6 +81,8 @@ public class UserPageWindow extends JFrame {
 
                 data[i] = new Object[]{book.getTitle(), returnDueDate};
                 i += 1;
+            } else {
+                it.remove();
             }
         }
         for (; i < rentalInfoList.size(); i++) {
