@@ -116,7 +116,7 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
             removeItem(title, index);
         }
         if(e.getSource() == userManageBTN){
-            new UserManageWindow(new DefaultListModel(), "");
+            new UserManageWindow(new DefaultListModel(), "", loginedMember);
             setVisible(false);
         }
     }
