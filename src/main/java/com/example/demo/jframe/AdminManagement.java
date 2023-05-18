@@ -135,10 +135,7 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
         if(inputText==null||inputText.length()==0) return;
 
         Optional<Library> handongLibrary = libraryService.findOne(1L);
-//        Book book = new Book(inputText, 23412534L, "530.32 지 474", "Unkown", handongLibrary.get());
-        Book book = new Book.BookBuilder(inputText, 0131420445L, "005.265 .B7 2004", "Britton, Robert", handongLibrary.get() )
-                .setIsBorrowed(false) //필요시 주석 해제
-                .setIsReserved(false)
+        Book book = new Book.BookBuilder(inputText, 0131420445L, "005.265 .B7 2004", "Britton, Robert", handongLibrary.get())
                 .build();
 
         System.out.println("book title: " + book.getTitle());

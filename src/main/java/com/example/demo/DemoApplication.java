@@ -11,8 +11,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 
 import javax.swing.*;
-import java.util.Optional;
-
 
 @Controller
 @RequiredArgsConstructor
@@ -22,8 +20,8 @@ public class DemoApplication {
     private MemberService memberService;
     private BookService bookService;
     private LibraryService libraryService;
-//    private RentalInfoService rentalInfoService;
-//    private ReservationInfoService reservationInfoService;
+    private RentalInfoService rentalInfoService;
+    private ReservationInfoService reservationInfoService;
 
     private final ApplicationContext context;	// 2. 실제 applicationContext 를 주입받는다.
 

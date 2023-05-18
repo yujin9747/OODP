@@ -23,6 +23,7 @@ public class LoginWindow extends JFrame {
 
     Button studentBTN;
     Button adminBTN;
+    Button backBTN;
     JTextField studentIdField = new JTextField("22000630", 20);
     JTextField passwordField = new JTextField("slsddbwls4421", 20);
     int loginOrRegister;
@@ -51,8 +52,6 @@ public class LoginWindow extends JFrame {
         Container c = getContentPane();
 
         c.setLayout(new FlowLayout());
-        c.add(studentIdField);
-        c.add(passwordField);
 
         studentBTN = (loginOrRegister == 0) ? new Button("학생으로 Login") : new Button("학생으로 Register");
         studentBTN.setBounds(20, 5, 70, 30);
@@ -60,12 +59,18 @@ public class LoginWindow extends JFrame {
         adminBTN = (loginOrRegister == 0) ? new Button("관리자로 Login") : new Button("관리자로 Register");
         adminBTN.setBounds(20, 5, 70, 30);
 
+        backBTN = new Button("<");
+
         studentBTN.addActionListener(new ActionListener());
         adminBTN.addActionListener(new ActionListener());
+        backBTN.addActionListener(new ActionListener());
 
-
+        add(backBTN);
+        add(studentIdField);
+        add(passwordField);
         add(studentBTN);
         add(adminBTN);
+
 
         setSize(600, 600); //창 사이즈
 
@@ -87,6 +92,10 @@ public class LoginWindow extends JFrame {
             }
             else if(command.equals("관리자로 Login") || command.equals("관리자로 Register")){
                 loginOrRegisterRole = Role.ADMIN;
+            }
+            else if(command.equals("<")){
+                new MainWindow(null);
+                setVisible(false);
             }
 
             boolean isRegistered = false;

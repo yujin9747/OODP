@@ -46,8 +46,8 @@ public class Book {
         this.title = builder.title;
         this.isbn = builder.isbn;
         this.position = builder.position;
-//        this.isBorrowed = false;
-//        this.isReserved = false;
+        this.isBorrowed = builder.isBorrowed;
+        this.isReserved = builder.isReserved;
         this.publisher = builder.publisher;
         this.library = builder.library;
 
@@ -78,8 +78,8 @@ public class Book {
             this.title = title;
             this.isbn = isbn;
             this.position = position;
-//            this.isBorrowed = false; //아래에 해당 변수 별도 함수로 만듦
-//            this.isReserved = false;
+            this.isBorrowed = false;
+            this.isReserved = false;
             this.publisher = publisher;
             this.library = library;
 
