@@ -1,19 +1,17 @@
 package com.example.demo.jframe;
 
 import com.example.demo.BeanUtil;
-import com.example.demo.domain.Member;
-import com.example.demo.domain.Role;
+import com.example.demo.domain.*;
 import com.example.demo.service.BookService;
 import com.example.demo.service.LibraryService;
 import com.example.demo.service.MemberService;
 import com.example.demo.service.RentalInfoService;
-import com.example.demo.domain.Book;
-import com.example.demo.domain.RentalInfo;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
 import java.util.List;
 
 public class UserPageWindow extends JFrame {
@@ -22,6 +20,7 @@ public class UserPageWindow extends JFrame {
     private final BookService bookService;
     private Button returnBTN;
     private Button renewBTN;
+    private Button backBTN;
 //    private JList bookList;
     private JTable bookTable;
     private DefaultListModel<String> model;
@@ -50,12 +49,15 @@ public class UserPageWindow extends JFrame {
 //        bookList = new JList<>();
 //        model = new DefaultListModel<>();
 
+        backBTN = new Button("<");
         returnBTN = new Button("return");
         renewBTN = new Button("renew");
+        backBTN.addActionListener(new backActionListener());
         renewBTN.addActionListener(new renewActionListener());
         returnBTN.addActionListener(new returnActionListener());
 
         JPanel topPanel=new JPanel(new FlowLayout(10,10,FlowLayout.LEFT));
+        topPanel.add(backBTN);
         topPanel.add(returnBTN);
         topPanel.add(renewBTN);
         topPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
@@ -66,14 +68,25 @@ public class UserPageWindow extends JFrame {
 
         rentalInfoList = rentalInfoService.findRentalInfosByMemberId(loginedMember.getId());
 
+        //iterator pattern 적용
+        RentalInfoContainer rentalInfoContainer = new RentalInfoContainer(rentalInfoList);
+
         data = new Object[rentalInfoList.size()][];
-        for (int i = 0; i < rentalInfoList.size(); i++) {
-            RentalInfo rentalInfo = rentalInfoList.get(i);
+        int i = 0;
+        for (Iterator it = rentalInfoContainer.getIterator(); it.hasNext();) {
+            RentalInfo rentalInfo = (RentalInfo) it.next();
+            if(!rentalInfo.isReturned()) {
+                Book book = rentalInfo.getBook();
+                String returnDueDate = rentalInfo.getReturnDueDate().toString();
 
-            Book book = rentalInfo.getBook();
-            String returnDueDate = rentalInfo.getReturnDueDate().toString();
-
-            data[i] = new Object[]{book.getTitle(), returnDueDate};
+                data[i] = new Object[]{book.getTitle(), returnDueDate};
+                i += 1;
+            } else {
+                it.remove();
+            }
+        }
+        for (; i < rentalInfoList.size(); i++) {
+            data[i] = new Object[]{"", ""};
         }
 
         bookTable = new JTable(data, columnNames);
@@ -85,7 +98,13 @@ public class UserPageWindow extends JFrame {
 
         setVisible(true); //보이기
     }
-
+    private class backActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new MainWindow(loginedMember);
+            setVisible(false);
+        }
+    }
     private class renewActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {

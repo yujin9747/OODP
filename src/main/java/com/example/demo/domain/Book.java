@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.hibernate.type.SpecialOneToOneType;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.List;
 @Setter
 @Entity
 @RequiredArgsConstructor
+// book class
 public class Book {
 
     @Id
@@ -39,17 +41,67 @@ public class Book {
     @OneToMany(mappedBy = "book")
     private List<ReservationInfo> reservationInfoList = new ArrayList<>();
 
-    public Book(String title, Long isbn, String position, String publisher, Library library){
-        this.title = title;
-        this.isbn = isbn;
-        this.position = position;
-        this.isBorrowed = false;
-        this.isReserved = false;
-        this.publisher = publisher;
-        this.library = library;
+//    public Book(String title, Long isbn, String position, String publisher, Library library){
+    public Book(BookBuilder builder){
+        this.title = builder.title;
+        this.isbn = builder.isbn;
+        this.position = builder.position;
+//        this.isBorrowed = false;
+//        this.isReserved = false;
+        this.publisher = builder.publisher;
+        this.library = builder.library;
+
 
         this.enrolledDate = LocalDateTime.now();
         this.lastModifiedDate = null;
+    }
+
+    //builder class
+    public static class BookBuilder{
+        // required parameters
+        private Long id;
+        private LocalDateTime enrolledDate;
+        private LocalDateTime lastModifiedDate;
+        private String title;
+        private Long isbn;
+        private String position;
+        private String publisher;
+
+        private Library library;
+
+        // boolean parameters
+        private boolean isBorrowed;
+        private boolean isReserved;
+
+
+        public BookBuilder(String title, Long isbn, String position, String publisher, Library library){
+            this.title = title;
+            this.isbn = isbn;
+            this.position = position;
+//            this.isBorrowed = false; //아래에 해당 변수 별도 함수로 만듦
+//            this.isReserved = false;
+            this.publisher = publisher;
+            this.library = library;
+
+            this.enrolledDate = LocalDateTime.now();
+            this.lastModifiedDate = null;
+
+        }
+
+        public BookBuilder setIsBorrowed(boolean isBorrowed) {
+            this.isBorrowed = isBorrowed;
+            return this;
+        }
+
+        public BookBuilder setIsReserved(boolean isReserved) {
+            this.isReserved = isReserved;
+            return this;
+        }
+
+        public Book build() {
+            return new Book(this);
+        }
+
     }
 
     public void rentBook(RentalInfo rentalInfo){
