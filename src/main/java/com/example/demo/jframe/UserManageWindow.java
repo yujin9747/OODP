@@ -2,6 +2,7 @@ package com.example.demo.jframe;
 
 import com.example.demo.BeanUtil;
 import com.example.demo.domain.Admin;
+import com.example.demo.domain.Member;
 import com.example.demo.domain.Student;
 import com.example.demo.service.MemberService;
 import com.example.demo.service.RentalInfoService;
@@ -18,15 +19,18 @@ public class UserManageWindow extends JFrame {
     private Button findStudentsBTN;   // 전체 학생 조회
     private Button findAdminsBTN;   // 전체 관리자 조회
     private Button findOverduedStudentsBTN;   // 전체 관리자 조회
+    private Button backBTN;
 
 
     private MemberService memberService;
 
 
     private JList<Student> studentList;
+    private Member loginedMember;
 
-    public UserManageWindow(DefaultListModel listModel, String description){
+    public UserManageWindow(DefaultListModel listModel, String description, Member loginedMember){
         this.memberService = BeanUtil.get(MemberService.class);
+        this.loginedMember = loginedMember;
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         Container c = getContentPane();
@@ -46,6 +50,11 @@ public class UserManageWindow extends JFrame {
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
+        backBTN = new Button("<");
+        backBTN.setBounds(20, 5, 70, 30);
+        backBTN.addActionListener(new ActionListener());
+        buttonPanel.add(backBTN);
+
         findStudentsBTN = new Button("학생 조회");
         findStudentsBTN.setBounds(20, 5, 70, 30);
         findStudentsBTN.addActionListener(new ActionListener());
@@ -85,7 +94,7 @@ public class UserManageWindow extends JFrame {
                 for (int i = 0; i < students.size(); i++) {
                     addItem(students.get(i).getStudentId());
                 }
-                new UserManageWindow(model, "< 학생 전체 조회 결과 >");
+                new UserManageWindow(model, "< 학생 전체 조회 결과 >", loginedMember);
                 setVisible(false);
             }
             else if(command.equals("관리자 조회")){
@@ -93,7 +102,7 @@ public class UserManageWindow extends JFrame {
                 for (int i = 0; i < admins.size(); i++) {
                     addItem(admins.get(i).getAdminId());
                 }
-                new UserManageWindow(model, "< 관리자 전체 조회 결과 >");
+                new UserManageWindow(model, "< 관리자 전체 조회 결과 >", loginedMember);
                 setVisible(false);
             }
             else if(command.equals("반납 연기된 학생 조회")){
@@ -101,7 +110,11 @@ public class UserManageWindow extends JFrame {
                 for (int i = 0; i < overdueStudents.size(); i++) {
                     addItem(overdueStudents.get(i).getStudentId());
                 }
-                new UserManageWindow(model, "< 반납 연기된 학생 조회 결과 >");
+                new UserManageWindow(model, "< 반납 연기된 학생 조회 결과 >", loginedMember);
+                setVisible(false);
+            }
+            else if(command.equals("<")){
+                new AdminManagement(loginedMember, null);
                 setVisible(false);
             }
         }

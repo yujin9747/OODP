@@ -4,8 +4,6 @@ import com.example.demo.BeanUtil;
 import com.example.demo.domain.Book;
 import com.example.demo.domain.Library;
 import com.example.demo.domain.Member;
-import com.example.demo.domain.Student;
-import com.example.demo.repository.BookRepository;
 import com.example.demo.service.BookService;
 import com.example.demo.service.MemberService;
 import com.example.demo.service.LibraryService;
@@ -13,7 +11,6 @@ import java.util.Optional;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -25,7 +22,10 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
     private final MemberService memberService;
     private final LibraryService libraryService;
     private JList list;				//리스트
-    private JTextField inputField;	//테스트 입력 Field
+    private JTextField titleInputField;
+    private JTextField isbnInputField;
+    private JTextField positionInputField;
+    private JTextField publisherInputField;
     private JButton addBtn;		//추가 버튼
     private JButton delBtn;		//삭제 버튼
     private Button userManageBTN;
@@ -34,12 +34,13 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
     private DefaultListModel model;	//JList에 보이는 실제 데이터
     private JScrollPane scrolled;
     private Member loginedMember;
-
-    public AdminManagement(Member loginedMember) {
+    private Book selectedBook;
+    public AdminManagement(Member loginedMember, Book selectedBook) {
         this.bookService = BeanUtil.get(BookService.class);
         this.memberService = BeanUtil.get(MemberService.class);
         this.libraryService = BeanUtil.get(LibraryService.class);
         this.loginedMember = loginedMember;
+        this.selectedBook = selectedBook;
         setTitle("AdminManagement");
         init();
     }
@@ -47,38 +48,98 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
     public void init() {
         model=new DefaultListModel();
         list=new JList(model);
-        inputField=new JTextField(20);
+        titleInputField =new JTextField(20);
+        isbnInputField =new JTextField(20);
+        positionInputField =new JTextField(20);
+        publisherInputField =new JTextField(20);
         addBtn=new JButton("추가");
         delBtn=new JButton("삭제");
         userManageBTN = new Button("학생 정보 관리");
 
         backBTN = new Button("<"); //뒤로가기 버튼
-        backBTN.addActionListener(new AdminManagement.backActionListener());
+        backBTN.addActionListener(new backActionListener());
 
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);	//하나만 선택 될 수 있도록
 
-        inputField.addKeyListener(this);	//엔터 처리
+        titleInputField.addKeyListener(this);
+        isbnInputField.addKeyListener(this);
+        positionInputField.addKeyListener(this);
+        publisherInputField.addKeyListener(this);
         addBtn.addMouseListener(this);		//아이템 추가
         delBtn.addMouseListener(this);		//아이템 삭제
         userManageBTN.addMouseListener(this);
-        list.addListSelectionListener(this);	//항목 선택시
+        list.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                String selectedTitle = list.getSelectedValue().toString();
+                selectedBook = bookService.findBookByTitle(selectedTitle).get();
+
+                new AdminManagement(loginedMember, selectedBook);
+                setVisible(false);
+            }
+        });	//항목 선택시
 
         this.setLayout(new BorderLayout());
 
-
         JPanel topPanel=new JPanel(new FlowLayout(10,10,FlowLayout.LEFT));
         topPanel.add(backBTN);
-        topPanel.add(inputField);
+        topPanel.add(titleInputField);
         topPanel.add(addBtn);
         topPanel.add(delBtn);		//위쪽 패널 [textfield]  [add] [del]
         topPanel.add(userManageBTN);
         topPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));	//상, 좌, 하, 우 공백(Padding)
 
+        JPanel inputPanel = new JPanel(new GridLayout(9, 2));
+        inputPanel.add(new JLabel("Title : "));
+        inputPanel.add(titleInputField);
+        inputPanel.add(new JLabel("ISBN: "));
+        inputPanel.add(isbnInputField);
+        inputPanel.add(new JLabel("Position : "));
+        inputPanel.add(positionInputField);
+        inputPanel.add(new JLabel("Publisher : "));
+        inputPanel.add(publisherInputField);
+
+        if(selectedBook != null){
+            inputPanel.add(new JLabel("< 책 상세정보 >"));
+            inputPanel.add(new JLabel(" "));
+
+            inputPanel.add(new JLabel("Title : "));
+            inputPanel.add(new JLabel(selectedBook.getTitle()));
+
+            inputPanel.add(new JLabel("ISBN: "));
+            inputPanel.add(new JLabel(selectedBook.getIsbn().toString()));
+
+            inputPanel.add(new JLabel("Position : "));
+            inputPanel.add(new JLabel(selectedBook.getPosition()));
+
+            inputPanel.add(new JLabel("Publisher : "));
+            inputPanel.add(new JLabel(selectedBook.getPublisher()));
+
+        }
+        else {
+            inputPanel.add(new JLabel("< 책 상세정보 >"));
+            inputPanel.add(new JLabel(" "));
+
+            inputPanel.add(new JLabel("Title : "));
+            inputPanel.add(new JLabel(" "));
+
+            inputPanel.add(new JLabel("ISBN: "));
+            inputPanel.add(new JLabel(" "));
+
+            inputPanel.add(new JLabel("Position : "));
+            inputPanel.add(new JLabel(" "));
+
+            inputPanel.add(new JLabel("Publisher : "));
+            inputPanel.add(new JLabel(" "));
+        }
+        inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
         scrolled=new JScrollPane(list);
         scrolled.setBorder(BorderFactory.createEmptyBorder(0,10,10,10));
 
         this.add(topPanel,"North");
-        this.add(scrolled,"Center");	//가운데 list
+        this.add(inputPanel, "Center");
+        this.add(scrolled,"South");	//가운데 list
 
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -88,11 +149,18 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
 
         List<Book> bookList = bookService.findBooks();
         for(int i=0; i<bookList.size(); i++){
-            String inputText=bookList.get(i).getTitle();
-            if(inputText==null||inputText.length()==0) return;
-            model.addElement(inputText);
-            inputField.setText("");		//내용 지우기
-            inputField.requestFocus();	//다음 입력을 편하게 받기 위해서 TextField에 포커스 요청
+            Book book=bookList.get(i);
+//            if(inputText==null||inputText.length()==0) return;
+//            JPanel oneBook = new JPanel();
+//            oneBook.setLayout(new GridLayout(1, 4));
+//            oneBook.add(new JLabel(book.getTitle()));
+//            oneBook.add(new JLabel(String.valueOf(book.getIsbn())));
+//            oneBook.add(new JLabel(book.getPosition()));
+//            oneBook.add(new JLabel(book.getPublisher()));
+//            model.addElement(oneBook);
+            model.addElement(book.getTitle());
+            titleInputField.setText("");		//내용 지우기
+            titleInputField.requestFocus();	//다음 입력을 편하게 받기 위해서 TextField에 포커스 요청
         }
 
     }
@@ -108,7 +176,31 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
     @Override
     public void mouseClicked(MouseEvent e) {
         if(e.getSource() == addBtn) {
-            addItem();
+            int idx = addItem();
+            if(idx == 0){
+                model.addElement(titleInputField.getText());
+                inputFieldSetting(titleInputField);
+                inputFieldSetting(isbnInputField);
+                inputFieldSetting(positionInputField);
+                inputFieldSetting(publisherInputField);
+            }
+            else{
+                switch (idx) {
+                    case 1:
+                        titleInputField.requestFocus();
+                        break;
+                    case 2:
+                        isbnInputField.requestFocus();
+                        break;
+                    case 3:
+                        positionInputField.requestFocus();
+                        break;
+                    case 4:
+                        publisherInputField.requestFocus();
+                }
+            }
+            //가장 마지막으로 list 위치 이동
+            scrolled.getVerticalScrollBar().setValue(scrolled.getVerticalScrollBar().getMaximum());
         }
         if(e.getSource() == delBtn) {
             String title = list.getSelectedValue().toString();
@@ -116,7 +208,7 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
             removeItem(title, index);
         }
         if(e.getSource() == userManageBTN){
-            new UserManageWindow(new DefaultListModel(), "");
+            new UserManageWindow(new DefaultListModel(), "", loginedMember);
             setVisible(false);
         }
     }
@@ -130,32 +222,34 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
         model.remove(index);
     }
 
-    public void addItem() {
-        String inputText=inputField.getText();
-        if(inputText==null||inputText.length()==0) return;
+    public int addItem() {
+        int emptyTextFieldIdx = needMoreInformation();
+        if(emptyTextFieldIdx > 0) return emptyTextFieldIdx;
 
         Optional<Library> handongLibrary = libraryService.findOne(1L);
-//        Book book = new Book(inputText, 23412534L, "530.32 지 474", "Unkown", handongLibrary.get());
-        Book book = new Book.BookBuilder(inputText, 0131420445L, "005.265 .B7 2004", "Britton, Robert", handongLibrary.get() )
-                .setIsBorrowed(false) //필요시 주석 해제
-                .setIsReserved(false)
+        Book book = new Book.BookBuilder(titleInputField.getText(), Long.parseLong(isbnInputField.getText()), positionInputField.getText(), publisherInputField.getText(), handongLibrary.get())
                 .build();
 
         System.out.println("book title: " + book.getTitle());
+        System.out.println("book isbn: " + book.getIsbn());
         System.out.println("book position: " + book.getPosition());
         System.out.println("book publisher: " + book.getPublisher());
 
-
-
-
-
         bookService.saveBook(book);
+        return emptyTextFieldIdx;
+    }
 
-        model.addElement(inputText);
-        inputField.setText("");		//내용 지우기
-        inputField.requestFocus();	//다음 입력을 편하게 받기 위해서 TextField에 포커스 요청
-        //가장 마지막으로 list 위치 이동
-        scrolled.getVerticalScrollBar().setValue(scrolled.getVerticalScrollBar().getMaximum());
+    private void inputFieldSetting(JTextField textField){
+//        model.addElement(textField); // title, isbn, position, publisher를 모두 보여주는 방향으로 가면 여기에 추가하기
+        textField.setText("");
+    }
+
+    private int needMoreInformation(){
+        if(titleInputField.getText()==null||titleInputField.getText().length()==0) return 1;
+        else if(isbnInputField.getText()==null||isbnInputField.getText().length()==0) return 2;
+        else if(positionInputField.getText()==null||positionInputField.getText().length()==0) return 3;
+        else if(publisherInputField.getText()==null||publisherInputField.getText().length()==0) return 4;
+        else return 0;
     }
     //MouseListener
     @Override
