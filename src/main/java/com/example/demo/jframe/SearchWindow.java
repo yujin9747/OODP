@@ -22,6 +22,7 @@ public class SearchWindow extends JFrame {
     Button checkoutBTN;
     Button returnBTN;
     Button reservationBTN;
+    Button backBTN;
 
     Member loginedMember;
     Book searchedBook;
@@ -39,7 +40,10 @@ public class SearchWindow extends JFrame {
         setLayout(null);
         Container c = getContentPane();
 
-        c.setLayout(new GridLayout(8, 1));
+        c.setLayout(new GridLayout(9, 1));
+        backBTN = new Button("<");
+        backBTN.addActionListener(new SearchActionListener());
+        add(backBTN);
 
         JLabel title = new JLabel();
         JLabel position = new JLabel();
@@ -94,7 +98,11 @@ public class SearchWindow extends JFrame {
         public void actionPerformed(ActionEvent e) {
             String command = e.getActionCommand();
 
-            if (command.equals("대출하기")) {
+            if(command.equals("<")){
+                new MainWindow(loginedMember);
+                setVisible(false);
+            }
+            else if (command.equals("대출하기")) {
                 if (loginedMember.getRole() == Role.STUDENT) {
                     rentalInfoService.saveRentalInfo(loginedMember.getId(), searchedBook.getId());
                     JOptionPane.showMessageDialog(null, "대출이 완료되었습니다.");
