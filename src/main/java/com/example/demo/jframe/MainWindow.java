@@ -102,7 +102,7 @@ public class MainWindow extends JFrame{
     private class AdminPageActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            new AdminManagement(loginedMember);
+            new AdminManagement(loginedMember, null);
             setVisible(false);
         }
     }

@@ -114,7 +114,7 @@ public class UserManageWindow extends JFrame {
                 setVisible(false);
             }
             else if(command.equals("<")){
-                new AdminManagement(loginedMember);
+                new AdminManagement(loginedMember, null);
                 setVisible(false);
             }
         }

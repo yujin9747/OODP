@@ -34,12 +34,13 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
     private DefaultListModel model;	//JList에 보이는 실제 데이터
     private JScrollPane scrolled;
     private Member loginedMember;
-
-    public AdminManagement(Member loginedMember) {
+    private Book selectedBook;
+    public AdminManagement(Member loginedMember, Book selectedBook) {
         this.bookService = BeanUtil.get(BookService.class);
         this.memberService = BeanUtil.get(MemberService.class);
         this.libraryService = BeanUtil.get(LibraryService.class);
         this.loginedMember = loginedMember;
+        this.selectedBook = selectedBook;
         setTitle("AdminManagement");
         init();
     }
@@ -56,7 +57,7 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
         userManageBTN = new Button("학생 정보 관리");
 
         backBTN = new Button("<"); //뒤로가기 버튼
-        backBTN.addActionListener(new AdminManagement.backActionListener());
+        backBTN.addActionListener(new backActionListener());
 
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);	//하나만 선택 될 수 있도록
 
@@ -67,7 +68,16 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
         addBtn.addMouseListener(this);		//아이템 추가
         delBtn.addMouseListener(this);		//아이템 삭제
         userManageBTN.addMouseListener(this);
-        list.addListSelectionListener(this);	//항목 선택시
+        list.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                String selectedTitle = list.getSelectedValue().toString();
+                selectedBook = bookService.findBookByTitle(selectedTitle).get();
+
+                new AdminManagement(loginedMember, selectedBook);
+                setVisible(false);
+            }
+        });	//항목 선택시
 
         this.setLayout(new BorderLayout());
 
@@ -79,23 +89,49 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
         topPanel.add(userManageBTN);
         topPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));	//상, 좌, 하, 우 공백(Padding)
 
-        JPanel inputPanel = new JPanel(new GridLayout(4, 2));
-        JLabel title = new JLabel();
-        JLabel isbn = new JLabel();
-        JLabel position = new JLabel();
-        JLabel publisher = new JLabel();
-        title.setText("Title: ");
-        isbn.setText("ISBN: ");
-        position.setText("Position: ");
-        publisher.setText("Publisher: ");
-        inputPanel.add(title);
+        JPanel inputPanel = new JPanel(new GridLayout(9, 2));
+        inputPanel.add(new JLabel("Title : "));
         inputPanel.add(titleInputField);
-        inputPanel.add(isbn);
+        inputPanel.add(new JLabel("ISBN: "));
         inputPanel.add(isbnInputField);
-        inputPanel.add(position);
+        inputPanel.add(new JLabel("Position : "));
         inputPanel.add(positionInputField);
-        inputPanel.add(publisher);
+        inputPanel.add(new JLabel("Publisher : "));
         inputPanel.add(publisherInputField);
+
+        if(selectedBook != null){
+            inputPanel.add(new JLabel("< 책 상세정보 >"));
+            inputPanel.add(new JLabel(" "));
+
+            inputPanel.add(new JLabel("Title : "));
+            inputPanel.add(new JLabel(selectedBook.getTitle()));
+
+            inputPanel.add(new JLabel("ISBN: "));
+            inputPanel.add(new JLabel(selectedBook.getIsbn().toString()));
+
+            inputPanel.add(new JLabel("Position : "));
+            inputPanel.add(new JLabel(selectedBook.getPosition()));
+
+            inputPanel.add(new JLabel("Publisher : "));
+            inputPanel.add(new JLabel(selectedBook.getPublisher()));
+
+        }
+        else {
+            inputPanel.add(new JLabel("< 책 상세정보 >"));
+            inputPanel.add(new JLabel(" "));
+
+            inputPanel.add(new JLabel("Title : "));
+            inputPanel.add(new JLabel(" "));
+
+            inputPanel.add(new JLabel("ISBN: "));
+            inputPanel.add(new JLabel(" "));
+
+            inputPanel.add(new JLabel("Position : "));
+            inputPanel.add(new JLabel(" "));
+
+            inputPanel.add(new JLabel("Publisher : "));
+            inputPanel.add(new JLabel(" "));
+        }
         inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         scrolled=new JScrollPane(list);
@@ -113,9 +149,16 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
 
         List<Book> bookList = bookService.findBooks();
         for(int i=0; i<bookList.size(); i++){
-            String inputText=bookList.get(i).getTitle();
-            if(inputText==null||inputText.length()==0) return;
-            model.addElement(inputText);
+            Book book=bookList.get(i);
+//            if(inputText==null||inputText.length()==0) return;
+//            JPanel oneBook = new JPanel();
+//            oneBook.setLayout(new GridLayout(1, 4));
+//            oneBook.add(new JLabel(book.getTitle()));
+//            oneBook.add(new JLabel(String.valueOf(book.getIsbn())));
+//            oneBook.add(new JLabel(book.getPosition()));
+//            oneBook.add(new JLabel(book.getPublisher()));
+//            model.addElement(oneBook);
+            model.addElement(book.getTitle());
             titleInputField.setText("");		//내용 지우기
             titleInputField.requestFocus();	//다음 입력을 편하게 받기 위해서 TextField에 포커스 요청
         }
@@ -135,6 +178,7 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
         if(e.getSource() == addBtn) {
             int idx = addItem();
             if(idx == 0){
+                model.addElement(titleInputField.getText());
                 inputFieldSetting(titleInputField);
                 inputFieldSetting(isbnInputField);
                 inputFieldSetting(positionInputField);
@@ -196,7 +240,7 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
     }
 
     private void inputFieldSetting(JTextField textField){
-        model.addElement(textField);
+//        model.addElement(textField); // title, isbn, position, publisher를 모두 보여주는 방향으로 가면 여기에 추가하기
         textField.setText("");
     }
 
