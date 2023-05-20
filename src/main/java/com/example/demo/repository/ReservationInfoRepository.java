@@ -13,4 +13,17 @@ public class ReservationInfoRepository {
     public void save(ReservationInfo reservationInfo) {
         em.persist(reservationInfo);
     }
+
+    public ReservationInfo findOne(Long reservationInfoId) {
+        return em.createQuery("select r from ReservationInfo r where id = :id", ReservationInfo.class)
+                .setParameter("id", reservationInfoId)
+                .getSingleResult();
+    }
+
+    public ReservationInfo findOneByMemberIdAndBookId(Long memberId, Long bookId) {
+        return em.createQuery("select r from ReservationInfo r where member.id = :memberId and book.id = :bookId", ReservationInfo.class)
+                .setParameter("memberId", memberId)
+                .setParameter("bookId", bookId)
+                .getSingleResult();
+    }
 }
