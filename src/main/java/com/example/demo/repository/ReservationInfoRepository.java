@@ -26,4 +26,9 @@ public class ReservationInfoRepository {
                 .setParameter("bookId", bookId)
                 .getSingleResult();
     }
+
+    public Long delete(ReservationInfo reservationInfo) {
+        em.remove(reservationInfo);
+        return reservationInfo.getId();
+    }
 }
