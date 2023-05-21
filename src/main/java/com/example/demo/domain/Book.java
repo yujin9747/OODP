@@ -15,6 +15,11 @@ import java.util.List;
 @Setter
 @Entity
 @RequiredArgsConstructor
+
+// book builder interface
+
+
+
 // book class
 public class Book {
 
@@ -42,26 +47,19 @@ public class Book {
     private List<ReservationInfo> reservationInfoList = new ArrayList<>();
 
 //    public Book(String title, Long isbn, String position, String publisher, Library library){
-    public Book(BookBuilder builder){
-        this.title = builder.title;
-        this.isbn = builder.isbn;
-        this.position = builder.position;
-        this.isBorrowed = builder.isBorrowed;
-        this.isReserved = builder.isReserved;
-        this.publisher = builder.publisher;
-        this.library = builder.library;
+    public Book(String title,Long isbn,String position,String publisher,Library library){
+        this.title = title;
+        this.isbn = isbn;
+        this.position = position;
+        this.publisher = publisher;
+        this.library = library;
 
 
         this.enrolledDate = LocalDateTime.now();
         this.lastModifiedDate = null;
     }
-
     //builder class
     public static class BookBuilder{
-        // required parameters
-        private Long id;
-        private LocalDateTime enrolledDate;
-        private LocalDateTime lastModifiedDate;
         private String title;
         private Long isbn;
         private String position;
@@ -72,22 +70,26 @@ public class Book {
         // boolean parameters
         private boolean isBorrowed;
         private boolean isReserved;
-
-
-        public BookBuilder(String title, Long isbn, String position, String publisher, Library library){
+        public BookBuilder title(String title){
             this.title = title;
-            this.isbn = isbn;
-            this.position = position;
-            this.isBorrowed = false;
-            this.isReserved = false;
-            this.publisher = publisher;
-            this.library = library;
-
-            this.enrolledDate = LocalDateTime.now();
-            this.lastModifiedDate = null;
-
+            return this;
         }
-
+        public BookBuilder isbn(Long isbn){
+            this.isbn = isbn;
+            return this;
+        }
+        public BookBuilder position(String position){
+            this.position = position;
+            return this;
+        }
+        public BookBuilder publisher(String publisher){
+            this.publisher = publisher;
+            return this;
+        }
+        public BookBuilder library(Library library){
+            this.library = library;
+            return this;
+        }
         public BookBuilder setIsBorrowed(boolean isBorrowed) {
             this.isBorrowed = isBorrowed;
             return this;
@@ -99,7 +101,7 @@ public class Book {
         }
 
         public Book build() {
-            return new Book(this);
+            return new Book(title,isbn,position,publisher,library);
         }
 
     }
