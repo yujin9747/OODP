@@ -1,5 +1,6 @@
 package com.example.demo.domain;
 
+import com.example.demo.domain.request.BookUpdateForm;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,7 @@ import org.hibernate.type.SpecialOneToOneType;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -54,6 +56,14 @@ public class Book {
 
         this.enrolledDate = LocalDateTime.now();
         this.lastModifiedDate = null;
+    }
+
+    public Optional<Book> update(BookUpdateForm bookUpdateForm) {
+        this.title = bookUpdateForm.getTitle();
+        this.isbn = Long.parseLong(bookUpdateForm.getIsbn());
+        this.position = bookUpdateForm.getPosition();
+        this.publisher = bookUpdateForm.getPublisher();
+        return Optional.of(this);
     }
 
     //builder class

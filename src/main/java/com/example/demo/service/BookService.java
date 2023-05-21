@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.domain.Book;
+import com.example.demo.domain.request.BookUpdateForm;
 import com.example.demo.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 public class BookService {
 
@@ -37,4 +38,8 @@ public class BookService {
         return Optional.ofNullable(bookRepository.findByTitle(title));
     }
 
+    public Optional<Book> updateBook(String title, BookUpdateForm bookUpdateForm) {
+        Book book = bookRepository.findByTitle(title);
+        return book.update(bookUpdateForm);
+    }
 }
