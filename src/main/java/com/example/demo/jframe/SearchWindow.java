@@ -3,6 +3,7 @@ package com.example.demo.jframe;
 import com.example.demo.BeanUtil;
 import com.example.demo.domain.*;
 
+import com.example.demo.domain.request.BookUpdateForm;
 import com.example.demo.service.BookService;
 import com.example.demo.service.MemberService;
 import com.example.demo.service.RentalInfoService;
@@ -12,6 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Optional;
 
 public class SearchWindow extends JFrame {
 
@@ -25,19 +27,28 @@ public class SearchWindow extends JFrame {
     Button returnBTN;
     Button reservationBTN;
     Button backBTN;
+    Button editBTN;
+    Button deleteBTN;
 
     Member loginedMember;
     Book searchedBook;
+    Integer beforePage; // 1 : adminPage
+    JTextField titleInput;
+    JTextField isbnInput;
+    JTextField positionInput;
+    JTextField publisherInput;
 
     ReservationInfo reservationInfo;
 
-    public SearchWindow(Book searchedBook, Member loginedMember){
+    public SearchWindow(Book searchedBook, Member loginedMember, Integer beforePage, boolean editMode){
+
         this.bookService = BeanUtil.get(BookService.class);
         this.memberService = BeanUtil.get(MemberService.class);
         this.rentalInfoService = BeanUtil.get(RentalInfoService.class);
         this.reservationInfoService = BeanUtil.get(ReservationInfoService.class);
         this.loginedMember = loginedMember;
         this.searchedBook = searchedBook;
+        this.beforePage = beforePage;
 
         setTitle("Search 결과창"); //창 제목
 
@@ -45,29 +56,55 @@ public class SearchWindow extends JFrame {
         setLayout(null);
         Container c = getContentPane();
 
-        c.setLayout(new GridLayout(9, 1));
+        c.setLayout(new GridLayout(9, 2));
         backBTN = new Button("<");
         backBTN.addActionListener(new SearchActionListener());
-        add(backBTN);
+        if(editMode == false) {
+            add(backBTN);
+            add(new JLabel(" "));
+        }
 
-        JLabel title = new JLabel();
-        JLabel position = new JLabel();
-        JLabel status = new JLabel();
-        JLabel isbn = new JLabel();
-        JLabel publisher = new JLabel();
-        title.setText("Title : " + searchedBook.getTitle());
-        position.setText("Position : " + searchedBook.getPosition());
-        if (searchedBook.isBorrowed()) status.setText("Status : 대출중");
-        else if (searchedBook.isReserved()) status.setText("Status : 예약중");
-        else status.setText("Status : 이용가능");
-        isbn.setText("ISBN : " + searchedBook.getIsbn());
-        publisher.setText("Publisdher : " + searchedBook.getPublisher());
+        JLabel title = new JLabel("Title : ");
+        JLabel position = new JLabel("Position : ");
+        JLabel status = new JLabel("Status :");
+        JLabel isbn = new JLabel("ISBN : ");
+        JLabel publisher = new JLabel("Publisdher : ");
 
-        add(title);
-        add(position);
-        add(status);
-        add(isbn);
-        add(publisher);
+        if(editMode == false){
+            JLabel titleInfo = new JLabel(searchedBook.getTitle());
+            JLabel positionInfo = new JLabel(searchedBook.getPosition());
+            JLabel statusInfo = (searchedBook.isBorrowed()) ? new JLabel("대출중") : (searchedBook.isReserved()) ? new JLabel("예약중") : new JLabel("이용가능");
+            JLabel isbnInfo = new JLabel(String.valueOf(searchedBook.getIsbn()));
+            JLabel publisherInfo = new JLabel(searchedBook.getPublisher());
+
+            add(title);
+            add(titleInfo);
+            add(position);
+            add(positionInfo);
+            add(status);
+            add(statusInfo);
+            add(isbn);
+            add(isbnInfo);
+            add(publisher);
+            add(publisherInfo);
+        }
+        else {
+            titleInput = new JTextField(searchedBook.getTitle());
+            positionInput = new JTextField(searchedBook.getPosition());
+            JLabel statusInfo = (searchedBook.isBorrowed()) ? new JLabel("대출중") : (searchedBook.isReserved()) ? new JLabel("예약중") : new JLabel("이용가능");
+            isbnInput = new JTextField(searchedBook.getIsbn().toString());
+            publisherInput = new JTextField(searchedBook.getPublisher());
+            add(title);
+            add(titleInput);
+            add(position);
+            add(positionInput);
+            add(status);
+            add(statusInfo);
+            add(isbn);
+            add(isbnInput);
+            add(publisher);
+            add(publisherInput);
+        }
 
         if (loginedMember != null && loginedMember.getRole() != Role.ADMIN) {
             if (!searchedBook.isBorrowed()) {
@@ -110,6 +147,23 @@ public class SearchWindow extends JFrame {
 
             }
         }
+        else if(loginedMember != null && loginedMember.getRole() == Role.ADMIN){
+            editBTN = new Button();
+            if ((editMode)) {
+                editBTN.setLabel("수정완료");
+            } else {
+                editBTN.setLabel("수정하기");
+            }
+            editBTN.setBounds(20, 5, 70, 30);
+            deleteBTN = new Button("삭제하기");
+            deleteBTN.setBounds(20, 5, 70, 30);
+
+            editBTN.addActionListener(new SearchActionListener());
+            deleteBTN.addActionListener(new SearchActionListener());
+
+            add(editBTN);
+            if(editMode == false) add(deleteBTN);
+        }
 
         setSize(600, 600); //창 사이즈
 
@@ -124,7 +178,10 @@ public class SearchWindow extends JFrame {
             String command = e.getActionCommand();
 
             if(command.equals("<")){
-                new MainWindow(loginedMember);
+                if (beforePage != 1)
+                    new MainWindow(loginedMember);
+                else
+                    new AdminManagement(loginedMember, null, null);
                 setVisible(false);
             }
             else if (command.equals("대출하기")) {
@@ -153,7 +210,6 @@ public class SearchWindow extends JFrame {
                 if (loginedMember.getRole() == Role.STUDENT) {
                     reservationInfoService.saveReservationInfo(loginedMember.getId(), searchedBook.getId());
                     JOptionPane.showMessageDialog(null, "예약되었습니다.");
-
                     new MainWindow(loginedMember);
                     setVisible(false);
                 } else if (loginedMember.getRole() == Role.PROFESSOR) {
@@ -170,6 +226,24 @@ public class SearchWindow extends JFrame {
                 } else if (loginedMember.getRole() == Role.PROFESSOR) {
 
                 }
+            } else if (command.equals("수정하기")) {
+                new SearchWindow(searchedBook, loginedMember, beforePage, true);
+                setVisible(false);
+            } else if (command.equals("삭제하기")) {
+                bookService.deleteBook(searchedBook.getTitle());
+                setVisible(false);
+                new AdminManagement(loginedMember, null, null);
+                JOptionPane.showMessageDialog(null, searchedBook.getTitle() + "책 삭제가 완료되었습니다.");
+            } else if (command.equals("수정완료")) {
+                BookUpdateForm bookUpdateForm = BookUpdateForm.builder()
+                        .title(titleInput.getText())
+                        .isbn(isbnInput.getText())
+                        .position(positionInput.getText())
+                        .publisher(publisherInput.getText())
+                        .build();
+                Optional<Book> book = bookService.updateBook(searchedBook.getTitle(), bookUpdateForm);
+                new SearchWindow(book.get(), loginedMember, beforePage, false);
+                setVisible(false);
             }
 
         }
