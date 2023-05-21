@@ -127,7 +127,8 @@ public class LoginWindow extends JFrame {
                         memberService.saveMember(student);
                     }
                     else if(command.equals("관리자로 Register")){
-                        Admin admin = new Admin("yujin", loginOrRegisterRole, password, loginLibrary.get(), id, 0);
+                        Admin admin = new Admin.AdminBuilder().name("yujin").role(loginOrRegisterRole).pw(password).library(loginLibrary.get()).adminId(id).weekTotalHours(0).build();
+                        //Admin admin = new Admin("yujin", loginOrRegisterRole, password, loginLibrary.get(), id, 0);
                         memberService.saveMember(admin);
                     }
                     JOptionPane.showMessageDialog(null, "회원가입 성공");
