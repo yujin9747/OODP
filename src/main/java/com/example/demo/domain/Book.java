@@ -58,8 +58,24 @@ public class Book {
         this.enrolledDate = LocalDateTime.now();
         this.lastModifiedDate = null;
     }
+    //builder interface
+    public interface Builder{
+
+        public Builder title(String title);
+
+        public Builder isbn(Long isbn);
+
+        public Builder position(String position);
+
+        public Builder publisher(String publisher);
+
+        public Builder library(Library library);
+
+        public Book build();
+
+    }
     //builder class
-    public static class BookBuilder{
+    public static class BookBuilder implements Builder{
         private String title;
         private Long isbn;
         private String position;
@@ -70,36 +86,31 @@ public class Book {
         // boolean parameters
         private boolean isBorrowed;
         private boolean isReserved;
-        public BookBuilder title(String title){
+        @Override
+        public Builder title(String title){
             this.title = title;
             return this;
         }
-        public BookBuilder isbn(Long isbn){
+        @Override
+        public Builder isbn(Long isbn){
             this.isbn = isbn;
             return this;
         }
-        public BookBuilder position(String position){
+        @Override
+        public Builder position(String position){
             this.position = position;
             return this;
         }
-        public BookBuilder publisher(String publisher){
+        @Override
+        public Builder publisher(String publisher){
             this.publisher = publisher;
             return this;
         }
-        public BookBuilder library(Library library){
+        @Override
+        public Builder library(Library library){
             this.library = library;
             return this;
         }
-        public BookBuilder setIsBorrowed(boolean isBorrowed) {
-            this.isBorrowed = isBorrowed;
-            return this;
-        }
-
-        public BookBuilder setIsReserved(boolean isReserved) {
-            this.isReserved = isReserved;
-            return this;
-        }
-
         public Book build() {
             return new Book(title,isbn,position,publisher,library);
         }
