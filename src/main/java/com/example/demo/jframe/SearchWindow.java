@@ -186,7 +186,10 @@ public class SearchWindow extends JFrame {
                 new SearchWindow(searchedBook, loginedMember, beforePage, true);
                 setVisible(false);
             } else if (command.equals("삭제하기")) {
-
+                bookService.deleteBook(searchedBook.getTitle());
+                setVisible(false);
+                new AdminManagement(loginedMember, null, null);
+                JOptionPane.showMessageDialog(null, searchedBook.getTitle() + "책 삭제가 완료되었습니다.");
             } else if (command.equals("수정완료")) {
                 BookUpdateForm bookUpdateForm = BookUpdateForm.builder()
                         .title(titleInput.getText())
