@@ -20,12 +20,25 @@ public class ReservationInfoRepository {
                 .getSingleResult();
     }
 
-    public ReservationInfo findOneByMemberIdAndBookId(Long memberId, Long bookId) {
-        return em.createQuery("select r from ReservationInfo r where member.id = :memberId and book.id = :bookId", ReservationInfo.class)
-                .setParameter("memberId", memberId)
-                .setParameter("bookId", bookId)
-                .getSingleResult();
+//    public ReservationInfo findOneByMemberIdAndBookId(Long memberId, Long bookId) {
+//        return em.createQuery("select r from ReservationInfo r where member.id = :memberId and book.id = :bookId", ReservationInfo.class)
+//                .setParameter("memberId", memberId)
+//                .setParameter("bookId", bookId)
+//                .getSingleResult();
+//    }
+
+    public ReservationInfo findOneByBookId(Long bookId) {
+        try {
+            return em.createQuery("select r from ReservationInfo r where book.id = :bookId", ReservationInfo.class)
+                    .setParameter("bookId", bookId)
+                    .getSingleResult();
+        } catch (Exception e) {
+            System.out.println("No result for the book from reservation info");
+            return null;
+        }
+
     }
+
 
     public Long delete(ReservationInfo reservationInfo) {
         em.remove(reservationInfo);

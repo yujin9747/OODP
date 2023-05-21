@@ -6,6 +6,7 @@ import com.example.demo.domain.*;
 import com.example.demo.service.BookService;
 import com.example.demo.service.MemberService;
 import com.example.demo.service.RentalInfoService;
+import com.example.demo.service.ReservationInfoService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,6 +19,7 @@ public class SearchWindow extends JFrame {
     private final MemberService memberService;
 
     private final RentalInfoService rentalInfoService;
+    private final ReservationInfoService reservationInfoService;
 
     Button checkoutBTN;
     Button returnBTN;
@@ -27,10 +29,13 @@ public class SearchWindow extends JFrame {
     Member loginedMember;
     Book searchedBook;
 
+    ReservationInfo reservationInfo;
+
     public SearchWindow(Book searchedBook, Member loginedMember){
         this.bookService = BeanUtil.get(BookService.class);
         this.memberService = BeanUtil.get(MemberService.class);
         this.rentalInfoService = BeanUtil.get(RentalInfoService.class);
+        this.reservationInfoService = BeanUtil.get(ReservationInfoService.class);
         this.loginedMember = loginedMember;
         this.searchedBook = searchedBook;
 
@@ -78,11 +83,19 @@ public class SearchWindow extends JFrame {
 
             // Todo : Role.STUDENT, disabled=true인 상태에서 버튼 안나와야 하는데 나옴.
             if (loginedMember.isDisabled() == false) {
-                reservationBTN = new Button("예약하기");
-                reservationBTN.setBounds(20, 5, 70, 30);
-                reservationBTN.addActionListener(new SearchActionListener());
+                this.reservationInfo = reservationInfoService.findOneByBookId(searchedBook.getId());
+                if (this.reservationInfo == null) {
+                    reservationBTN = new Button("예약하기");
+                    reservationBTN.setBounds(20, 5, 70, 30);
+                    reservationBTN.addActionListener(new SearchActionListener());
 
-                add(reservationBTN);
+                    add(reservationBTN);
+                } else {
+                    JLabel label = new JLabel();
+                    label.setText("다른 회원이 예약한 도서입니다.");
+                    add(label);
+                }
+
             }
         }
 
@@ -125,7 +138,13 @@ public class SearchWindow extends JFrame {
 
                 }
             } else if (command.equals("예약하기")) {
+                if (loginedMember.getRole() == Role.STUDENT) {
+                    reservationInfoService.saveReservationInfo(loginedMember.getId(), searchedBook.getId());
+                    JOptionPane.showMessageDialog(null, "에약되었습니다.");
 
+                    new MainWindow(loginedMember);
+                    setVisible(false);
+                }
             } else if (loginedMember.getRole() == Role.PROFESSOR) {
 
             }
