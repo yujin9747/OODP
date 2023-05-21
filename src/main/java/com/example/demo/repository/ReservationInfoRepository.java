@@ -6,6 +6,8 @@ import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 public class ReservationInfoRepository {
     private final EntityManager em;
@@ -19,13 +21,6 @@ public class ReservationInfoRepository {
                 .setParameter("id", reservationInfoId)
                 .getSingleResult();
     }
-
-//    public ReservationInfo findOneByMemberIdAndBookId(Long memberId, Long bookId) {
-//        return em.createQuery("select r from ReservationInfo r where member.id = :memberId and book.id = :bookId", ReservationInfo.class)
-//                .setParameter("memberId", memberId)
-//                .setParameter("bookId", bookId)
-//                .getSingleResult();
-//    }
 
     public ReservationInfo findOneByBookId(Long bookId) {
         try {

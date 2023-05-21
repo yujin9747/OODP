@@ -113,12 +113,14 @@ public class SearchWindow extends JFrame {
                 checkoutBTN.addActionListener(new SearchActionListener());
                 add(checkoutBTN);
             } else {
-                returnBTN = new Button("반납하기");
-                returnBTN.setBounds(20, 5, 70, 30);
+                if (rentalInfoService.findOneByMemberIdAndBookId(loginedMember.getId(), searchedBook.getId()) != null) {
+                    returnBTN = new Button("반납하기");
+                    returnBTN.setBounds(20, 5, 70, 30);
 
-                returnBTN.addActionListener(new SearchActionListener());
+                    returnBTN.addActionListener(new SearchActionListener());
 
-                add(returnBTN);
+                    add(returnBTN);
+                }
             }
 
 
