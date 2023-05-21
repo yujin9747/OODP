@@ -227,10 +227,10 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
         if(emptyTextFieldIdx > 0) return emptyTextFieldIdx;
 
         Optional<Library> handongLibrary = libraryService.findOne(1L);
-        Book book = new Book.BookBuilder().title(titleInputField.getText()).build();
+        Book book = new Book.BookBuilder().title(titleInputField.getText()).isbn(Long.parseLong(isbnInputField.getText())).position(positionInputField.getText()).publisher(publisherInputField.getText()).library(handongLibrary.get()).build();
 
-        (titleInputField.getText(), Long.parseLong(isbnInputField.getText()), positionInputField.getText(), publisherInputField.getText(), handongLibrary.get())
-                .build();
+//        (titleInputField.getText(), Long.parseLong(isbnInputField.getText()), positionInputField.getText(), publisherInputField.getText(), handongLibrary.get())
+//                .build();
 
         System.out.println("book title: " + book.getTitle());
         System.out.println("book isbn: " + book.getIsbn());
