@@ -40,8 +40,9 @@ public class ReservationInfoRepository {
     }
 
 
-    public Long delete(ReservationInfo reservationInfo) {
-        em.remove(reservationInfo);
-        return reservationInfo.getId();
+    public void delete(Long reservationInfoId) {
+        em.createQuery("delete from ReservationInfo r where r.id = :id")
+                .setParameter("id", reservationInfoId)
+                .executeUpdate();
     }
 }

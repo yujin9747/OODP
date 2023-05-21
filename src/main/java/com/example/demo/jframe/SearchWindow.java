@@ -91,9 +91,17 @@ public class SearchWindow extends JFrame {
 
                     add(reservationBTN);
                 } else {
-                    JLabel label = new JLabel();
-                    label.setText("다른 회원이 예약한 도서입니다.");
-                    add(label);
+                    if (this.reservationInfo.getMember().getId() == loginedMember.getId()) {
+                        reservationBTN = new Button("예약취소");
+                        reservationBTN.setBounds(20, 5, 70, 30);
+                        reservationBTN.addActionListener(new SearchActionListener());
+
+                        add(reservationBTN);
+                    } else {
+                        JLabel label = new JLabel();
+                        label.setText("다른 회원이 예약한 도서입니다.");
+                        add(label);
+                    }
                 }
 
             }
@@ -140,14 +148,26 @@ public class SearchWindow extends JFrame {
             } else if (command.equals("예약하기")) {
                 if (loginedMember.getRole() == Role.STUDENT) {
                     reservationInfoService.saveReservationInfo(loginedMember.getId(), searchedBook.getId());
-                    JOptionPane.showMessageDialog(null, "에약되었습니다.");
+                    JOptionPane.showMessageDialog(null, "예약되었습니다.");
 
                     new MainWindow(loginedMember);
                     setVisible(false);
-                }
-            } else if (loginedMember.getRole() == Role.PROFESSOR) {
+                } else if (loginedMember.getRole() == Role.PROFESSOR) {
 
+                }
+
+            } else if (command.equals("예약취소")) {
+                if (loginedMember.getRole() == Role.STUDENT) {
+                    reservationInfoService.cancelReservation(reservationInfo.getId());
+                    JOptionPane.showMessageDialog(null, "예약이 취소되었습니다.");
+
+                    new MainWindow(loginedMember);
+                    setVisible(false);
+                } else if (loginedMember.getRole() == Role.PROFESSOR) {
+
+                }
             }
+
         }
 
     }

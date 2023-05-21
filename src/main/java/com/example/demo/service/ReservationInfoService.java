@@ -34,5 +34,5 @@ public class ReservationInfoService {
 
     public ReservationInfo findOne(Long reservationInfoId){ return reservationInfoRepository.findOne(reservationInfoId);}
     public ReservationInfo findOneByBookId(Long bookId){return reservationInfoRepository.findOneByBookId(bookId);}
-    public Long cancelReservation(ReservationInfo reservationInfo){return reservationInfoRepository.delete(reservationInfo);}
+    public void cancelReservation(Long reservationInfoId){reservationInfoRepository.delete(reservationInfoId);}
 }
