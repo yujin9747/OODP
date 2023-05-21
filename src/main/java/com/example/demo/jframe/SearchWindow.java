@@ -70,19 +70,23 @@ public class SearchWindow extends JFrame {
         add(publisher);
 
         if (loginedMember != null && loginedMember.getRole() != Role.ADMIN) {
-            checkoutBTN = new Button("대출하기");
-            checkoutBTN.setBounds(20, 5, 70, 30);
-            returnBTN = new Button("반납하기");
-            returnBTN.setBounds(20, 5, 70, 30);
+            if (!searchedBook.isBorrowed()) {
+                checkoutBTN = new Button("대출하기");
+                checkoutBTN.setBounds(20, 5, 70, 30);
+                checkoutBTN.addActionListener(new SearchActionListener());
+                add(checkoutBTN);
+            } else {
+                returnBTN = new Button("반납하기");
+                returnBTN.setBounds(20, 5, 70, 30);
 
-            checkoutBTN.addActionListener(new SearchActionListener());
-            returnBTN.addActionListener(new SearchActionListener());
+                returnBTN.addActionListener(new SearchActionListener());
 
-            add(checkoutBTN);
-            add(returnBTN);
+                add(returnBTN);
+            }
+
 
             // Todo : Role.STUDENT, disabled=true인 상태에서 버튼 안나와야 하는데 나옴.
-            if (loginedMember.isDisabled() == false) {
+            if (loginedMember.isDisabled() == false && searchedBook.isBorrowed()) {
                 this.reservationInfo = reservationInfoService.findOneByBookId(searchedBook.getId());
                 if (this.reservationInfo == null) {
                     reservationBTN = new Button("예약하기");
