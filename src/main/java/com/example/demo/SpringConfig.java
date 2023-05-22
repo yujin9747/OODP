@@ -62,7 +62,7 @@ public class SpringConfig {
 
     @Bean
     public ReservationInfoService reservationInfoService(){
-        return new ReservationInfoService(reservationInfoRepository(), memberRepository(), bookRepository());
+        return new ReservationInfoService(reservationInfoRepository());
     }
 
 }
