@@ -123,12 +123,25 @@ public class LoginWindow extends JFrame {
                 }
                 else{
                     if(command.equals("학생으로 Register")) {
-                        Student student = new Student.StudentBuilder().name("yujin").role(loginOrRegisterRole).pw(password).library(loginLibrary.get()).sid(id).build();
+                        Student student = new Student.StudentBuilder()
+                                .name("yujin")
+                                .role(loginOrRegisterRole)
+                                .pw(password)
+                                .library(loginLibrary.get())
+                                .sid(id)
+                                .build();
                                 //("yujin", loginOrRegisterRole, password, loginLibrary.get(), id);
                         memberService.saveMember(student);
                     }
                     else if(command.equals("관리자로 Register")){
-                        Admin admin = new Admin.AdminBuilder().name("yujin").role(loginOrRegisterRole).pw(password).library(loginLibrary.get()).adminId(id).weekTotalHours(0).build();
+                        Admin admin = new Admin.AdminBuilder()
+                                .name("yujin")
+                                .role(loginOrRegisterRole)
+                                .pw(password)
+                                .library(loginLibrary.get())
+                                .adminId(id)
+                                .weekTotalHours(0)
+                                .build();
                         //Admin admin = new Admin("yujin", loginOrRegisterRole, password, loginLibrary.get(), id, 0);
                         memberService.saveMember(admin);
                     }
