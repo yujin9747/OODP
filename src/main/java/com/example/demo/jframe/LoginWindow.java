@@ -123,7 +123,8 @@ public class LoginWindow extends JFrame {
                 }
                 else{
                     if(command.equals("학생으로 Register")) {
-                        Student student = new Student("yujin", loginOrRegisterRole, password, loginLibrary.get(), id);
+                        Student student = new Student.StudentBuilder().name("yujin").role(loginOrRegisterRole).pw(password).library(loginLibrary.get()).sid(id).build();
+                                //("yujin", loginOrRegisterRole, password, loginLibrary.get(), id);
                         memberService.saveMember(student);
                     }
                     else if(command.equals("관리자로 Register")){
