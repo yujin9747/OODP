@@ -29,21 +29,18 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
     private JButton addBtn;		//추가 버튼
     private JButton delBtn;		//삭제 버튼
     private Button userManageBTN;
-    private Button bookManageBTN;
     private Button backBTN;
 
     private DefaultListModel model;	//JList에 보이는 실제 데이터
     private JScrollPane scrolled;
     private Member loginedMember;
     private Book selectedBook;
-    private Integer selectedIdx;
-    public AdminManagement(Member loginedMember, Book selectedBook, Integer selectedIdx) {
+    public AdminManagement(Member loginedMember, Book selectedBook) {
         this.bookService = BeanUtil.get(BookService.class);
         this.memberService = BeanUtil.get(MemberService.class);
         this.libraryService = BeanUtil.get(LibraryService.class);
         this.loginedMember = loginedMember;
         this.selectedBook = selectedBook;
-        this.selectedIdx = selectedIdx;
         setTitle("AdminManagement");
         init();
     }
@@ -58,31 +55,11 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
         addBtn=new JButton("추가");
         delBtn=new JButton("삭제");
         userManageBTN = new Button("학생 정보 관리");
-        bookManageBTN = new Button("책 정보 관리");
 
         backBTN = new Button("<"); //뒤로가기 버튼
         backBTN.addActionListener(new backActionListener());
-        class ColoredListCellRenderer extends DefaultListCellRenderer{
-            @Override
-            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                // 기본 스타일을 사용하기 위해 상위 클래스의 구현을 호출
-                Component renderer = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-
-                // 특정 인덱스에 따라 색상을 설정
-                if (selectedIdx != null && index == selectedIdx) { // 인덱스 2에 색상을 적용
-                    renderer.setBackground(Color.BLUE);
-                    renderer.setForeground(Color.WHITE);
-                } else {
-                    renderer.setBackground(list.getBackground());
-                    renderer.setForeground(list.getForeground());
-                }
-
-                return renderer;
-            }
-        }
 
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);	//하나만 선택 될 수 있도록
-        list.setCellRenderer(new ColoredListCellRenderer());
 
         titleInputField.addKeyListener(this);
         isbnInputField.addKeyListener(this);
@@ -91,14 +68,13 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
         addBtn.addMouseListener(this);		//아이템 추가
         delBtn.addMouseListener(this);		//아이템 삭제
         userManageBTN.addMouseListener(this);
-        bookManageBTN.addMouseListener(this);
         list.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 String selectedTitle = list.getSelectedValue().toString();
                 selectedBook = bookService.findBookByTitle(selectedTitle).get();
 
-                new AdminManagement(loginedMember, selectedBook, list.getSelectedIndex());
+                new AdminManagement(loginedMember, selectedBook);
                 setVisible(false);
             }
         });	//항목 선택시
@@ -111,7 +87,6 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
         topPanel.add(addBtn);
         topPanel.add(delBtn);		//위쪽 패널 [textfield]  [add] [del]
         topPanel.add(userManageBTN);
-        topPanel.add(bookManageBTN);
         topPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));	//상, 좌, 하, 우 공백(Padding)
 
         JPanel inputPanel = new JPanel(new GridLayout(9, 2));
@@ -227,21 +202,15 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
             //가장 마지막으로 list 위치 이동
             scrolled.getVerticalScrollBar().setValue(scrolled.getVerticalScrollBar().getMaximum());
         }
-        else if(e.getSource() == delBtn) {
+        if(e.getSource() == delBtn) {
             String title = list.getSelectedValue().toString();
             int index = list.getSelectedIndex();
             removeItem(title, index);
         }
-        else if(e.getSource() == userManageBTN){
+        if(e.getSource() == userManageBTN){
             new UserManageWindow(new DefaultListModel(), "", loginedMember);
             setVisible(false);
         }
-        else if(e.getSource() == bookManageBTN){
-//            Optional<Book> book = bookService.findBookByTitle(list.getSelectedValue().toString());
-            new SearchWindow(selectedBook, loginedMember, 1, false);
-            setVisible(false);
-        }
-
     }
 
     public void removeItem(String title, int index) {
@@ -258,8 +227,10 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
         if(emptyTextFieldIdx > 0) return emptyTextFieldIdx;
 
         Optional<Library> handongLibrary = libraryService.findOne(1L);
-        Book book = new Book.BookBuilder(titleInputField.getText(), Long.parseLong(isbnInputField.getText()), positionInputField.getText(), publisherInputField.getText(), handongLibrary.get())
-                .build();
+        Book book = new Book.BookBuilder().title(titleInputField.getText()).isbn(Long.parseLong(isbnInputField.getText())).position(positionInputField.getText()).publisher(publisherInputField.getText()).library(handongLibrary.get()).build();
+
+//        (titleInputField.getText(), Long.parseLong(isbnInputField.getText()), positionInputField.getText(), publisherInputField.getText(), handongLibrary.get())
+//                .build();
 
         System.out.println("book title: " + book.getTitle());
         System.out.println("book isbn: " + book.getIsbn());

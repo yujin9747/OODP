@@ -1,6 +1,5 @@
 package com.example.demo.domain;
 
-import com.example.demo.domain.request.BookUpdateForm;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,12 +10,16 @@ import org.hibernate.type.SpecialOneToOneType;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Getter
 @Setter
 @Entity
 @RequiredArgsConstructor
+
+// book builder interface
+
+
+
 // book class
 public class Book {
 
@@ -44,34 +47,35 @@ public class Book {
     private List<ReservationInfo> reservationInfoList = new ArrayList<>();
 
 //    public Book(String title, Long isbn, String position, String publisher, Library library){
-    public Book(BookBuilder builder){
-        this.title = builder.title;
-        this.isbn = builder.isbn;
-        this.position = builder.position;
-        this.isBorrowed = builder.isBorrowed;
-        this.isReserved = builder.isReserved;
-        this.publisher = builder.publisher;
-        this.library = builder.library;
+    public Book(String title,Long isbn,String position,String publisher,Library library){
+        this.title = title;
+        this.isbn = isbn;
+        this.position = position;
+        this.publisher = publisher;
+        this.library = library;
 
 
         this.enrolledDate = LocalDateTime.now();
         this.lastModifiedDate = null;
     }
+    //builder interface
+    public interface Builder{
 
-    public Optional<Book> update(BookUpdateForm bookUpdateForm) {
-        this.title = bookUpdateForm.getTitle();
-        this.isbn = Long.parseLong(bookUpdateForm.getIsbn());
-        this.position = bookUpdateForm.getPosition();
-        this.publisher = bookUpdateForm.getPublisher();
-        return Optional.of(this);
+        public Builder title(String title);
+
+        public Builder isbn(Long isbn);
+
+        public Builder position(String position);
+
+        public Builder publisher(String publisher);
+
+        public Builder library(Library library);
+
+        public Book build();
+
     }
-
     //builder class
-    public static class BookBuilder{
-        // required parameters
-        private Long id;
-        private LocalDateTime enrolledDate;
-        private LocalDateTime lastModifiedDate;
+    public static class BookBuilder implements Builder{
         private String title;
         private Long isbn;
         private String position;
@@ -82,34 +86,33 @@ public class Book {
         // boolean parameters
         private boolean isBorrowed;
         private boolean isReserved;
-
-
-        public BookBuilder(String title, Long isbn, String position, String publisher, Library library){
+        @Override
+        public Builder title(String title){
             this.title = title;
+            return this;
+        }
+        @Override
+        public Builder isbn(Long isbn){
             this.isbn = isbn;
+            return this;
+        }
+        @Override
+        public Builder position(String position){
             this.position = position;
-            this.isBorrowed = false;
-            this.isReserved = false;
+            return this;
+        }
+        @Override
+        public Builder publisher(String publisher){
             this.publisher = publisher;
+            return this;
+        }
+        @Override
+        public Builder library(Library library){
             this.library = library;
-
-            this.enrolledDate = LocalDateTime.now();
-            this.lastModifiedDate = null;
-
-        }
-
-        public BookBuilder setIsBorrowed(boolean isBorrowed) {
-            this.isBorrowed = isBorrowed;
             return this;
         }
-
-        public BookBuilder setIsReserved(boolean isReserved) {
-            this.isReserved = isReserved;
-            return this;
-        }
-
         public Book build() {
-            return new Book(this);
+            return new Book(title,isbn,position,publisher,library);
         }
 
     }

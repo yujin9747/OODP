@@ -94,7 +94,7 @@ public class MainWindow extends JFrame{
                 JOptionPane.showMessageDialog(null, "일치하는 책 정보가 없습니다.");
             }
             else{
-                new SearchWindow(searchedBook.get(), loginedMember, 0, false);
+                new SearchWindow(searchedBook.get(), loginedMember);
             }
         }
     }
@@ -102,7 +102,7 @@ public class MainWindow extends JFrame{
     private class AdminPageActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            new AdminManagement(loginedMember, null, null);
+            new AdminManagement(loginedMember, null);
             setVisible(false);
         }
     }
