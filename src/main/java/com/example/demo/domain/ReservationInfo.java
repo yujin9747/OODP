@@ -26,12 +26,21 @@ public class ReservationInfo {
     @ManyToOne
     @JoinColumn(name = "book_id")
     private Book book;
-
-    public ReservationInfo(Long id, Role userType, Member member, Book book){
-        this.id = id;
+//
+//    public ReservationInfo(Long id, Role userType, Member member, Book book){
+//        this.id = id;
+//        this.reservationDate = LocalDateTime.now();
+//        this.userType = userType;
+//        this.member = member;
+//        this.book = book;
+//    }
+    public ReservationInfo( Member member, Book book){
         this.reservationDate = LocalDateTime.now();
-        this.userType = userType;
+        this.userType = member.getRole();
         this.member = member;
         this.book = book;
+
+        member.getReservationInfoList().add(this);
+        book.getReservationInfoList().add(this);
     }
 }
