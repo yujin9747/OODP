@@ -112,39 +112,61 @@ public class SearchWindow extends JFrame {
                 checkoutBTN.addActionListener(new SearchActionListener());
                 add(checkoutBTN);
             } else {
-                if (rentalInfoService.findOneByMemberIdAndBookId(loginedMember.getId(), searchedBook.getId()) != null) {
+                RentalInfo _rentalInfo = rentalInfoService.findOneByMemberIdAndBookId(loginedMember.getId(), searchedBook.getId());
+                if (_rentalInfo != null && !_rentalInfo.isReturned()) {
                     returnBTN = new Button("반납하기");
                     returnBTN.setBounds(20, 5, 70, 30);
 
                     returnBTN.addActionListener(new SearchActionListener());
 
                     add(returnBTN);
-                }
-            }
-
-            // Todo : Role.STUDENT, disabled=true인 상태에서 버튼 안나와야 하는데 나옴.
-            if (loginedMember.isDisabled() == false && searchedBook.isBorrowed()) {
-                this.reservationInfo = reservationInfoService.findOneByBookId(searchedBook.getId());
-                if (this.reservationInfo == null) {
-                    reservationBTN = new Button("예약하기");
-                    reservationBTN.setBounds(20, 5, 70, 30);
-                    reservationBTN.addActionListener(new SearchActionListener());
-
-                    add(reservationBTN);
                 } else {
-                    if (this.reservationInfo.getMember().getId() == loginedMember.getId()) {
-                        reservationBTN = new Button("예약취소");
+                    this.reservationInfo = reservationInfoService.findOneByBookId(searchedBook.getId());
+                    if (this.reservationInfo == null) {
+                        reservationBTN = new Button("예약하기");
                         reservationBTN.setBounds(20, 5, 70, 30);
                         reservationBTN.addActionListener(new SearchActionListener());
 
                         add(reservationBTN);
                     } else {
-                        JLabel label = new JLabel();
-                        label.setText("다른 회원이 예약한 도서입니다.");
-                        add(label);
+                        if (this.reservationInfo.getMember().getId() == loginedMember.getId()) {
+                            reservationBTN = new Button("예약취소");
+                            reservationBTN.setBounds(20, 5, 70, 30);
+                            reservationBTN.addActionListener(new SearchActionListener());
+
+                            add(reservationBTN);
+                        } else {
+                            JLabel label = new JLabel();
+                            label.setText("다른 회원이 예약한 도서입니다.");
+                            add(label);
+                        }
                     }
                 }
             }
+//
+//            // Todo : Role.STUDENT, disabled=true인 상태에서 버튼 안나와야 하는데 나옴.
+//            if (loginedMember.isDisabled() == false && searchedBook.isBorrowed() && ) {
+//                this.reservationInfo = reservationInfoService.findOneByBookId(searchedBook.getId());
+//                if (this.reservationInfo == null) {
+//                    reservationBTN = new Button("예약하기");
+//                    reservationBTN.setBounds(20, 5, 70, 30);
+//                    reservationBTN.addActionListener(new SearchActionListener());
+//
+//                    add(reservationBTN);
+//                } else {
+//                    if (this.reservationInfo.getMember().getId() == loginedMember.getId()) {
+//                        reservationBTN = new Button("예약취소");
+//                        reservationBTN.setBounds(20, 5, 70, 30);
+//                        reservationBTN.addActionListener(new SearchActionListener());
+//
+//                        add(reservationBTN);
+//                    } else {
+//                        JLabel label = new JLabel();
+//                        label.setText("다른 회원이 예약한 도서입니다.");
+//                        add(label);
+//                    }
+//                }
+//            }
         } else if(loginedMember != null && loginedMember.getRole() == Role.ADMIN){
             editBTN = new Button();
             if ((editMode)) {
