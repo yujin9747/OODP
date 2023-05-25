@@ -28,10 +28,15 @@ public class RentalInfoRepository {
     }
 
     public RentalInfo findOneByMemberIdAndBookId(Long memberId, Long bookId) {// error, 한 멤버가 같은 책을 두번 빌렸을 경우 에러 발생
-        return em.createQuery("select r from RentalInfo r where member.id = :memberId and book.id = :bookId", RentalInfo.class)
-                .setParameter("memberId", memberId)
-                .setParameter("bookId", bookId)
-                .getSingleResult();
+        try {
+            return em.createQuery("select r from RentalInfo r where member.id = :memberId and book.id = :bookId", RentalInfo.class)
+                    .setParameter("memberId", memberId)
+                    .setParameter("bookId", bookId)
+                    .getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
+
     }
 
     public List<RentalInfo> findRentalInfosByMemberId(Long memberId){
