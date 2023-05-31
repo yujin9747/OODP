@@ -3,7 +3,6 @@ package com.example.demo.repository;
 import com.example.demo.domain.*;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -59,5 +58,23 @@ public class MemberRepository {
     public List<Student> findNotPermittedStudents() {
         return em.createQuery("select s from Student s where s.externalLibraryPermission = false", Student.class)
                 .getResultList();
+    }
+
+    public List<Student> findByStudentId(String selectedUserId) {
+        return em.createQuery("select s from Student s where s.studentId = :id", Student.class)
+                .setParameter("id", selectedUserId)
+                .getResultList();
+    }
+
+    public void permitById(Long memberId) {
+        em.createQuery("update Student s set s.externalLibraryPermission = true where s.id = :memberId")
+                .setParameter("memberId", memberId)
+                .executeUpdate();
+    }
+
+    public void banById(Long memberId) {
+        em.createQuery("update Student s set s.externalLibraryPermission = false where s.id = :memberId")
+                .setParameter("memberId", memberId)
+                .executeUpdate();
     }
 }
