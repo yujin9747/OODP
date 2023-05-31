@@ -23,6 +23,15 @@ public class MainWindowDirector {
     public void constructMainWindow(){
         mainWindowBuilder.createNewMainWindowProduct(loginedMember);
         mainWindowBuilder.buildDependencyInjection();
+        mainWindowBuilder.buildLoginedMember(loginedMember);
+        mainWindowBuilder.buildSearchBoxField();
+        mainWindowBuilder.buildWindowTitle();
+        mainWindowBuilder.buildWindowSize();
+        mainWindowBuilder.buildWindowSize();
+        mainWindowBuilder.buildWindowDefaultSetting();
+        mainWindowBuilder.buildContainer();
+        mainWindowBuilder.buildSearchBTN();
+        mainWindowBuilder.buildVisible();
+        mainWindowBuilder.builWindowButton();
     }
-
 }

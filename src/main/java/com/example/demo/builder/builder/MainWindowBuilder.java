@@ -2,8 +2,7 @@ package com.example.demo.builder.builder;
 
 import com.example.demo.BeanUtil;
 import com.example.demo.domain.Member;
-import com.example.demo.jframe.MainWindow;
-import com.example.demo.jframe.SearchWindow;
+import com.example.demo.jframe.*;
 import com.example.demo.actionListener.SearchActionListener;
 import com.example.demo.service.BookService;
 import com.example.demo.service.MemberService;
@@ -13,6 +12,8 @@ import com.example.demo.service.ReservationInfoService;
 import javax.swing.*;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
@@ -20,6 +21,9 @@ public abstract class MainWindowBuilder {
 
     protected MainWindow mainWindow;
     private Member loginedMember;
+    public MainWindow getMainWindow(){
+        return mainWindow;
+    }
 
     public void createNewMainWindowProduct(Member loginedMember){
         mainWindow = new MainWindow(loginedMember);
@@ -27,10 +31,6 @@ public abstract class MainWindowBuilder {
     public void buildDependencyInjection() {
         mainWindow.setMemberService(BeanUtil.get(MemberService.class));
         mainWindow.setBookService(BeanUtil.get(BookService.class));
-    }
-
-    public MainWindow getMainWindow(){
-        return mainWindow;
     }
     public void buildLoginedMember(Member loginedMember){
         mainWindow.setLoginedMember(loginedMember);
@@ -62,8 +62,46 @@ public abstract class MainWindowBuilder {
     public void buildVisible(){
         mainWindow.setVisible(true);
     }
+    public abstract void builWindowButton();
+    public class AdminPageActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new AdminManagement(loginedMember, null, null);
+            mainWindow.setVisible(false);
+        }
+    }
 
-    setVisible(true); //보이기
+    public class UserPageActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new UserPageWindow(loginedMember);
+            mainWindow.setVisible(false);
+        }
+    }
+
+    public class LoginActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new LoginWindow(0);
+            mainWindow.setVisible(false);
+        }
+    }
+    public class RegisterActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new LoginWindow(1);
+            mainWindow.setVisible(false);
+        }
+    }
+
+    public class LogoutActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new MainWindow(null);
+            mainWindow.setVisible(false);
+        }
+    }
+
 
 
 
