@@ -5,7 +5,6 @@ import com.example.demo.domain.Admin;
 import com.example.demo.domain.Member;
 import com.example.demo.domain.Student;
 import com.example.demo.service.MemberService;
-import com.example.demo.service.RentalInfoService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,6 +18,8 @@ public class UserManageWindow extends JFrame {
     private Button findStudentsBTN;   // 전체 학생 조회
     private Button findAdminsBTN;   // 전체 관리자 조회
     private Button findOverduedStudentsBTN;   // 전체 관리자 조회
+    private Button findPermittedStudentsBTN;
+    private Button findNotPermittedStudentsBTN;
     private Button backBTN;
 
 
@@ -27,10 +28,12 @@ public class UserManageWindow extends JFrame {
 
     private JList<Student> studentList;
     private Member loginedMember;
+    private int selectedIdx;
 
-    public UserManageWindow(DefaultListModel listModel, String description, Member loginedMember){
+    public UserManageWindow(DefaultListModel listModel, String description, Member loginedMember, Integer selectedIdx){
         this.memberService = BeanUtil.get(MemberService.class);
         this.loginedMember = loginedMember;
+        this.selectedIdx = selectedIdx;
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         Container c = getContentPane();
@@ -65,10 +68,20 @@ public class UserManageWindow extends JFrame {
         findAdminsBTN.addActionListener(new ActionListener());
         buttonPanel.add(findAdminsBTN);
 
-        findOverduedStudentsBTN = new Button("반납 연기된 학생 조회");
+        findOverduedStudentsBTN = new Button("연기된 학생 조회");
         findOverduedStudentsBTN.setBounds(20, 5, 70, 30);
         findOverduedStudentsBTN.addActionListener(new ActionListener());
         buttonPanel.add(findOverduedStudentsBTN);
+
+        findPermittedStudentsBTN = new Button("외부 도서관 허가 학생 조회");
+        findPermittedStudentsBTN.setBounds(20, 5, 70, 30);
+        findPermittedStudentsBTN.addActionListener(new ActionListener());
+        buttonPanel.add(findPermittedStudentsBTN);
+
+        findNotPermittedStudentsBTN = new Button("외부 도서관 이용 불가 학생 조회");
+        findNotPermittedStudentsBTN.setBounds(20, 5, 70, 30);
+        findNotPermittedStudentsBTN.addActionListener(new ActionListener());
+        buttonPanel.add(findNotPermittedStudentsBTN);
 
         JLabel desc = new JLabel(description);
 
@@ -77,7 +90,7 @@ public class UserManageWindow extends JFrame {
 
         add(northPanel, "North");
         add(scrolled, "Center");
-        setSize(600, 600); //창 사이즈
+        setSize(900, 600); //창 사이즈
 
         setVisible(true); //보이기
     }
@@ -94,7 +107,7 @@ public class UserManageWindow extends JFrame {
                 for (int i = 0; i < students.size(); i++) {
                     addItem(students.get(i).getStudentId());
                 }
-                new UserManageWindow(model, "< 학생 전체 조회 결과 >", loginedMember);
+                new UserManageWindow(model, "< 학생 전체 조회 결과 >", loginedMember, null);
                 setVisible(false);
             }
             else if(command.equals("관리자 조회")){
@@ -102,15 +115,31 @@ public class UserManageWindow extends JFrame {
                 for (int i = 0; i < admins.size(); i++) {
                     addItem(admins.get(i).getAdminId());
                 }
-                new UserManageWindow(model, "< 관리자 전체 조회 결과 >", loginedMember);
+                new UserManageWindow(model, "< 관리자 전체 조회 결과 >", loginedMember, null);
                 setVisible(false);
             }
-            else if(command.equals("반납 연기된 학생 조회")){
+            else if(command.equals("연기된 학생 조회")){
                 List<Student> overdueStudents = memberService.findOverdueStudents();
                 for (int i = 0; i < overdueStudents.size(); i++) {
                     addItem(overdueStudents.get(i).getStudentId());
                 }
-                new UserManageWindow(model, "< 반납 연기된 학생 조회 결과 >", loginedMember);
+                new UserManageWindow(model, "< 반납 연기된 학생 조회 결과 >", loginedMember, null);
+                setVisible(false);
+            }
+            else if(command.equals("외부 도서관 허가 학생 조회")){
+                List<Student> permittedStudents = memberService.findPermittedStudents();
+                for(int i=0; i<permittedStudents.size(); i++){
+                    addItem(permittedStudents.get(i).getStudentId());
+                }
+                new UserManageWindow(model, "< 외부 도서관 이용 허가된 학생 조회 >", loginedMember, null);
+                setVisible(false);
+            }
+            else if(command.equals("외부 도서관 이용 불가 학생 조회")){
+                List<Student> notPermittedStudents = memberService.findNotPermittedStudents();
+                for(int i=0; i<notPermittedStudents.size(); i++){
+                    addItem(notPermittedStudents.get(i).getStudentId());
+                }
+                new UserManageWindow(model, "< 외부 도서관 이용 불가능한 학생 조회 >", loginedMember, null);
                 setVisible(false);
             }
             else if(command.equals("<")){

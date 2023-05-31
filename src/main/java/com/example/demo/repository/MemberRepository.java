@@ -50,4 +50,14 @@ public class MemberRepository {
         return em.createQuery("select s from Student s left join RentalInfo r on s.id = r.member.id where r.isOverdue = true", Student.class)
                 .getResultList();
     }
+
+    public List<Student> findPermittedStudents() {
+        return em.createQuery("select s from Student s where s.externalLibraryPermission = true", Student.class)
+                .getResultList();
+    }
+
+    public List<Student> findNotPermittedStudents() {
+        return em.createQuery("select s from Student s where s.externalLibraryPermission = false", Student.class)
+                .getResultList();
+    }
 }

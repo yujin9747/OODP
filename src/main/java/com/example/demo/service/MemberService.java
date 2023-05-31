@@ -45,4 +45,11 @@ public class MemberService {
     public List<Student> findOverdueStudents() {
         return memberRepository.findAllOverdueStudents();
     }
+
+    public List<Student> findPermittedStudents() {
+        return memberRepository.findPermittedStudents();
+    }
+    public List<Student> findNotPermittedStudents() {
+        return memberRepository.findNotPermittedStudents();
+    }
 }
