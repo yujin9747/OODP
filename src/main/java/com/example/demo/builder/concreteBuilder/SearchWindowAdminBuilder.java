@@ -13,10 +13,7 @@ public class SearchWindowAdminBuilder extends SearchWindowBuilder {
 
     @Override
     public void buildBackButton() {
-        searchWindow.setBackBTN(new Button("<"));
-        searchWindow.getBackBTN().addActionListener(new SearchActionListener());
-        searchWindow.add(searchWindow.getBackBTN());
-        searchWindow.add(new JLabel(" "));
+        super.buildBackButtonBuilder();
     }
 
     @Override

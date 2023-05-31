@@ -1,6 +1,7 @@
 package com.example.demo.builder.builder;
 
 import com.example.demo.BeanUtil;
+import com.example.demo.actionListener.SearchActionListener;
 import com.example.demo.domain.Book;
 import com.example.demo.domain.Member;
 import com.example.demo.jframe.SearchWindow;
@@ -133,6 +134,12 @@ public abstract class SearchWindowBuilder {
         searchWindow.add(searchWindow.getPublisherInput());
     }
 
+    public void buildBackButtonBuilder(){
+        searchWindow.setBackBTN(new Button("<"));
+        searchWindow.getBackBTN().addActionListener(new SearchActionListener());
+        searchWindow.add(searchWindow.getBackBTN());
+        searchWindow.add(new JLabel(" "));
+    }
     public abstract void buildBackButton();
     public abstract void buildFunctionButton();
     public abstract void buildBookInfoLabel();
