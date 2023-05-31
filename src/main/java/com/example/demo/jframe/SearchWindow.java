@@ -9,6 +9,8 @@ import com.example.demo.service.BookService;
 import com.example.demo.service.MemberService;
 import com.example.demo.service.RentalInfoService;
 import com.example.demo.service.ReservationInfoService;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,13 +18,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Optional;
 
+@Setter
+@Getter
 public class SearchWindow extends JFrame {
 
-    private final BookService bookService;
-    private final MemberService memberService;
+    private BookService bookService;
+    private MemberService memberService;
 
-    private final RentalInfoService rentalInfoService;
-    private final ReservationInfoService reservationInfoService;
+    private RentalInfoService rentalInfoService;
+    private ReservationInfoService reservationInfoService;
 
     Button checkoutBTN;
     Button returnBTN;
@@ -40,7 +44,20 @@ public class SearchWindow extends JFrame {
     JTextField publisherInput;
     ButtonWithCommand buttonWithCommand;
 
+    JLabel titleLabel;
+    JLabel position;
+    JLabel status;
+    JLabel isbn;
+    JLabel publisher;
+
+    JLabel titleInfo;
+    JLabel positionInfo;
+    JLabel statusInfo;
+    JLabel isbnInfo;
+    JLabel publisherInfo;
     ReservationInfo reservationInfo;
+
+    public SearchWindow(){}
 
     public SearchWindow(Book searchedBook, Member loginedMember, Integer beforePage, boolean editMode){
         this.bookService = BeanUtil.get(BookService.class);
@@ -48,7 +65,7 @@ public class SearchWindow extends JFrame {
         this.rentalInfoService = BeanUtil.get(RentalInfoService.class);
         this.reservationInfoService = BeanUtil.get(ReservationInfoService.class);
         this.loginedMember = loginedMember;
-        this.searchedBook = searchedBook;
+        ;this.searchedBook = searchedBook;
         this.beforePage = beforePage;
         this.buttonWithCommand = new ButtonWithCommand(new InitCommand());
 
@@ -56,6 +73,7 @@ public class SearchWindow extends JFrame {
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(null);
+
         Container c = getContentPane();
 
         c.setLayout(new GridLayout(9, 2));
