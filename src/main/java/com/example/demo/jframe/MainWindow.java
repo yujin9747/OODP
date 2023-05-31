@@ -100,14 +100,11 @@ public class MainWindow extends JFrame{
                 JOptionPane.showMessageDialog(null, "일치하는 책 정보가 없습니다.");
             }
             else{
-                System.out.println("in");
-                SearchWindowBuilder searchWindowBuilder;
+                SearchWindowBuilder searchWindowBuilder = new SearchWindowUserNullBuilder();
                 if(loginedMember != null){
                     if(loginedMember.getRole() == Role.ADMIN) searchWindowBuilder = new SearchWindowAdminBuilder();
+                    else if(loginedMember.getRole() == Role.STUDENT) searchWindowBuilder = new SearchWindowUserBuilder();
                 }
-//                searchWindowBuilder = new SearchWindowAdminBuilder();
-//                searchWindowBuilder = new SearchWindowAdminEditBuilder();
-                searchWindowBuilder = new SearchWindowUserNullBuilder();
                 SearchWindowDirector searchWindowDirector = new SearchWindowDirector(searchWindowBuilder, loginedMember, searchedBook.get(), 0);
                 searchWindowDirector.constructSearchWindow();
 //                new SearchWindow(searchedBook.get(), loginedMember, 0, false);
