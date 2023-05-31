@@ -183,8 +183,13 @@ public class SearchWindow extends JFrame {
             }
             else if (command.equals("대출하기")) {
                 if (loginedMember.getRole() == Role.STUDENT) {
-                    rentalInfoService.saveRentalInfo(loginedMember.getId(), searchedBook.getId());
-                    JOptionPane.showMessageDialog(null, "대출이 완료되었습니다.");
+                    if ((loginedMember.getLibrary().getId() == searchedBook.getLibrary().getId()) || loginedMember.isExternalLibraryPermission()) {
+                        rentalInfoService.saveRentalInfo(loginedMember.getId(), searchedBook.getId());
+                        JOptionPane.showMessageDialog(null, "대출이 완료되었습니다.");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "외부도서에 대한 접근이 허가되지 않았습니다.");
+                    }
+
 
                     new MainWindow(loginedMember);
                     setVisible(false);
@@ -205,8 +210,12 @@ public class SearchWindow extends JFrame {
                 }
             } else if (command.equals("예약하기")) {
                 if (loginedMember.getRole() == Role.STUDENT) {
-                    reservationInfoService.saveReservationInfo(loginedMember.getId(), searchedBook.getId());
-                    JOptionPane.showMessageDialog(null, "예약되었습니다.");
+                    if ((loginedMember.getLibrary().getId() == searchedBook.getLibrary().getId()) || loginedMember.isExternalLibraryPermission()) {
+                        reservationInfoService.saveReservationInfo(loginedMember.getId(), searchedBook.getId());
+                        JOptionPane.showMessageDialog(null, "예약되었습니다.");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "외부도서에 대한 접근이 허가되지 않았습니다.");
+                    }
                     new MainWindow(loginedMember);
                     setVisible(false);
                 } else if (loginedMember.getRole() == Role.PROFESSOR) {

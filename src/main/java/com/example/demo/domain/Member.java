@@ -43,6 +43,7 @@ public abstract class Member {
         this.password = pw;
         this.library = library;
         this.disabled = false;
+        this.externalLibraryPermission = false;
     }
 
     public void rentBook(RentalInfo rentalInfo){
