@@ -1,9 +1,5 @@
 package com.example.demo;
 
-import com.example.demo.builder.builder.SearchWindowBuilder;
-import com.example.demo.builder.concreteBuilder.SearchWindowAdminBuilder;
-import com.example.demo.builder.director.SearchWindowDirector;
-import com.example.demo.domain.*;
 import com.example.demo.jframe.MainWindow;
 import com.example.demo.service.*;
 import jakarta.annotation.PostConstruct;

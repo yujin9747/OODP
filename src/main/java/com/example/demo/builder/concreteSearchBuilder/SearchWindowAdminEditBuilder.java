@@ -1,11 +1,9 @@
-package com.example.demo.builder.concreteBuilder;
+package com.example.demo.builder.concreteSearchBuilder;
 
 import com.example.demo.actionListener.AdminSearchActionListener;
 import com.example.demo.actionListener.SearchActionListener;
 import com.example.demo.builder.builder.SearchWindowBuilder;
-import com.example.demo.domain.Book;
 
-import javax.swing.*;
 import java.awt.*;
 
 public class SearchWindowAdminEditBuilder extends SearchWindowBuilder {
