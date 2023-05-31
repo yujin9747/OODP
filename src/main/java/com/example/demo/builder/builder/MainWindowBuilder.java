@@ -13,6 +13,7 @@ public abstract class MainWindowBuilder {
     }
     public MainWindow createNewMainWindow(){
         mainWindow = new MainWindow(loginedMember);
+        return mainWindow;
     }
 
 

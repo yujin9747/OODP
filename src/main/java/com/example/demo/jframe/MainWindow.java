@@ -29,7 +29,7 @@ public class MainWindow extends JFrame{
     Long memberId;
     Member loginedMember = null;
 
-    public MainWindow(Member loginedMember) {
+    public MainWindow(Member loginedMember){
         this.memberService = BeanUtil.get(MemberService.class);
         this.bookService = BeanUtil.get(BookService.class);
         this.loginedMember = loginedMember;
