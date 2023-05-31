@@ -103,7 +103,8 @@ public class MainWindow extends JFrame{
                 if(loginedMember != null){
                     if(loginedMember.getRole() == Role.ADMIN) searchWindowBuilder = new SearchWindowAdminBuilder();
                 }
-                searchWindowBuilder = new SearchWindowAdminBuilder();
+//                searchWindowBuilder = new SearchWindowAdminBuilder();
+                searchWindowBuilder = new SearchWindowAdminEditBuilder();
                 SearchWindowDirector searchWindowDirector = new SearchWindowDirector(searchWindowBuilder, loginedMember, searchedBook.get(), 0);
                 searchWindowDirector.constructSearchWindow();
 //                new SearchWindow(searchedBook.get(), loginedMember, 0, false);
