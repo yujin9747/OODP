@@ -8,6 +8,7 @@ import com.example.demo.service.BookService;
 import com.example.demo.service.MemberService;
 import com.example.demo.service.RentalInfoService;
 import com.example.demo.service.ReservationInfoService;
+import lombok.Getter;
 import lombok.Setter;
 
 import javax.swing.*;
@@ -17,6 +18,7 @@ import java.awt.event.ActionListener;
 import java.util.Optional;
 
 @Setter
+@Getter
 public class SearchWindow extends JFrame {
 
     private BookService bookService;
@@ -40,6 +42,17 @@ public class SearchWindow extends JFrame {
     JTextField positionInput;
     JTextField publisherInput;
 
+    JLabel titleLabel;
+    JLabel position;
+    JLabel status;
+    JLabel isbn;
+    JLabel publisher;
+
+    JLabel titleInfo;
+    JLabel positionInfo;
+    JLabel statusInfo;
+    JLabel isbnInfo;
+    JLabel publisherInfo;
     ReservationInfo reservationInfo;
 
     public SearchWindow(){}
@@ -57,6 +70,7 @@ public class SearchWindow extends JFrame {
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(null);
+
         Container c = getContentPane();
 
         c.setLayout(new GridLayout(9, 2));
