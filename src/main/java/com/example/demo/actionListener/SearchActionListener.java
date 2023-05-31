@@ -1,5 +1,6 @@
 package com.example.demo.actionListener;
 
+import com.example.demo.command.ButtonWithCommand;
 import com.example.demo.domain.Book;
 import com.example.demo.domain.Role;
 import com.example.demo.domain.request.BookUpdateForm;
@@ -13,8 +14,15 @@ import java.awt.event.ActionListener;
 import java.util.Optional;
 
 public class SearchActionListener implements ActionListener {
+
+    private ButtonWithCommand buttonWithCommand;
+
+    public SearchActionListener(ButtonWithCommand buttonWithCommand) {
+        this.buttonWithCommand = buttonWithCommand;
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
+        buttonWithCommand.pressed();
 //        String command = e.getActionCommand();
 //
 //        if(command.equals("<")){

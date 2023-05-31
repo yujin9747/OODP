@@ -1,6 +1,7 @@
 package com.example.demo.builder.builder;
 
 import com.example.demo.BeanUtil;
+import com.example.demo.actionListener.AdminSearchActionListener;
 import com.example.demo.actionListener.SearchActionListener;
 import com.example.demo.domain.Book;
 import com.example.demo.domain.Member;
@@ -136,7 +137,7 @@ public abstract class SearchWindowBuilder {
 
     public void buildBackButtonBuilder(){
         searchWindow.setBackBTN(new Button("<"));
-        searchWindow.getBackBTN().addActionListener(new SearchActionListener());
+        searchWindow.getBackBTN().addActionListener(new AdminSearchActionListener(searchWindow));
         searchWindow.add(searchWindow.getBackBTN());
         searchWindow.add(new JLabel(" "));
     }
