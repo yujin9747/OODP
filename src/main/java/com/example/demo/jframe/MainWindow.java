@@ -1,11 +1,10 @@
 package com.example.demo.jframe;
 
 import com.example.demo.BeanUtil;
+import com.example.demo.builder.builder.LoginWindowBuilder;
 import com.example.demo.builder.builder.SearchWindowBuilder;
-import com.example.demo.builder.concreteBuilder.SearchWindowAdminBuilder;
-import com.example.demo.builder.concreteBuilder.SearchWindowAdminEditBuilder;
-import com.example.demo.builder.concreteBuilder.SearchWindowUserBuilder;
-import com.example.demo.builder.concreteBuilder.SearchWindowUserNullBuilder;
+import com.example.demo.builder.concreteBuilder.*;
+import com.example.demo.builder.director.LoginWindowDirector;
 import com.example.demo.builder.director.SearchWindowDirector;
 import com.example.demo.domain.Book;
 import com.example.demo.domain.Role;
@@ -131,14 +130,16 @@ public class MainWindow extends JFrame{
     private class LoginActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            new LoginWindow(0);
+            LoginWindowBuilder loginWindowBuilder = new LoginWindowLoginBuilder();
+            LoginWindowDirector loginWindowDirector = new LoginWindowDirector(loginWindowBuilder);
+            loginWindowDirector.constructLoginWindow();
             setVisible(false);
         }
     }
     private class RegisterActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            new LoginWindow(1);
+//            new LoginWindow(1);
             setVisible(false);
         }
     }
