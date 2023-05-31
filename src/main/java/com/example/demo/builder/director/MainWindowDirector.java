@@ -1,4 +1,4 @@
 package com.example.demo.builder.director;
 
-public class Director {
+public class MainWindowDirector {
 }

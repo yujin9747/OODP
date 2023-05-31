@@ -1,4 +1,4 @@
 package com.example.demo.builder.concreteBuilder;
 
-public class concreteBuilder {
+public class MainWindowConcreteBuilder {
 }
