@@ -12,13 +12,11 @@ import com.example.demo.service.ReservationInfoService;
 public abstract class MainWindowBuilder {
 
     protected MainWindow mainWindow;
-    private Member loginedMember;
-    public void createNewMainWindowProduct(){
-        mainWindow = new MainWindow(loginedMember);
-    }
+//    public void createNewMainWindowProduct(){
+//        mainWindow = new MainWindow(loginedMember);
+//    }
 
     public MainWindow getMainWindow(){
-
         return mainWindow;
     }
     public void buildLoginedMember(Member loginedMember){
