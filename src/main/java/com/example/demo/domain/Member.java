@@ -28,6 +28,7 @@ public abstract class Member {
     @JoinColumn(name = "library_id")
     private Library library;
     private boolean disabled;
+    private boolean externalLibraryPermission;
 
     @OneToMany(mappedBy = "member")
     private List<RentalInfo> rentalInfoList = new ArrayList<>();
