@@ -1,12 +1,16 @@
 package com.example.demo.service;
 
 import com.example.demo.domain.*;
+import com.example.demo.jframe.MainWindow;
 import com.example.demo.repository.BookRepository;
 import com.example.demo.repository.MemberRepository;
 import com.example.demo.repository.RentalInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.demo.command.Command;
+
+import javax.swing.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.Period;
@@ -46,6 +50,36 @@ public class RentalInfoService {
         return rentalInfoRepository.updateRentalInfoDueDate(rentalInfoId, dueDate);
     }
 
+    //대출하기
+    public void checkout(Member loginedMember, Book searchedBook) {
+        if (loginedMember.getRole() == Role.STUDENT) {
+            if ((loginedMember.getLibrary().getId() == searchedBook.getLibrary().getId()) || loginedMember.isExternalLibraryPermission()) {
+                saveRentalInfo(loginedMember.getId(), searchedBook.getId());
+                JOptionPane.showMessageDialog(null, "대출이 완료되었습니다.");
+            } else {
+                JOptionPane.showMessageDialog(null, "외부도서에 대한 접근이 허가되지 않았습니다.");
+            }
+
+
+            new MainWindow(loginedMember);
+//            setVisible(false);
+        } else if (loginedMember.getRole() == Role.PROFESSOR) {
+
+        }
+    }
+
+    public void return_book(Member loginedMember, Book searchedBook) {
+        if (loginedMember.getRole() == Role.STUDENT) {
+            returnBook(loginedMember.getId(), searchedBook.getId());
+            JOptionPane.showMessageDialog(null, "반납이 완료되었습니다.");
+
+            new MainWindow(loginedMember);
+//            setVisible(false);
+        }
+        else if(loginedMember.getRole() == Role.PROFESSOR){
+
+        }
+    }
 
     @Transactional
     public void returnBook(Long memberId, Long bookId) {
@@ -74,6 +108,5 @@ public class RentalInfoService {
 
         }
 
-        //rentalInfoRepository.delete(rentalInfo);
     }
 }
