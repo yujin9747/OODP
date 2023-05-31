@@ -3,6 +3,9 @@ package com.example.demo.jframe;
 import com.example.demo.BeanUtil;
 import com.example.demo.builder.builder.SearchWindowBuilder;
 import com.example.demo.builder.concreteBuilder.SearchWindowAdminBuilder;
+import com.example.demo.builder.concreteBuilder.SearchWindowAdminEditBuilder;
+import com.example.demo.builder.concreteBuilder.SearchWindowUserBuilder;
+import com.example.demo.builder.concreteBuilder.SearchWindowUserNullBuilder;
 import com.example.demo.builder.director.SearchWindowDirector;
 import com.example.demo.domain.Book;
 import com.example.demo.domain.Role;
@@ -106,7 +109,9 @@ public class MainWindow extends JFrame{
                 if(loginedMember != null){
                     if(loginedMember.getRole() == Role.ADMIN) searchWindowBuilder = new SearchWindowAdminBuilder();
                 }
-                searchWindowBuilder = new SearchWindowAdminBuilder();
+//                searchWindowBuilder = new SearchWindowAdminBuilder();
+//                searchWindowBuilder = new SearchWindowAdminEditBuilder();
+                searchWindowBuilder = new SearchWindowUserNullBuilder();
                 SearchWindowDirector searchWindowDirector = new SearchWindowDirector(searchWindowBuilder, loginedMember, searchedBook.get(), 0);
                 searchWindowDirector.constructSearchWindow();
 //                new SearchWindow(searchedBook.get(), loginedMember, 0, false);

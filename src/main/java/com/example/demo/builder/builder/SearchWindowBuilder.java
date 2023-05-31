@@ -1,6 +1,7 @@
 package com.example.demo.builder.builder;
 
 import com.example.demo.BeanUtil;
+import com.example.demo.actionListener.SearchActionListener;
 import com.example.demo.domain.Book;
 import com.example.demo.domain.Member;
 import com.example.demo.jframe.SearchWindow;
@@ -11,9 +12,6 @@ import com.example.demo.service.ReservationInfoService;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Optional;
 
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
@@ -71,10 +69,13 @@ public abstract class SearchWindowBuilder {
         searchWindow.setPublisher(new JLabel("Publisdher : "));
     }
 
-    public void buildBookInfoLabel(){
+    public void buildFinished() {
+        searchWindow.setSize(600, 600); //창 사이즈
+        searchWindow.setVisible(true); //보이기
+    }
+
+    public void buildStatusInfo(){
         Book searchedBook = searchWindow.getSearchedBook();
-        searchWindow.setTitleInfo(new JLabel(searchedBook.getTitle()));
-        searchWindow.setPositionInfo(new JLabel(searchedBook.getPosition()));
         if ((searchedBook.isBorrowed())) {
             searchWindow.setStatusInfo(new JLabel("대출중"));
         } else if((searchedBook.isReserved())) {
@@ -83,13 +84,31 @@ public abstract class SearchWindowBuilder {
         else {
             searchWindow.setStatusInfo(new JLabel("이용가능"));
         }
+    }
+
+    public void buildBookInfoLabelBuilder(){
+        Book searchedBook = searchWindow.getSearchedBook();
+        searchWindow.setTitleInfo(new JLabel(searchedBook.getTitle()));
+        searchWindow.setPositionInfo(new JLabel(searchedBook.getPosition()));
+        buildStatusInfo();
         searchWindow.setIsbnInfo(new JLabel(String.valueOf(searchedBook.getIsbn())));
         searchWindow.setPublisherInfo(new JLabel(searchedBook.getPublisher()));
 
-        addBookInfLabel();
+        addBookInfoLabel();
     }
 
-    private void addBookInfLabel(){
+    public void buildBookInfoInputLabelBuilder() {
+        Book searchedBook = searchWindow.getSearchedBook();
+        searchWindow.setTitleInput(new JTextField(searchedBook.getTitle()));
+        searchWindow.setPositionInput(new JTextField(searchedBook.getPosition()));
+        buildStatusInfo();
+        searchWindow.setIsbnInput(new JTextField(searchedBook.getIsbn().toString()));
+        searchWindow.setPublisherInput(new JTextField(searchedBook.getPublisher()));
+
+        addBookInfoInputField();
+    }
+
+    private void addBookInfoLabel(){
         searchWindow.add(searchWindow.getTitleLabel());
         searchWindow.add(searchWindow.getTitleInfo());
         searchWindow.add(searchWindow.getPosition());
@@ -102,12 +121,27 @@ public abstract class SearchWindowBuilder {
         searchWindow.add(searchWindow.getPublisherInfo());
     }
 
-    public void buildFinished() {
-        searchWindow.setSize(600, 600); //창 사이즈
-        searchWindow.setVisible(true); //보이기
+    private void addBookInfoInputField(){
+        searchWindow.add(searchWindow.getTitleLabel());
+        searchWindow.add(searchWindow.getTitleInput());
+        searchWindow.add(searchWindow.getPosition());
+        searchWindow.add(searchWindow.getPositionInput());
+        searchWindow.add(searchWindow.getStatus());
+        searchWindow.add(searchWindow.getStatusInfo());
+        searchWindow.add(searchWindow.getIsbn());
+        searchWindow.add(searchWindow.getIsbnInput());
+        searchWindow.add(searchWindow.getPublisher());
+        searchWindow.add(searchWindow.getPublisherInput());
     }
 
+    public void buildBackButtonBuilder(){
+        searchWindow.setBackBTN(new Button("<"));
+        searchWindow.getBackBTN().addActionListener(new SearchActionListener());
+        searchWindow.add(searchWindow.getBackBTN());
+        searchWindow.add(new JLabel(" "));
+    }
     public abstract void buildBackButton();
     public abstract void buildFunctionButton();
+    public abstract void buildBookInfoLabel();
 
 }
