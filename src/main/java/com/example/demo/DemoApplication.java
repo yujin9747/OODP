@@ -33,7 +33,7 @@ public class DemoApplication {
         SwingUtilities.invokeLater(() -> {
             new MainWindow(null);
         });
-    }
+    } 
 
     @PostConstruct
     public void init(){
