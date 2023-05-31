@@ -52,4 +52,18 @@ public class MemberService {
     public List<Student> findNotPermittedStudents() {
         return memberRepository.findNotPermittedStudents();
     }
+
+    public List<Student> findByStudentId(String selectedUserId) {
+        return memberRepository.findByStudentId(selectedUserId);
+    }
+
+    public void permitExternalLibrary(Long memberId) {
+        Member member = memberRepository.findOne(memberId).get();
+        memberRepository.permitById(member.getId());
+    }
+
+    public void banExternalLibrary(Long memberId) {
+        Member member = memberRepository.findOne(memberId).get();
+        memberRepository.banById(member.getId());
+    }
 }

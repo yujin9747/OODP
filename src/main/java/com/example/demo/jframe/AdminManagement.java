@@ -234,7 +234,7 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
             JOptionPane.showMessageDialog(null, selectedBook.getTitle() + "책 삭제가 완료되었습니다.");
         }
         else if(e.getSource() == userManageBTN){
-            new UserManageWindow(new DefaultListModel(), "", loginedMember, null);
+            new UserManageWindow(new DefaultListModel(), "", loginedMember, null, null);
             setVisible(false);
         }
         else if(e.getSource() == bookManageBTN){
