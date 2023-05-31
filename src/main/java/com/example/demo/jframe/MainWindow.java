@@ -139,7 +139,9 @@ public class MainWindow extends JFrame{
     private class RegisterActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-//            new LoginWindow(1);
+            LoginWindowBuilder loginWindowBuilder = new LoginWindowRegisterBuilder();
+            LoginWindowDirector loginWindowDirector = new LoginWindowDirector(loginWindowBuilder);
+            loginWindowDirector.constructLoginWindow();
             setVisible(false);
         }
     }

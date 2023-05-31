@@ -3,6 +3,7 @@ package com.example.demo.builder.builder;
 import com.example.demo.BeanUtil;
 import com.example.demo.actionListener.AdminSearchActionListener;
 import com.example.demo.actionListener.LoginActionListener;
+import com.example.demo.domain.Library;
 import com.example.demo.jframe.LoginWindow;
 import com.example.demo.service.*;
 
@@ -24,6 +25,10 @@ public abstract class LoginWindowBuilder {
         loginWindow.setBookService(BeanUtil.get(BookService.class));
         loginWindow.setRentalInfoService(BeanUtil.get(RentalInfoService.class));
         loginWindow.setReservationInfoService(BeanUtil.get(ReservationInfoService.class));
+    }
+
+    public void buildLoginLibrary() {
+        loginWindow.setLoginLibrary(loginWindow.getLibraryService().findOne(1L));
     }
 
 

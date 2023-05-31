@@ -1,5 +1,8 @@
 package com.example.demo.actionListener;
 
+import com.example.demo.builder.builder.LoginWindowBuilder;
+import com.example.demo.builder.concreteBuilder.LoginWindowLoginBuilder;
+import com.example.demo.builder.director.LoginWindowDirector;
 import com.example.demo.domain.Admin;
 import com.example.demo.domain.Library;
 import com.example.demo.domain.Role;
@@ -83,7 +86,9 @@ public class LoginActionListener implements ActionListener {
                     }
                     JOptionPane.showMessageDialog(null, "회원가입 성공");
                     System.out.println("성공 - 새로운 Id로 회원가입 완료");
-    //                    new LoginWindow(0);
+                    LoginWindowBuilder loginWindowBuilder = new LoginWindowLoginBuilder();
+                    LoginWindowDirector loginWindowDirector = new LoginWindowDirector(loginWindowBuilder);
+                    loginWindowDirector.constructLoginWindow();
     //                setVisible(false);
                 }
             }
