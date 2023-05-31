@@ -1,12 +1,10 @@
-package com.example.demo.builder.concreteBuilder;
+package com.example.demo.builder.concreteSearchBuilder;
 
 import com.example.demo.actionListener.SearchActionListener;
 import com.example.demo.builder.builder.SearchWindowBuilder;
 import com.example.demo.domain.Book;
 import com.example.demo.domain.Member;
 import com.example.demo.domain.RentalInfo;
-import com.example.demo.domain.ReservationInfo;
-import com.example.demo.jframe.SearchWindow;
 import com.example.demo.service.RentalInfoService;
 import com.example.demo.service.ReservationInfoService;
 

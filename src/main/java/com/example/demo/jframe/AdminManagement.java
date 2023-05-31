@@ -2,16 +2,17 @@ package com.example.demo.jframe;
 
 import com.example.demo.BeanUtil;
 import com.example.demo.builder.builder.SearchWindowBuilder;
-import com.example.demo.builder.concreteBuilder.SearchWindowAdminBuilder;
-import com.example.demo.builder.concreteBuilder.SearchWindowUserNullBuilder;
+import com.example.demo.builder.concreteSearchBuilder.SearchWindowAdminBuilder;
 import com.example.demo.builder.director.SearchWindowDirector;
 import com.example.demo.domain.Book;
 import com.example.demo.domain.Library;
 import com.example.demo.domain.Member;
-import com.example.demo.domain.Role;
 import com.example.demo.service.BookService;
 import com.example.demo.service.MemberService;
 import com.example.demo.service.LibraryService;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Optional;
 
 import java.awt.*;
@@ -21,16 +22,20 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 
+@Getter
+@Setter
 public class AdminManagement extends JFrame implements MouseListener,KeyListener,ListSelectionListener{
 
-    private final BookService bookService;
-    private final MemberService memberService;
-    private final LibraryService libraryService;
+    private BookService bookService;
+    private MemberService memberService;
+    private LibraryService libraryService;
     private JList list;				//리스트
     private JTextField titleInputField;
     private JTextField isbnInputField;
     private JTextField positionInputField;
     private JTextField publisherInputField;
+    private JPanel topPanel;
+    private JPanel inputPanel;
     private JButton addBtn;		//추가 버튼
     private JButton delBtn;		//삭제 버튼
     private Button userManageBTN;
@@ -42,6 +47,8 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
     private Member loginedMember;
     private Book selectedBook;
     private Integer selectedIdx;
+
+    public AdminManagement(){}
     public AdminManagement(Member loginedMember, Book selectedBook, Integer selectedIdx) {
         this.bookService = BeanUtil.get(BookService.class);
         this.memberService = BeanUtil.get(MemberService.class);
