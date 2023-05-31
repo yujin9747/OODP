@@ -45,7 +45,7 @@ public class ReservationInfoService {
                 JOptionPane.showMessageDialog(null, "외부도서에 대한 접근이 허가되지 않았습니다.");
             }
             new MainWindow(loginedMember);
-//            setVisible(false);
+//            setVisible(false); 창 닫기 안됨
         } else if (loginedMember.getRole() == Role.PROFESSOR) {
         }
     }
@@ -56,7 +56,7 @@ public class ReservationInfoService {
             JOptionPane.showMessageDialog(null, "예약이 취소되었습니다.");
 
             new MainWindow(loginedMember);
-//            setVisible(false);
+//            setVisible(false); 창 닫기 안됨
         } else if (loginedMember.getRole() == Role.PROFESSOR) {
 
         }

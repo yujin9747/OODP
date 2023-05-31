@@ -79,7 +79,7 @@ public class RentalInfoService {
 
 
             new MainWindow(loginedMember);
-//            setVisible(false);
+//            setVisible(false); 창 닫기 안됨
         } else if (loginedMember.getRole() == Role.PROFESSOR) {
 
         }
@@ -91,7 +91,7 @@ public class RentalInfoService {
             JOptionPane.showMessageDialog(null, "반납이 완료되었습니다.");
 
             new MainWindow(loginedMember);
-//            setVisible(false);
+//            setVisible(false); 창 닫기 안됨
         }
         else if(loginedMember.getRole() == Role.PROFESSOR){
 
@@ -100,6 +100,8 @@ public class RentalInfoService {
 
     @Transactional
     public void returnBook(Long memberId, Long bookId) {
+        //command DP 적용시켰을 떄 db에서 반납처리가 안됨, 기존에는 해당 function을 searchPage에서 호출했고,
+        // command DP 적용 후에는 return_book function을 통해 ReturnCommand에서 호출하는 것 이외에 해당 function 관련 변경된 사항 없음
         Optional<Member> member = memberRepository.findOne(memberId);
         Optional<Book> book = bookRepository.findOne(bookId);
         book.get().setBorrowed(false);
