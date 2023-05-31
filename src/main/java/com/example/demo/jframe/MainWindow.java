@@ -3,6 +3,7 @@ package com.example.demo.jframe;
 import com.example.demo.BeanUtil;
 import com.example.demo.builder.builder.SearchWindowBuilder;
 import com.example.demo.builder.concreteBuilder.SearchWindowAdminBuilder;
+import com.example.demo.builder.concreteBuilder.SearchWindowAdminEditBuilder;
 import com.example.demo.builder.director.SearchWindowDirector;
 import com.example.demo.domain.Book;
 import com.example.demo.domain.Role;
