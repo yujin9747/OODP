@@ -23,8 +23,8 @@ import java.util.Optional;
 @Getter
 public class MainWindow extends JFrame{
 
-    private final MemberService memberService;
-    private final BookService bookService;
+    private MemberService memberService;
+    private BookService bookService;
 
     final int GUEST = -1;
     Button searchBTN;

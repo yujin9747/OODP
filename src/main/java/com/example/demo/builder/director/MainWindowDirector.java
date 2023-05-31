@@ -15,16 +15,14 @@ public class MainWindowDirector {
 
     }
 
-    public void setMainWindowDirector(MainWindowBuilder builder){
-        mainWindowBuilder = builder;
-    }
 
     public MainWindow getMainWindow(){
         return mainWindowBuilder.getMainWindow();
     }
 
     public void constructMainWindow(){
-        mainWindowBuilder.createNewMainWindowProduct();
+        mainWindowBuilder.createNewMainWindowProduct(loginedMember);
+        mainWindowBuilder.buildDependencyInjection();
     }
 
 }
