@@ -1,5 +1,6 @@
 package com.example.demo.jframe;
 
+import com.example.demo.command.*;
 import com.example.demo.builder.builder.SearchWindowBuilder;
 import com.example.demo.builder.concreteBuilder.SearchWindowAdminBuilder;
 import com.example.demo.builder.concreteBuilder.SearchWindowAdminEditBuilder;
@@ -45,6 +46,7 @@ public class SearchWindow extends JFrame {
     JTextField isbnInput;
     JTextField positionInput;
     JTextField publisherInput;
+    ButtonWithCommand buttonWithCommand;
 
     JLabel titleLabel;
     JLabel position;
@@ -68,6 +70,7 @@ public class SearchWindow extends JFrame {
 //        this.loginedMember = loginedMember;
 //        ;this.searchedBook = searchedBook;
 //        this.beforePage = beforePage;
+//        this.buttonWithCommand = new ButtonWithCommand(new InitCommand());
 //
 //        setTitle("Search 결과창"); //창 제목
 //
@@ -78,7 +81,7 @@ public class SearchWindow extends JFrame {
 //
 //        c.setLayout(new GridLayout(9, 2));
 //        backBTN = new Button("<");
-//        backBTN.addActionListener(new SearchActionListener());
+//        backBTN.addActionListener(new AdminSearchActionListener());
 //        if(editMode == false) {
 //            add(backBTN);
 //            add(new JLabel(" "));
@@ -127,7 +130,9 @@ public class SearchWindow extends JFrame {
 //        }
 //
 //        if (loginedMember != null && loginedMember.getRole() != Role.ADMIN) {
-//            if (!searchedBook.isBorrowed()) {
+//            if (!rentalInfoService.isTheBookBorrowed(searchedBook)) {
+//                Command checkoutCommand = new CheckoutCommand(rentalInfoService, loginedMember, searchedBook);
+//                buttonWithCommand.setCommand(checkoutCommand);
 //                checkoutBTN = new Button("대출하기");
 //                checkoutBTN.setBounds(20, 5, 70, 30);
 //                checkoutBTN.addActionListener(new SearchActionListener());
@@ -135,6 +140,8 @@ public class SearchWindow extends JFrame {
 //            } else {
 //                RentalInfo _rentalInfo = rentalInfoService.findOneByMemberIdAndBookId(loginedMember.getId(), searchedBook.getId());
 //                if (_rentalInfo != null && !_rentalInfo.isReturned()) {
+//                    Command returnCommand = new ReturnCommand(rentalInfoService, loginedMember, searchedBook);
+//                    buttonWithCommand.setCommand(returnCommand);
 //                    returnBTN = new Button("반납하기");
 //                    returnBTN.setBounds(20, 5, 70, 30);
 //
@@ -144,6 +151,8 @@ public class SearchWindow extends JFrame {
 //                } else {
 //                    this.reservationInfo = reservationInfoService.findOneByBookId(searchedBook.getId());
 //                    if (this.reservationInfo == null) {
+//                        Command reserveCommand = new ReserveCommand(reservationInfoService, loginedMember, searchedBook);
+//                        buttonWithCommand.setCommand(reserveCommand);
 //                        reservationBTN = new Button("예약하기");
 //                        reservationBTN.setBounds(20, 5, 70, 30);
 //                        reservationBTN.addActionListener(new SearchActionListener());
@@ -151,6 +160,8 @@ public class SearchWindow extends JFrame {
 //                        add(reservationBTN);
 //                    } else {
 //                        if (this.reservationInfo.getMember().getId() == loginedMember.getId()) {
+//                            Command reserveCancelCommand = new ReserveCancelCommand(reservationInfoService, reservationInfo, loginedMember, searchedBook);
+//                            buttonWithCommand.setCommand(reserveCancelCommand);
 //                            reservationBTN = new Button("예약취소");
 //                            reservationBTN.setBounds(20, 5, 70, 30);
 //                            reservationBTN.addActionListener(new SearchActionListener());
@@ -176,8 +187,8 @@ public class SearchWindow extends JFrame {
 //            deleteBTN = new Button("삭제하기");
 //            deleteBTN.setBounds(20, 5, 70, 30);
 //
-//            editBTN.addActionListener(new SearchActionListener());
-//            deleteBTN.addActionListener(new SearchActionListener());
+//            editBTN.addActionListener(new AdminSearchActionListener());
+//            deleteBTN.addActionListener(new AdminSearchActionListener());
 //
 //            add(editBTN);
 //            if(editMode == false) add(deleteBTN);
@@ -193,6 +204,13 @@ public class SearchWindow extends JFrame {
 //    private class SearchActionListener implements ActionListener {
 //        @Override
 //        public void actionPerformed(ActionEvent e) {
+//            buttonWithCommand.pressed();
+//        }
+//    }
+//
+//    private class AdminSearchActionListener implements ActionListener {
+//        @Override
+//        public void actionPerformed(ActionEvent e) {
 //            String command = e.getActionCommand();
 //
 //            if(command.equals("<")){
@@ -201,62 +219,8 @@ public class SearchWindow extends JFrame {
 //                else
 //                    new AdminManagement(loginedMember, null, null);
 //                setVisible(false);
-//            }
-//            else if (command.equals("대출하기")) {
-//                if (loginedMember.getRole() == Role.STUDENT) {
-//                    if ((loginedMember.getLibrary().getId() == searchedBook.getLibrary().getId()) || loginedMember.isExternalLibraryPermission()) {
-//                        rentalInfoService.saveRentalInfo(loginedMember.getId(), searchedBook.getId());
-//                        JOptionPane.showMessageDialog(null, "대출이 완료되었습니다.");
-//                    } else {
-//                        JOptionPane.showMessageDialog(null, "외부도서에 대한 접근이 허가되지 않았습니다.");
-//                    }
-//
-//
-//                    new MainWindow(loginedMember);
-//                    setVisible(false);
-//                } else if (loginedMember.getRole() == Role.PROFESSOR) {
-//
-//                }
-//
-//            } else if (command.equals("반납하기")) {
-//                if (loginedMember.getRole() == Role.STUDENT) {
-//                    rentalInfoService.returnBook(loginedMember.getId(), searchedBook.getId());
-//                    JOptionPane.showMessageDialog(null, "반납이 완료되었습니다.");
-//
-//                    new MainWindow(loginedMember);
-//                    setVisible(false);
-//                }
-//                else if(loginedMember.getRole() == Role.PROFESSOR){
-//
-//                }
-//            } else if (command.equals("예약하기")) {
-//                if (loginedMember.getRole() == Role.STUDENT) {
-//                    if ((loginedMember.getLibrary().getId() == searchedBook.getLibrary().getId()) || loginedMember.isExternalLibraryPermission()) {
-//                        reservationInfoService.saveReservationInfo(loginedMember.getId(), searchedBook.getId());
-//                        JOptionPane.showMessageDialog(null, "예약되었습니다.");
-//                    } else {
-//                        JOptionPane.showMessageDialog(null, "외부도서에 대한 접근이 허가되지 않았습니다.");
-//                    }
-//                    new MainWindow(loginedMember);
-//                    setVisible(false);
-//                } else if (loginedMember.getRole() == Role.PROFESSOR) {
-//                }
-//
-//            } else if (command.equals("예약취소")) {
-//                if (loginedMember.getRole() == Role.STUDENT) {
-//                    reservationInfoService.cancelReservation(reservationInfo.getId());
-//                    JOptionPane.showMessageDialog(null, "예약이 취소되었습니다.");
-//
-//                    new MainWindow(loginedMember);
-//                    setVisible(false);
-//                } else if (loginedMember.getRole() == Role.PROFESSOR) {
-//
-//                }
 //            } else if (command.equals("수정하기")) {
-//                SearchWindowBuilder searchWindowBuilder;
-//                searchWindowBuilder = new SearchWindowAdminEditBuilder();
-//                SearchWindowDirector searchWindowDirector = new SearchWindowDirector(searchWindowBuilder, loginedMember, searchedBook, 0);
-//                searchWindowDirector.constructSearchWindow();
+//                new SearchWindow(searchedBook, loginedMember, beforePage, true);
 //                setVisible(false);
 //            } else if (command.equals("삭제하기")) {
 //                bookService.deleteBook(searchedBook.getTitle());
@@ -277,5 +241,6 @@ public class SearchWindow extends JFrame {
 //        }
 //
 //    }
+
 
 }

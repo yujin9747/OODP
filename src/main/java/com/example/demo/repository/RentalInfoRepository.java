@@ -45,6 +45,12 @@ public class RentalInfoRepository {
                 .getResultList();
     }
 
+    public List<RentalInfo> findRentalInfosByBookId(Long bookId){
+        return em.createQuery("select r from RentalInfo r where book.id = :bookId", RentalInfo.class)
+                .setParameter("bookId", bookId)
+                .getResultList();
+    }
+
     public int updateRentalInfoDueDate(Long rentalInfoId, LocalDateTime dueDate) {
         return em.createQuery("update RentalInfo r set r.returnDueDate = :dueDate where r.id = :id")
                 .setParameter("dueDate", dueDate)
