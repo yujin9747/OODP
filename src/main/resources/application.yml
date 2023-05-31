@@ -1,13 +1,13 @@
 spring:
   datasource:
-    url: jdbc:h2:tcp://localhost/~/OODP
+    url: jdbc:h2:tcp://localhost/~/2023-1/OODP/OODP
     hikari:
       username: sa
       password:
       driver-class-name: org.h2.Driver
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
