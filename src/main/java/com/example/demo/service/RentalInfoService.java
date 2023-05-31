@@ -15,6 +15,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.temporal.TemporalAmount;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.List;
@@ -44,6 +45,22 @@ public class RentalInfoService {
     public List<RentalInfo> findRentalInfosByMemberId(Long memberId){
         return rentalInfoRepository.findRentalInfosByMemberId(memberId);
     }
+    public List<RentalInfo> findRentalInfosByBookId(Long bookId) {
+        return rentalInfoRepository.findRentalInfosByBookId(bookId);
+    }
+    public boolean isTheBookBorrowed(Book book) {
+        List<RentalInfo> rentalInfoList = findRentalInfosByBookId(book.getId());
+        RentalInfoContainer rentalInfoContainer = new RentalInfoContainer(rentalInfoList);
+
+        for (Iterator it = rentalInfoContainer.getIterator(); it.hasNext();) {
+            RentalInfo rentalInfo = (RentalInfo) it.next();
+            if(!rentalInfo.isReturned()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     public int updateRentalInfoDueDate(Long rentalInfoId) {
         LocalDateTime dueDate = findOne(rentalInfoId).getReturnDueDate().plusDays(5);
@@ -51,7 +68,7 @@ public class RentalInfoService {
     }
 
     //대출하기
-    public void checkout(Member loginedMember, Book searchedBook) {
+    public void checkout( Member loginedMember, Book searchedBook) {
         if (loginedMember.getRole() == Role.STUDENT) {
             if ((loginedMember.getLibrary().getId() == searchedBook.getLibrary().getId()) || loginedMember.isExternalLibraryPermission()) {
                 saveRentalInfo(loginedMember.getId(), searchedBook.getId());
@@ -68,7 +85,7 @@ public class RentalInfoService {
         }
     }
 
-    public void return_book(Member loginedMember, Book searchedBook) {
+    public void return_book( Member loginedMember, Book searchedBook) {
         if (loginedMember.getRole() == Role.STUDENT) {
             returnBook(loginedMember.getId(), searchedBook.getId());
             JOptionPane.showMessageDialog(null, "반납이 완료되었습니다.");
@@ -87,11 +104,9 @@ public class RentalInfoService {
         Optional<Book> book = bookRepository.findOne(bookId);
         book.get().setBorrowed(false);
         book.get().setLastModifiedDate(LocalDateTime.now());
-
         RentalInfo rentalInfo = rentalInfoRepository.findOneByMemberIdAndBookId(memberId, bookId);
         rentalInfo.setReturned(true);
         rentalInfo.setReturnedDate(LocalDateTime.now());
-
         if(rentalInfo.getReturnedDate().isAfter(rentalInfo.getReturnDueDate())){
             rentalInfo.setOverdue(true);
             rentalInfo.setOverDueDays(Period.between(rentalInfo.getReturnDueDate().toLocalDate(), rentalInfo.getReturnedDate().toLocalDate()).getDays());

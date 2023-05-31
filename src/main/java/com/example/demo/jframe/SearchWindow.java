@@ -60,7 +60,7 @@ public class SearchWindow extends JFrame {
 
         c.setLayout(new GridLayout(9, 2));
         backBTN = new Button("<");
-        backBTN.addActionListener(new SearchActionListener());
+        backBTN.addActionListener(new AdminSearchActionListener());
         if(editMode == false) {
             add(backBTN);
             add(new JLabel(" "));
@@ -109,7 +109,7 @@ public class SearchWindow extends JFrame {
         }
 
         if (loginedMember != null && loginedMember.getRole() != Role.ADMIN) {
-            if (!searchedBook.isBorrowed()) {
+            if (!rentalInfoService.isTheBookBorrowed(searchedBook)) {
                 Command checkoutCommand = new CheckoutCommand(rentalInfoService, loginedMember, searchedBook);
                 buttonWithCommand.setCommand(checkoutCommand);
                 checkoutBTN = new Button("대출하기");
@@ -130,6 +130,8 @@ public class SearchWindow extends JFrame {
                 } else {
                     this.reservationInfo = reservationInfoService.findOneByBookId(searchedBook.getId());
                     if (this.reservationInfo == null) {
+                        Command reserveCommand = new ReserveCommand(reservationInfoService, loginedMember, searchedBook);
+                        buttonWithCommand.setCommand(reserveCommand);
                         reservationBTN = new Button("예약하기");
                         reservationBTN.setBounds(20, 5, 70, 30);
                         reservationBTN.addActionListener(new SearchActionListener());
@@ -137,6 +139,8 @@ public class SearchWindow extends JFrame {
                         add(reservationBTN);
                     } else {
                         if (this.reservationInfo.getMember().getId() == loginedMember.getId()) {
+                            Command reserveCancelCommand = new ReserveCancelCommand(reservationInfoService, reservationInfo, loginedMember, searchedBook);
+                            buttonWithCommand.setCommand(reserveCancelCommand);
                             reservationBTN = new Button("예약취소");
                             reservationBTN.setBounds(20, 5, 70, 30);
                             reservationBTN.addActionListener(new SearchActionListener());
@@ -162,8 +166,8 @@ public class SearchWindow extends JFrame {
             deleteBTN = new Button("삭제하기");
             deleteBTN.setBounds(20, 5, 70, 30);
 
-            editBTN.addActionListener(new SearchActionListener());
-            deleteBTN.addActionListener(new SearchActionListener());
+            editBTN.addActionListener(new AdminSearchActionListener());
+            deleteBTN.addActionListener(new AdminSearchActionListener());
 
             add(editBTN);
             if(editMode == false) add(deleteBTN);
@@ -179,6 +183,13 @@ public class SearchWindow extends JFrame {
     private class SearchActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            buttonWithCommand.pressed();
+        }
+    }
+
+    private class AdminSearchActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             String command = e.getActionCommand();
 
             if(command.equals("<")){
@@ -187,59 +198,6 @@ public class SearchWindow extends JFrame {
                 else
                     new AdminManagement(loginedMember, null, null);
                 setVisible(false);
-            }
-            else if (command.equals("대출하기")) {
-                buttonWithCommand.pressed();
-//                if (loginedMember.getRole() == Role.STUDENT) {
-//                    if ((loginedMember.getLibrary().getId() == searchedBook.getLibrary().getId()) || loginedMember.isExternalLibraryPermission()) {
-//                        rentalInfoService.saveRentalInfo(loginedMember.getId(), searchedBook.getId());
-//                        JOptionPane.showMessageDialog(null, "대출이 완료되었습니다.");
-//                    } else {
-//                        JOptionPane.showMessageDialog(null, "외부도서에 대한 접근이 허가되지 않았습니다.");
-//                    }
-//
-//
-//                    new MainWindow(loginedMember);
-//                    setVisible(false);
-//                } else if (loginedMember.getRole() == Role.PROFESSOR) {
-//
-//                }
-
-            } else if (command.equals("반납하기")) {
-                buttonWithCommand.pressed();
-//                if (loginedMember.getRole() == Role.STUDENT) {
-//                    rentalInfoService.returnBook(loginedMember.getId(), searchedBook.getId());
-//                    JOptionPane.showMessageDialog(null, "반납이 완료되었습니다.");
-//
-//                    new MainWindow(loginedMember);
-//                    setVisible(false);
-//                }
-//                else if(loginedMember.getRole() == Role.PROFESSOR){
-//
-//                }
-            } else if (command.equals("예약하기")) {
-                if (loginedMember.getRole() == Role.STUDENT) {
-                    if ((loginedMember.getLibrary().getId() == searchedBook.getLibrary().getId()) || loginedMember.isExternalLibraryPermission()) {
-                        reservationInfoService.saveReservationInfo(loginedMember.getId(), searchedBook.getId());
-                        JOptionPane.showMessageDialog(null, "예약되었습니다.");
-                    } else {
-                        JOptionPane.showMessageDialog(null, "외부도서에 대한 접근이 허가되지 않았습니다.");
-                    }
-                    new MainWindow(loginedMember);
-                    setVisible(false);
-                } else if (loginedMember.getRole() == Role.PROFESSOR) {
-                }
-
-            } else if (command.equals("예약취소")) {
-                if (loginedMember.getRole() == Role.STUDENT) {
-                    reservationInfoService.cancelReservation(reservationInfo.getId());
-                    JOptionPane.showMessageDialog(null, "예약이 취소되었습니다.");
-
-                    new MainWindow(loginedMember);
-                    setVisible(false);
-                } else if (loginedMember.getRole() == Role.PROFESSOR) {
-
-                }
             } else if (command.equals("수정하기")) {
                 new SearchWindow(searchedBook, loginedMember, beforePage, true);
                 setVisible(false);
