@@ -1,9 +1,14 @@
 package com.example.demo.jframe;
 
 import com.example.demo.BeanUtil;
+import com.example.demo.builder.builder.SearchWindowBuilder;
+import com.example.demo.builder.concreteBuilder.SearchWindowAdminBuilder;
+import com.example.demo.builder.concreteBuilder.SearchWindowUserNullBuilder;
+import com.example.demo.builder.director.SearchWindowDirector;
 import com.example.demo.domain.Book;
 import com.example.demo.domain.Library;
 import com.example.demo.domain.Member;
+import com.example.demo.domain.Role;
 import com.example.demo.service.BookService;
 import com.example.demo.service.MemberService;
 import com.example.demo.service.LibraryService;
@@ -238,8 +243,10 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
             setVisible(false);
         }
         else if(e.getSource() == bookManageBTN){
-//            Optional<Book> book = bookService.findBookByTitle(list.getSelectedValue().toString());
-            new SearchWindow(selectedBook, loginedMember, 1, false);
+            SearchWindowBuilder searchWindowBuilder;
+            searchWindowBuilder = new SearchWindowAdminBuilder();
+            SearchWindowDirector searchWindowDirector = new SearchWindowDirector(searchWindowBuilder, loginedMember, selectedBook, 0);
+            searchWindowDirector.constructSearchWindow();
             setVisible(false);
         }
     }
