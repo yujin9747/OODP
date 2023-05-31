@@ -27,7 +27,6 @@ public class SearchWindowUserBuilder extends SearchWindowBuilder {
         Member loginedMember = searchWindow.getLoginedMember();
         RentalInfoService rentalInfoService = searchWindow.getRentalInfoService();
         ReservationInfoService reservationInfoService = searchWindow.getReservationInfoService();
-        ReservationInfo reservationInfo = searchWindow.getReservationInfo();
         ButtonWithCommand buttonWithCommand = new ButtonWithCommand(new InitCommand());
 
         if (!rentalInfoService.isTheBookBorrowed(searchedBook)) {
@@ -57,7 +56,7 @@ public class SearchWindowUserBuilder extends SearchWindowBuilder {
                     searchWindow.add(searchWindow.getReservationBTN());
                 } else {
                     if (searchWindow.getReservationInfo().getMember().getId() == loginedMember.getId()) {
-                        Command reserveCancelCommand = new ReserveCancelCommand(reservationInfoService, reservationInfo, loginedMember, searchedBook);
+                        Command reserveCancelCommand = new ReserveCancelCommand(reservationInfoService, searchWindow.getReservationInfo(), loginedMember, searchedBook);
                         buttonWithCommand.setCommand(reserveCancelCommand);
                         searchWindow.setReservationBTN(new Button("예약취소"));
                         searchWindow.getReservationBTN().setBounds(20, 5, 70, 30);

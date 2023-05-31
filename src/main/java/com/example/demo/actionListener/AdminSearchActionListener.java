@@ -1,8 +1,14 @@
 package com.example.demo.actionListener;
 
+import com.example.demo.builder.builder.SearchWindowBuilder;
+import com.example.demo.builder.concreteBuilder.SearchWindowAdminBuilder;
+import com.example.demo.builder.concreteBuilder.SearchWindowUserBuilder;
+import com.example.demo.builder.concreteBuilder.SearchWindowUserNullBuilder;
+import com.example.demo.builder.director.SearchWindowDirector;
 import com.example.demo.command.ButtonWithCommand;
 import com.example.demo.domain.Book;
 import com.example.demo.domain.Member;
+import com.example.demo.domain.Role;
 import com.example.demo.domain.request.BookUpdateForm;
 import com.example.demo.jframe.AdminManagement;
 import com.example.demo.jframe.MainWindow;
@@ -24,6 +30,7 @@ public class AdminSearchActionListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
+        SearchWindowBuilder searchWindowBuilder = new SearchWindowAdminBuilder();
 
         if(command.equals("<")){
             if (searchWindow.getBeforePage() != 1)
@@ -32,7 +39,8 @@ public class AdminSearchActionListener implements ActionListener {
                 new AdminManagement(searchWindow.getLoginedMember(),  null, null);
 //            setVisible(false);
         } else if (command.equals("수정하기")) {
-            new SearchWindow(searchWindow.getSearchedBook(), searchWindow.getLoginedMember(),  searchWindow.getBeforePage(), true);
+            SearchWindowDirector searchWindowDirector = new SearchWindowDirector(searchWindowBuilder, searchWindow.getLoginedMember(), searchWindow.getSearchedBook(),  searchWindow.getBeforePage());
+            searchWindowDirector.constructSearchWindow();
 //            setVisible(false);
         } else if (command.equals("삭제하기")) {
             searchWindow.getBookService().deleteBook(searchWindow.getSearchedBook().getTitle());
@@ -47,7 +55,8 @@ public class AdminSearchActionListener implements ActionListener {
                     .publisher(searchWindow.getPublisherInput().getText())
                     .build();
             Optional<Book> book = searchWindow.getBookService().updateBook(searchWindow.getSearchedBook().getTitle(), bookUpdateForm);
-            new SearchWindow(book.get(), searchWindow.getLoginedMember(),  searchWindow.getBeforePage(), false);
+            SearchWindowDirector searchWindowDirector = new SearchWindowDirector(searchWindowBuilder, searchWindow.getLoginedMember(), book.get(), searchWindow.getBeforePage());
+            searchWindowDirector.constructSearchWindow();
 //            setVisible(false);
         }
     }
