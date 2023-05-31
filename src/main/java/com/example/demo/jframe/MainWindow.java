@@ -5,12 +5,16 @@ import com.example.demo.domain.Book;
 import com.example.demo.domain.Role;
 import com.example.demo.domain.Member;
 import com.example.demo.service.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Optional;
-
+@Setter
+@Getter
 public class MainWindow extends JFrame{
 
     private final MemberService memberService;
