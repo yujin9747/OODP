@@ -5,8 +5,6 @@ import com.example.demo.builder.concreteMainBuilder.MainWindowUserBuilder;
 import com.example.demo.builder.director.MainWindowDirector;
 import com.example.demo.domain.*;
 import com.example.demo.service.BookService;
-import com.example.demo.service.LibraryService;
-import com.example.demo.service.MemberService;
 import com.example.demo.service.RentalInfoService;
 
 import javax.swing.*;
@@ -17,15 +15,11 @@ import java.util.Iterator;
 import java.util.List;
 
 public class UserPageWindow extends JFrame {
-    private final MemberService memberService;
-    private final LibraryService libraryService;
     private final BookService bookService;
     private Button returnBTN;
     private Button renewBTN;
     private Button backBTN;
-//    private JList bookList;
     private JTable bookTable;
-    private DefaultListModel<String> model;
     private List<RentalInfo> rentalInfoList;
 
     private final RentalInfoService rentalInfoService;
@@ -35,8 +29,6 @@ public class UserPageWindow extends JFrame {
     private Object[][] data;
 
     public UserPageWindow (Member loginedMember) {
-        this.memberService = BeanUtil.get(MemberService.class);
-        this.libraryService = BeanUtil.get(LibraryService.class);
         this.bookService = BeanUtil.get(BookService.class);
         this.rentalInfoService = BeanUtil.get(RentalInfoService.class);
 
@@ -47,9 +39,6 @@ public class UserPageWindow extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Container c = getContentPane();
         c.setLayout(new FlowLayout());
-
-//        bookList = new JList<>();
-//        model = new DefaultListModel<>();
 
         backBTN = new Button("<");
         returnBTN = new Button("return");
@@ -77,17 +66,10 @@ public class UserPageWindow extends JFrame {
         int i = 0;
         for (Iterator it = rentalInfoContainer.getIterator(); it.hasNext();) {
             RentalInfo rentalInfo = (RentalInfo) it.next();
-            Book book = rentalInfo.getBook();
-//            if(!rentalInfo.isReturned()) {
-            if(!rentalInfoService.isTheBookBorrowed(book)){
-//                Book book = rentalInfo.getBook();
-                String returnDueDate = rentalInfo.getReturnDueDate().toString();
+            String returnDueDate = rentalInfo.getReturnDueDate().toString();
 
-                data[i] = new Object[]{book.getTitle(), returnDueDate};
-                i += 1;
-            } else {
-                it.remove();
-            }
+            data[i] = new Object[]{rentalInfo.getBook().getTitle(), returnDueDate};
+            i += 1;
         }
         for (; i < rentalInfoList.size(); i++) {
             data[i] = new Object[]{"", ""};
@@ -108,7 +90,6 @@ public class UserPageWindow extends JFrame {
             MainWindowUserBuilder builder = new MainWindowUserBuilder();
             MainWindowDirector director = new MainWindowDirector(builder, loginedMember);
             director.constructMainWindow();
-//            new MainWindow(loginedMember);
             setVisible(false);
         }
     }
@@ -123,13 +104,12 @@ public class UserPageWindow extends JFrame {
 
             if (isExtensionAllowed) {
                 //modify due date
-                int updatedCount = rentalInfoService.updateRentalInfoDueDate(rentalInfo.getId());
+                rentalInfoService.updateRentalInfoDueDate(rentalInfo.getId());
                 System.out.println("성공 - 연장");
                 setVisible(false);
                 new UserPageWindow(loginedMember);
             } else {
                 JOptionPane.showMessageDialog(null, "연장이 불가능합니다.");
-                System.out.println("실패 - 연장불가");
             }
 
         }
@@ -151,16 +131,9 @@ public class UserPageWindow extends JFrame {
                     MainWindowUserBuilder builder = new MainWindowUserBuilder();
                     MainWindowDirector director = new MainWindowDirector(builder, loginedMember);
                     director.constructMainWindow();
-//                    new MainWindow(loginedMember);
                     setVisible(false);
                 }
-                else if(loginedMember.getRole() == Role.PROFESSOR){
-
-                }
-
             }
         }
-
     }
-
 }

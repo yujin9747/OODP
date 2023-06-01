@@ -6,7 +6,7 @@ public class SearchWindowUserNullBuilder extends SearchWindowBuilder {
 
     @Override
     public void buildBackButton() {
-        super.buildBackButtonBuilder();
+        super.buildBackButtonBuilder(0);
     }
 
     @Override

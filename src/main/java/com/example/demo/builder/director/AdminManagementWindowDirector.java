@@ -28,7 +28,6 @@ public class AdminManagementWindowDirector {
 
     public void constructAdminManagementWindow(){
         adminManagementWindowBuilder.createNewSearchWindowProduct();
-        adminManagementWindowBuilder.buildDependencyInjection();
         adminManagementWindowBuilder.buildLoginedMember(loginedMember);
         adminManagementWindowBuilder.buildSelectedBook(selectedBook);
         adminManagementWindowBuilder.buildSelectedIdx(selectedIdx);

@@ -1,5 +1,6 @@
 package com.example.demo.builder.concreteSearchBuilder;
 
+import com.example.demo.BeanUtil;
 import com.example.demo.actionListener.SearchActionListener;
 import com.example.demo.builder.builder.SearchWindowBuilder;
 import com.example.demo.command.*;
@@ -16,15 +17,15 @@ public class SearchWindowUserBuilder extends SearchWindowBuilder {
 
     @Override
     public void buildBackButton() {
-        super.buildBackButtonBuilder();
+        super.buildBackButtonBuilder(0);
     }
 
     @Override
     public void buildFunctionButton() {
         Book searchedBook = searchWindow.getSearchedBook();
         Member loginedMember = searchWindow.getLoginedMember();
-        RentalInfoService rentalInfoService = searchWindow.getRentalInfoService();
-        ReservationInfoService reservationInfoService = searchWindow.getReservationInfoService();
+        RentalInfoService rentalInfoService = BeanUtil.get(RentalInfoService.class);
+        ReservationInfoService reservationInfoService = BeanUtil.get(ReservationInfoService.class);
         ButtonWithCommand buttonWithCommand = new ButtonWithCommand(new InitCommand());
 
         if (!rentalInfoService.isTheBookBorrowed(searchedBook)) {

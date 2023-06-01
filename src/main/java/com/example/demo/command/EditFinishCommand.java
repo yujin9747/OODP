@@ -1,5 +1,6 @@
 package com.example.demo.command;
 
+import com.example.demo.BeanUtil;
 import com.example.demo.builder.concreteAdminBuilder.AdminManagementDefaultBuilder;
 import com.example.demo.builder.concreteSearchBuilder.SearchWindowAdminBuilder;
 import com.example.demo.builder.director.AdminManagementWindowDirector;
@@ -18,14 +19,12 @@ public class EditFinishCommand implements Command{
     private Member loginedMember;
     private SearchWindow searchWindow;
     private Book searchedBook;
-    private BookService bookService;
 
-    public EditFinishCommand(Integer beforePage, Member loginedMember, SearchWindow searchWindow, Book searchedBook, BookService bookService) {
+    public EditFinishCommand(Integer beforePage, Member loginedMember, SearchWindow searchWindow, Book searchedBook) {
         this.beforePage = beforePage;
         this.loginedMember = loginedMember;
         this.searchWindow = searchWindow;
         this.searchedBook = searchedBook;
-        this.bookService = bookService;
     }
 
     public void execute() {
@@ -36,10 +35,10 @@ public class EditFinishCommand implements Command{
                         .publisher(searchWindow.getPublisherInput().getText())
                         .build();
 
-        Optional<Book> book = bookService.updateBook(searchedBook.getTitle(), bookUpdateForm);
+        Optional<Book> book = BeanUtil.get(BookService.class).updateBook(searchedBook.getTitle(), bookUpdateForm);
 
         SearchWindowAdminBuilder builder = new SearchWindowAdminBuilder();
-        SearchWindowDirector director = new SearchWindowDirector(builder, loginedMember, book.get(), 1);
+        SearchWindowDirector director = new SearchWindowDirector(builder, loginedMember, book.get(), beforePage);
         searchWindow.setVisible(false);
         director.constructSearchWindow();
         searchWindow.setVisible(false);

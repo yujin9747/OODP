@@ -2,7 +2,6 @@ package com.example.demo.builder.builder;
 
 import com.example.demo.BeanUtil;
 import com.example.demo.actionListener.AdminSearchActionListener;
-import com.example.demo.actionListener.SearchActionListener;
 import com.example.demo.command.BackCommand;
 import com.example.demo.command.ButtonWithCommand;
 import com.example.demo.command.Command;
@@ -11,13 +10,8 @@ import com.example.demo.domain.Book;
 import com.example.demo.domain.Member;
 import com.example.demo.domain.RentalInfo;
 import com.example.demo.jframe.SearchWindow;
-import com.example.demo.service.BookService;
-import com.example.demo.service.MemberService;
 import com.example.demo.service.RentalInfoService;
-import com.example.demo.service.ReservationInfoService;
-
 import javax.swing.*;
-
 import java.awt.*;
 import java.util.List;
 
@@ -33,14 +27,6 @@ public abstract class SearchWindowBuilder {
 
     public void createNewSearchWindowProduct(){
         searchWindow = new SearchWindow();
-    }
-
-    public void buildDependencyInjection() {
-        searchWindow.setMemberService(BeanUtil.get(MemberService.class));
-        searchWindow.setBookService(BeanUtil.get(BookService.class));
-        searchWindow.setRentalInfoService(BeanUtil.get(RentalInfoService.class));
-        searchWindow.setReservationInfoService(BeanUtil.get(ReservationInfoService.class));
-        searchWindow.setRentalInfoService(BeanUtil.get(RentalInfoService.class));
     }
 
     public void buildLoginedMember(Member loginedMember){
@@ -84,7 +70,8 @@ public abstract class SearchWindowBuilder {
 
     public void buildStatusInfo(){
         Book searchedBook = searchWindow.getSearchedBook();
-        List<RentalInfo> rentalInfos = searchWindow.getRentalInfoService().findRentalInfosByBookId(searchedBook.getId());
+        RentalInfoService rentalInfoService = BeanUtil.get(RentalInfoService.class);
+        List<RentalInfo> rentalInfos = rentalInfoService.findRentalInfosByBookId(searchedBook.getId());
 
         boolean isBorrowed = false;
         for(int i=0; i<rentalInfos.size(); i++)
@@ -151,9 +138,9 @@ public abstract class SearchWindowBuilder {
         searchWindow.add(searchWindow.getPublisherInput());
     }
 
-    public void buildBackButtonBuilder(){
+    public void buildBackButtonBuilder(int beforePage){
         ButtonWithCommand buttonWithCommand = new ButtonWithCommand(new InitCommand());
-        Command backCommand = new BackCommand(searchWindow.getBeforePage(), searchWindow.getLoginedMember(), searchWindow);
+        Command backCommand = new BackCommand(beforePage, searchWindow.getLoginedMember(), searchWindow);
         buttonWithCommand.setCommand(backCommand);
         searchWindow.setBackBTN(new Button("<"));
         searchWindow.getBackBTN().addActionListener(new AdminSearchActionListener(buttonWithCommand));

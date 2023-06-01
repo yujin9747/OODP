@@ -1,7 +1,6 @@
 package com.example.demo.jframe;
 
 import com.example.demo.domain.Member;
-import com.example.demo.service.*;
 import lombok.Getter;
 import lombok.Setter;
 import javax.swing.*;
@@ -10,11 +9,6 @@ import java.awt.*;
 @Setter
 @Getter
 public class MainWindow extends JFrame{
-
-    private MemberService memberService;
-    private BookService bookService;
-    private RentalInfoService rentalInfoService;
-
     final int GUEST = -1;
     Button searchBTN;
     Button loginBTN;

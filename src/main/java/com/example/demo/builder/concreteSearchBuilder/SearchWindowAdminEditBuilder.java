@@ -15,7 +15,7 @@ public class SearchWindowAdminEditBuilder extends SearchWindowBuilder {
     @Override
     public void buildFunctionButton() {
         ButtonWithCommand buttonWithCommand = new ButtonWithCommand(new InitCommand());
-        Command editFinishCommand = new EditFinishCommand(searchWindow.getBeforePage(), searchWindow.getLoginedMember(), searchWindow, searchWindow.getSearchedBook(), searchWindow.getBookService());
+        Command editFinishCommand = new EditFinishCommand(searchWindow.getBeforePage(), searchWindow.getLoginedMember(), searchWindow, searchWindow.getSearchedBook());
         buttonWithCommand.setCommand(editFinishCommand);
         searchWindow.setEditBTN(new Button("수정완료"));
         searchWindow.getEditBTN().setBounds(20, 5, 70, 30);

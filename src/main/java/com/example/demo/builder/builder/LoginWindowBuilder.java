@@ -19,16 +19,9 @@ public abstract class LoginWindowBuilder {
 
     public void createNewLoginWindowProduct() { loginWindow = new LoginWindow(); }
 
-    public void buildDependencyInjection() {
-        loginWindow.setMemberService(BeanUtil.get(MemberService.class));
-        loginWindow.setLibraryService(BeanUtil.get(LibraryService.class));
-        loginWindow.setBookService(BeanUtil.get(BookService.class));
-        loginWindow.setRentalInfoService(BeanUtil.get(RentalInfoService.class));
-        loginWindow.setReservationInfoService(BeanUtil.get(ReservationInfoService.class));
-    }
-
     public void buildLoginLibrary() {
-        loginWindow.setLoginLibrary(loginWindow.getLibraryService().findOne(1L));
+        LibraryService libraryService = BeanUtil.get(LibraryService.class);
+        loginWindow.setLoginLibrary(libraryService.findOne(1L));
     }
 
 

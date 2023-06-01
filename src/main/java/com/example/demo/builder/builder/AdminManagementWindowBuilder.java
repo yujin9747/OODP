@@ -37,12 +37,6 @@ public abstract class AdminManagementWindowBuilder {
         adminManagementWindow = new AdminManagement();
     }
 
-    public void buildDependencyInjection() {
-        adminManagementWindow.setMemberService(BeanUtil.get(MemberService.class));
-        adminManagementWindow.setBookService(BeanUtil.get(BookService.class));
-        adminManagementWindow.setLibraryService(BeanUtil.get(LibraryService.class));
-    }
-
     public void buildLoginedMember(Member loginedMember){
         adminManagementWindow.setLoginedMember(loginedMember);
     }
@@ -70,10 +64,10 @@ public abstract class AdminManagementWindowBuilder {
 
         list.addListSelectionListener(e -> {
             String selectedTitle = list.getSelectedValue().toString();
-            adminManagementWindow.setSelectedBook(adminManagementWindow.getBookService().findBookByTitle(selectedTitle).get());
+            adminManagementWindow.setSelectedBook(BeanUtil.get(BookService.class).findBookByTitle(selectedTitle).get());
 
             AdminManagementSelectedBookBuilder builder = new AdminManagementSelectedBookBuilder();
-            AdminManagementWindowDirector director = new AdminManagementWindowDirector(builder, adminManagementWindow.getLoginedMember(), adminManagementWindow.getSelectedBook(), adminManagementWindow.getSelectedIdx());
+            AdminManagementWindowDirector director = new AdminManagementWindowDirector(builder, adminManagementWindow.getLoginedMember(), adminManagementWindow.getSelectedBook(), list.getSelectedIndex());
             adminManagementWindow.setVisible(false);
             director.constructAdminManagementWindow();
         });
@@ -182,7 +176,7 @@ public abstract class AdminManagementWindowBuilder {
     }
 
     public void fillJList(){
-        List<Book> bookList = adminManagementWindow.getBookService().findBooks();
+        List<Book> bookList = BeanUtil.get(BookService.class).findBooks();
         for(int i=0; i<bookList.size(); i++){
             Book book=bookList.get(i);
             adminManagementWindow.getModel().addElement(book.getTitle());

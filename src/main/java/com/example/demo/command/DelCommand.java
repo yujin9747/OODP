@@ -1,5 +1,6 @@
 package com.example.demo.command;
 
+import com.example.demo.BeanUtil;
 import com.example.demo.builder.concreteAdminBuilder.AdminManagementDefaultBuilder;
 import com.example.demo.builder.concreteSearchBuilder.SearchWindowAdminEditBuilder;
 import com.example.demo.builder.director.AdminManagementWindowDirector;
@@ -16,18 +17,16 @@ public class DelCommand implements Command{
     private Member loginedMember;
     private SearchWindow searchWindow;
     private Book searchedBook;
-    private BookService bookService;
 
-    public DelCommand(Integer beforePage, Member loginedMember, SearchWindow searchWindow, Book searchedBook, BookService bookService) {
+    public DelCommand(Integer beforePage, Member loginedMember, SearchWindow searchWindow, Book searchedBook) {
         this.beforePage = beforePage;
         this.loginedMember = loginedMember;
         this.searchWindow = searchWindow;
         this.searchedBook = searchedBook;
-        this.bookService = bookService;
     }
 
     public void execute() {
-        bookService.deleteBook(searchedBook.getTitle());
+        BeanUtil.get(BookService.class).deleteBook(searchedBook.getTitle());
         AdminManagementDefaultBuilder builder = new AdminManagementDefaultBuilder();
         AdminManagementWindowDirector director = new AdminManagementWindowDirector(builder, loginedMember, searchedBook, beforePage);
         director.constructAdminManagementWindow();

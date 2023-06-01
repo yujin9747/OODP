@@ -13,7 +13,7 @@ public class SearchWindowAdminBuilder extends SearchWindowBuilder {
 
     @Override
     public void buildBackButton() {
-        super.buildBackButtonBuilder();
+        super.buildBackButtonBuilder(searchWindow.getBeforePage());
     }
 
     @Override
@@ -26,7 +26,7 @@ public class SearchWindowAdminBuilder extends SearchWindowBuilder {
         searchWindow.getEditBTN().addActionListener(new AdminSearchActionListener(buttonWithCommand));
 
         ButtonWithCommand buttonWithCommand2 = new ButtonWithCommand(new InitCommand());
-        Command delCommand = new DelCommand(searchWindow.getBeforePage(), searchWindow.getLoginedMember(), searchWindow, searchWindow.getSearchedBook(), searchWindow.getBookService());
+        Command delCommand = new DelCommand(searchWindow.getBeforePage(), searchWindow.getLoginedMember(), searchWindow, searchWindow.getSearchedBook());
         buttonWithCommand2.setCommand(delCommand);
         searchWindow.setDeleteBTN(new Button("삭제하기"));
         searchWindow.getDeleteBTN().setBounds(20, 5, 70, 30);
