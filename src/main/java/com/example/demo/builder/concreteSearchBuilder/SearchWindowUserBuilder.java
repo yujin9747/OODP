@@ -28,7 +28,7 @@ public class SearchWindowUserBuilder extends SearchWindowBuilder {
         ButtonWithCommand buttonWithCommand = new ButtonWithCommand(new InitCommand());
 
         if (!rentalInfoService.isTheBookBorrowed(searchedBook)) {
-            Command checkoutCommand = new CheckoutCommand(rentalInfoService, loginedMember, searchedBook);
+            Command checkoutCommand = new CheckoutCommand(rentalInfoService, loginedMember, searchedBook, searchWindow);
             buttonWithCommand.setCommand(checkoutCommand);
             searchWindow.setCheckoutBTN(new Button("대출하기"));
             searchWindow.getCheckoutBTN().setBounds(20, 5, 70, 30);
@@ -37,7 +37,7 @@ public class SearchWindowUserBuilder extends SearchWindowBuilder {
         } else {
             RentalInfo _rentalInfo = rentalInfoService.findOneByMemberIdAndBookId(loginedMember.getId(), searchedBook.getId());
             if (_rentalInfo != null && !_rentalInfo.isReturned()) {
-                Command returnCommand = new ReturnCommand(rentalInfoService, loginedMember, searchedBook);
+                Command returnCommand = new ReturnCommand(rentalInfoService, loginedMember, searchedBook, searchWindow);
                 buttonWithCommand.setCommand(returnCommand);
                 searchWindow.setReturnBTN(new Button("반납하기"));
                 searchWindow.getReturnBTN().setBounds(20, 5, 70, 30);

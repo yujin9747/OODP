@@ -42,7 +42,7 @@ public class MainActionListener implements ActionListener {
             }
             SearchWindowDirector searchWindowDirector = new SearchWindowDirector(searchWindowBuilder, loginedMember, searchedBook.get(), 0);
             searchWindowDirector.constructSearchWindow();
-//                new SearchWindow(searchedBook.get(), loginedMember, 0, false);
+            mainWindow.setVisible(false);
         }
     }
 }

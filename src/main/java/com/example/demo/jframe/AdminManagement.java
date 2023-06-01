@@ -12,6 +12,7 @@ import com.example.demo.domain.Member;
 import com.example.demo.service.BookService;
 import com.example.demo.service.MemberService;
 import com.example.demo.service.LibraryService;
+import com.example.demo.service.RentalInfoService;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,6 +32,7 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
     private BookService bookService;
     private MemberService memberService;
     private LibraryService libraryService;
+    private RentalInfoService rentalInfoService;
     private JList list;				//리스트
     private JTextField titleInputField;
     private JTextField isbnInputField;
