@@ -57,7 +57,7 @@ public class ReservationInfoService {
         }
     }
 
-    public void reserveCancel(ReservationInfo reservationInfo, Member loginedMember, Book searchedBook) {
+    public void reserveCancel(ReservationInfo reservationInfo, Member loginedMember) {
         if (loginedMember.getRole() == Role.STUDENT) {
             cancelReservation(reservationInfo.getId());
             JOptionPane.showMessageDialog(null, "예약이 취소되었습니다.");

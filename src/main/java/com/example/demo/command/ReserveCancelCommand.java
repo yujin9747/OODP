@@ -19,7 +19,7 @@ public class ReserveCancelCommand implements Command {
     }
 
     public void execute() {
-        reservationInfoService.reserveCancel(reservationInfo, loginedMember, searchedBook);
+        reservationInfoService.reserveCancel(reservationInfo, loginedMember);
     }
 
 }
