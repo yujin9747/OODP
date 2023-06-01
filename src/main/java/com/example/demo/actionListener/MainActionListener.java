@@ -1,5 +1,6 @@
 package com.example.demo.actionListener;
 
+import com.example.demo.BeanUtil;
 import com.example.demo.builder.builder.SearchWindowBuilder;
 import com.example.demo.builder.concreteSearchBuilder.SearchWindowAdminBuilder;
 import com.example.demo.builder.concreteSearchBuilder.SearchWindowUserBuilder;
@@ -26,7 +27,7 @@ public class MainActionListener implements ActionListener {
         String command = e.getActionCommand();
         String bookTitle = mainWindow.getSearchBoxField().getText();
         Member loginedMember = mainWindow.getLoginedMember();
-        BookService bookService = mainWindow.getBookService();
+        BookService bookService = BeanUtil.get(BookService.class);
 
         Optional<Book> searchedBook = bookService.findBookByTitle(bookTitle);
         if(searchedBook.isPresent() == false) {

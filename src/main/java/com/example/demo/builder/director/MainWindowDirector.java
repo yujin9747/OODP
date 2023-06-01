@@ -15,14 +15,12 @@ public class MainWindowDirector {
 
     }
 
-
     public MainWindow getMainWindow(){
         return mainWindowBuilder.getMainWindow();
     }
 
     public void constructMainWindow(){
         mainWindowBuilder.createNewMainWindowProduct();
-        mainWindowBuilder.buildDependencyInjection();
         mainWindowBuilder.buildLoginedMember(loginedMember);
         mainWindowBuilder.buildSearchBoxField();
         mainWindowBuilder.buildContainer();
@@ -30,6 +28,5 @@ public class MainWindowDirector {
         mainWindowBuilder.builWindowButton();
         mainWindowBuilder.buildDefaultSetting();
         mainWindowBuilder.buildVisible();
-
     }
 }

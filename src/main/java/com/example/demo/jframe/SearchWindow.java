@@ -17,11 +17,6 @@ import java.awt.*;
 @Getter
 public class SearchWindow extends JFrame {
 
-    private BookService bookService;
-    private MemberService memberService;
-    private RentalInfoService rentalInfoService;
-    private ReservationInfoService reservationInfoService;
-
     Button checkoutBTN;
     Button returnBTN;
     Button reservationBTN;

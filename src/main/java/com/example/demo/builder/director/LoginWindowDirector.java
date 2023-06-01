@@ -13,7 +13,6 @@ public class LoginWindowDirector {
 
     public void constructLoginWindow(){
         loginWindowBuilder.createNewLoginWindowProduct();
-        loginWindowBuilder.buildDependencyInjection();
         loginWindowBuilder.buildLoginLibrary();
         loginWindowBuilder.buildWindowTitle();
         loginWindowBuilder.buildWindowDefaultSetting();

@@ -14,15 +14,10 @@ import com.example.demo.domain.Member;
 import com.example.demo.jframe.*;
 import com.example.demo.service.BookService;
 import com.example.demo.service.MemberService;
-import com.example.demo.service.RentalInfoService;
-import com.example.demo.service.ReservationInfoService;
-
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public abstract class MainWindowBuilder {
@@ -35,10 +30,6 @@ public abstract class MainWindowBuilder {
     public void createNewMainWindowProduct(){
         mainWindow = new MainWindow();
     }
-    public void buildDependencyInjection() {
-        mainWindow.setMemberService(BeanUtil.get(MemberService.class));
-        mainWindow.setBookService(BeanUtil.get(BookService.class));
-    }
     public void buildLoginedMember(Member loginedMember){
         mainWindow.setLoginedMember(loginedMember);
     }
@@ -48,9 +39,7 @@ public abstract class MainWindowBuilder {
     public void buildDefaultSetting(){
         mainWindow.setTitle("Main"); //창 제목
         mainWindow.setSize(600, 600); //창 사이즈
-
         mainWindow.setDefaultCloseOperation(EXIT_ON_CLOSE);
-//        mainWindow.setLayout(null);
     }
     public void buildContainer(){
         Container c = mainWindow.getContentPane();
@@ -118,8 +107,5 @@ public abstract class MainWindowBuilder {
             mainWindow.setVisible(false);
         }
     }
-
-
-
 
 }

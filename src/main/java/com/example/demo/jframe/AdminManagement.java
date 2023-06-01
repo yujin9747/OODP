@@ -28,11 +28,6 @@ import javax.swing.event.*;
 @Getter
 @Setter
 public class AdminManagement extends JFrame implements MouseListener,KeyListener,ListSelectionListener{
-
-    private BookService bookService;
-    private MemberService memberService;
-    private LibraryService libraryService;
-    private RentalInfoService rentalInfoService;
     private JList list;				//리스트
     private JTextField titleInputField;
     private JTextField isbnInputField;
@@ -51,7 +46,6 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
     private Member loginedMember;
     private Book selectedBook;
     private Integer selectedIdx;
-
     private Integer beforePage;
 
     @Override
@@ -108,7 +102,8 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
             if(model.size()==0) return;	//아무것도 저장되어 있지 않으면 return
             index=0;	//그 이상이면 가장 상위 list index
         }
-        bookService.deleteBook(title);
+
+        BeanUtil.get(BookService.class).deleteBook(title);
         model.remove(index);
     }
 
@@ -116,7 +111,7 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
         int emptyTextFieldIdx = needMoreInformation();
         if(emptyTextFieldIdx > 0) return emptyTextFieldIdx;
 
-        Optional<Library> handongLibrary = libraryService.findOne(1L);
+        Optional<Library> handongLibrary = BeanUtil.get(LibraryService.class).findOne(1L);
         Book book = new Book.BookBuilder()
                 .title(titleInputField.getText())
                 .isbn(Long.parseLong(isbnInputField.getText()))
@@ -130,7 +125,7 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
         System.out.println("book position: " + book.getPosition());
         System.out.println("book publisher: " + book.getPublisher());
 
-        bookService.saveBook(book);
+        BeanUtil.get(BookService.class).saveBook(book);
         return emptyTextFieldIdx;
     }
 
