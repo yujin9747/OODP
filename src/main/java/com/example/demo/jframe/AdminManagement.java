@@ -48,6 +48,8 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
     private Book selectedBook;
     private Integer selectedIdx;
 
+    private Integer beforePage;
+
     public AdminManagement(){}
     public AdminManagement(Member loginedMember, Book selectedBook, Integer selectedIdx) {
         this.bookService = BeanUtil.get(BookService.class);

@@ -3,6 +3,10 @@ package com.example.demo.builder.builder;
 import com.example.demo.BeanUtil;
 import com.example.demo.actionListener.AdminSearchActionListener;
 import com.example.demo.actionListener.SearchActionListener;
+import com.example.demo.command.BackCommand;
+import com.example.demo.command.ButtonWithCommand;
+import com.example.demo.command.Command;
+import com.example.demo.command.InitCommand;
 import com.example.demo.domain.Book;
 import com.example.demo.domain.Member;
 import com.example.demo.jframe.SearchWindow;
@@ -136,8 +140,11 @@ public abstract class SearchWindowBuilder {
     }
 
     public void buildBackButtonBuilder(){
+        ButtonWithCommand buttonWithCommand = new ButtonWithCommand(new InitCommand());
+        Command backCommand = new BackCommand(searchWindow.getBeforePage(), searchWindow.getLoginedMember(), searchWindow);
+        buttonWithCommand.setCommand(backCommand);
         searchWindow.setBackBTN(new Button("<"));
-        searchWindow.getBackBTN().addActionListener(new AdminSearchActionListener(searchWindow));
+        searchWindow.getBackBTN().addActionListener(new AdminSearchActionListener(buttonWithCommand));
         searchWindow.add(searchWindow.getBackBTN());
         searchWindow.add(new JLabel(" "));
         searchWindow.setVisible(false);

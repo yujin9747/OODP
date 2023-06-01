@@ -224,12 +224,12 @@ public class SearchWindow extends JFrame {
 //                new AdminManagement(loginedMember, null, null);
 //                JOptionPane.showMessageDialog(null, searchedBook.getTitle() + "책 삭제가 완료되었습니다.");
 //            } else if (command.equals("수정완료")) {
-//                BookUpdateForm bookUpdateForm = new BookUpdateForm.BookUpdateFormBuilder()
-//                        .title(titleInput.getText())
-//                        .isbn(isbnInput.getText())
-//                        .position(positionInput.getText())
-//                        .publisher(publisherInput.getText())
-//                        .build();
+//                blisherInput.getText())
+//                        .build();BookUpdateForm bookUpdateForm = new BookUpdateForm.BookUpdateFormBuilder()
+////                        .title(titleInput.getText())
+////                        .isbn(isbnInput.getText())
+////                        .position(positionInput.getText())
+////                        .publisher(pu
 //                Optional<Book> book = bookService.updateBook(searchedBook.getTitle(), bookUpdateForm);
 //                new SearchWindow(book.get(), loginedMember, beforePage, false);
 //                setVisible(false);
