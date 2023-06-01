@@ -1,4 +1,4 @@
-package com.example.demo.builder.concreteBuilder;
+package com.example.demo.builder.concreteMainBuilder;
 
 import com.example.demo.builder.builder.MainWindowBuilder;
 import com.example.demo.domain.Role;
@@ -12,9 +12,10 @@ public class MainWindowUserBuilder extends MainWindowBuilder{
         mainWindow.setLogoutBTN(new Button("Logout"));
         mainWindow.getLogoutBTN().setBounds(300, 300, 70, 30);
         mainWindow.getLogoutBTN().addActionListener(new LogoutActionListener());
+        mainWindow.add(mainWindow.getLogoutBTN());
         mainWindow.setUserPageBTN(new Button("User Page"));
         mainWindow.getUserPageBTN().setBounds(300, 350, 70, 30);
         mainWindow.add(mainWindow.getUserPageBTN());
-        mainWindow.getUserPageBTN().addActionListener(new UserPageActionListener());
+        mainWindow.getUserPageBTN().addActionListener(new UserPageActionListener(mainWindow.getLoginedMember()));
     }
 }

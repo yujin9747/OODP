@@ -1,6 +1,8 @@
 package com.example.demo.jframe;
 
 import com.example.demo.BeanUtil;
+import com.example.demo.builder.concreteMainBuilder.MainWindowUserBuilder;
+import com.example.demo.builder.director.MainWindowDirector;
 import com.example.demo.domain.*;
 import com.example.demo.service.BookService;
 import com.example.demo.service.LibraryService;
@@ -101,7 +103,10 @@ public class UserPageWindow extends JFrame {
     private class backActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            new MainWindow(loginedMember);
+            MainWindowUserBuilder builder = new MainWindowUserBuilder();
+            MainWindowDirector director = new MainWindowDirector(builder, loginedMember);
+            director.constructMainWindow();
+//            new MainWindow(loginedMember);
             setVisible(false);
         }
     }
@@ -141,7 +146,10 @@ public class UserPageWindow extends JFrame {
                     rentalInfoService.returnBook(loginedMember.getId(), searchedBook.getId());
                     JOptionPane.showMessageDialog(null, "반납이 완료되었습니다.");
 
-                    new MainWindow(loginedMember);
+                    MainWindowUserBuilder builder = new MainWindowUserBuilder();
+                    MainWindowDirector director = new MainWindowDirector(builder, loginedMember);
+                    director.constructMainWindow();
+//                    new MainWindow(loginedMember);
                     setVisible(false);
                 }
                 else if(loginedMember.getRole() == Role.PROFESSOR){

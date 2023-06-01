@@ -1,4 +1,4 @@
-package com.example.demo.builder.concreteBuilder;
+package com.example.demo.builder.concreteMainBuilder;
 
 import com.example.demo.builder.builder.MainWindowBuilder;
 import com.example.demo.jframe.MainWindow;

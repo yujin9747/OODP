@@ -21,17 +21,15 @@ public class MainWindowDirector {
     }
 
     public void constructMainWindow(){
-        mainWindowBuilder.createNewMainWindowProduct(loginedMember);
+        mainWindowBuilder.createNewMainWindowProduct();
         mainWindowBuilder.buildDependencyInjection();
         mainWindowBuilder.buildLoginedMember(loginedMember);
         mainWindowBuilder.buildSearchBoxField();
-        mainWindowBuilder.buildWindowTitle();
-        mainWindowBuilder.buildWindowSize();
-        mainWindowBuilder.buildWindowSize();
-        mainWindowBuilder.buildWindowDefaultSetting();
         mainWindowBuilder.buildContainer();
         mainWindowBuilder.buildSearchBTN();
-        mainWindowBuilder.buildVisible();
         mainWindowBuilder.builWindowButton();
+        mainWindowBuilder.buildDefaultSetting();
+        mainWindowBuilder.buildVisible();
+
     }
 }

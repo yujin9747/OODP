@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import com.example.demo.builder.concreteMainBuilder.MainWindowUserBuilder;
+import com.example.demo.builder.director.MainWindowDirector;
 import com.example.demo.domain.Book;
 import com.example.demo.domain.Member;
 import com.example.demo.domain.ReservationInfo;
@@ -44,7 +46,12 @@ public class ReservationInfoService {
             } else {
                 JOptionPane.showMessageDialog(null, "외부도서에 대한 접근이 허가되지 않았습니다.");
             }
-            new MainWindow(loginedMember);
+
+            MainWindowUserBuilder builder = new MainWindowUserBuilder();
+            MainWindowDirector director = new MainWindowDirector(builder, loginedMember);
+            director.constructMainWindow();
+
+//            new MainWindow(loginedMember);
 //            setVisible(false); 창 닫기 안됨
         } else if (loginedMember.getRole() == Role.PROFESSOR) {
         }
@@ -55,7 +62,10 @@ public class ReservationInfoService {
             cancelReservation(reservationInfo.getId());
             JOptionPane.showMessageDialog(null, "예약이 취소되었습니다.");
 
-            new MainWindow(loginedMember);
+            MainWindowUserBuilder builder = new MainWindowUserBuilder();
+            MainWindowDirector director = new MainWindowDirector(builder, loginedMember);
+            director.constructMainWindow();
+//            new MainWindow(loginedMember);
 //            setVisible(false); 창 닫기 안됨
         } else if (loginedMember.getRole() == Role.PROFESSOR) {
 
