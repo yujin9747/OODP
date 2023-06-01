@@ -77,8 +77,10 @@ public class UserPageWindow extends JFrame {
         int i = 0;
         for (Iterator it = rentalInfoContainer.getIterator(); it.hasNext();) {
             RentalInfo rentalInfo = (RentalInfo) it.next();
-            if(!rentalInfo.isReturned()) {
-                Book book = rentalInfo.getBook();
+            Book book = rentalInfo.getBook();
+//            if(!rentalInfo.isReturned()) {
+            if(!rentalInfoService.isTheBookBorrowed(book)){
+//                Book book = rentalInfo.getBook();
                 String returnDueDate = rentalInfo.getReturnDueDate().toString();
 
                 data[i] = new Object[]{book.getTitle(), returnDueDate};

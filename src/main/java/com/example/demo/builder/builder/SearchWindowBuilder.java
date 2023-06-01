@@ -9,6 +9,7 @@ import com.example.demo.command.Command;
 import com.example.demo.command.InitCommand;
 import com.example.demo.domain.Book;
 import com.example.demo.domain.Member;
+import com.example.demo.domain.RentalInfo;
 import com.example.demo.jframe.SearchWindow;
 import com.example.demo.service.BookService;
 import com.example.demo.service.MemberService;
@@ -16,15 +17,16 @@ import com.example.demo.service.RentalInfoService;
 import com.example.demo.service.ReservationInfoService;
 
 import javax.swing.*;
+
 import java.awt.*;
+import java.util.List;
 
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public abstract class SearchWindowBuilder {
 
     protected SearchWindow searchWindow;
-
-
+    private RentalInfoService rentalInfoService;
     public SearchWindow getSearchWindow() {
         return searchWindow;
     }
@@ -38,6 +40,7 @@ public abstract class SearchWindowBuilder {
         searchWindow.setBookService(BeanUtil.get(BookService.class));
         searchWindow.setRentalInfoService(BeanUtil.get(RentalInfoService.class));
         searchWindow.setReservationInfoService(BeanUtil.get(ReservationInfoService.class));
+        searchWindow.setRentalInfoService(BeanUtil.get(RentalInfoService.class));
     }
 
     public void buildLoginedMember(Member loginedMember){
@@ -81,7 +84,16 @@ public abstract class SearchWindowBuilder {
 
     public void buildStatusInfo(){
         Book searchedBook = searchWindow.getSearchedBook();
-        if ((searchedBook.isBorrowed())) {
+        List<RentalInfo> rentalInfos = searchWindow.getRentalInfoService().findRentalInfosByBookId(searchedBook.getId());
+
+        boolean isBorrowed = false;
+        for(int i=0; i<rentalInfos.size(); i++)
+            if(rentalInfos.get(i).isReturned() == false) {
+                isBorrowed = true;
+                break;
+            }
+
+        if (isBorrowed) {
             searchWindow.setStatusInfo(new JLabel("대출중"));
         } else if((searchedBook.isReserved())) {
             searchWindow.setStatusInfo(new JLabel("예약중"));

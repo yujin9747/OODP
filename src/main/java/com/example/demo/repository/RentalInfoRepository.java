@@ -62,4 +62,11 @@ public class RentalInfoRepository {
         em.remove(rentalInfo);
         return rentalInfo.getId();
     }
+
+    public void updateRetalInfoCheckout(Member loginedMember, Book searchedBook) {
+        em.createQuery("update RentalInfo r set r.isReturned = false, r.returnDueDate = (CURRENT DATE + 14), r.rentalDate = current date, r.returnedDate = null where r.member = :loginedMember and r.book = :searchedBook")
+                .setParameter("loginedMember", loginedMember)
+                .setParameter("searchedBook", searchedBook)
+                .executeUpdate();
+    }
 }

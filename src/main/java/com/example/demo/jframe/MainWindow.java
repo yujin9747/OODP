@@ -13,6 +13,7 @@ public class MainWindow extends JFrame{
 
     private MemberService memberService;
     private BookService bookService;
+    private RentalInfoService rentalInfoService;
 
     final int GUEST = -1;
     Button searchBTN;

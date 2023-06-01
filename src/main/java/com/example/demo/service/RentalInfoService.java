@@ -71,8 +71,16 @@ public class RentalInfoService {
     public void checkout( Member loginedMember, Book searchedBook, JFrame window) {
         if (loginedMember.getRole() == Role.STUDENT) {
             if ((loginedMember.getLibrary().getId() == searchedBook.getLibrary().getId()) || loginedMember.isExternalLibraryPermission()) {
-                saveRentalInfo(loginedMember.getId(), searchedBook.getId());
-                JOptionPane.showMessageDialog(null, "대출이 완료되었습니다.");
+                RentalInfo rentalInfo = rentalInfoRepository.findOneByMemberIdAndBookId(loginedMember.getId(), searchedBook.getId());
+                if(rentalInfo == null) {
+                    saveRentalInfo(loginedMember.getId(), searchedBook.getId());
+                    JOptionPane.showMessageDialog(null, "대출이 완료되었습니다.");
+                }
+                else {
+                    rentalInfoRepository.updateRetalInfoCheckout(loginedMember, searchedBook);
+                    JOptionPane.showMessageDialog(null, "대출이 완료되었습니다.(이전 대출 기록 존재)");
+                }
+
             } else {
                 JOptionPane.showMessageDialog(null, "외부도서에 대한 접근이 허가되지 않았습니다.");
             }
