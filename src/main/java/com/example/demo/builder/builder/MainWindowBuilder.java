@@ -4,8 +4,11 @@ import com.example.demo.BeanUtil;
 import com.example.demo.actionListener.MainActionListener;
 import com.example.demo.actionListener.SearchActionListener;
 import com.example.demo.builder.concreteAdminBuilder.AdminManagementDefaultBuilder;
+import com.example.demo.builder.concreteLoginBuilder.LoginWindowLoginBuilder;
+import com.example.demo.builder.concreteLoginBuilder.LoginWindowRegisterBuilder;
 import com.example.demo.builder.concreteMainBuilder.MainWindowNullBuilder;
 import com.example.demo.builder.director.AdminManagementWindowDirector;
+import com.example.demo.builder.director.LoginWindowDirector;
 import com.example.demo.builder.director.MainWindowDirector;
 import com.example.demo.domain.Member;
 import com.example.demo.jframe.*;
@@ -91,14 +94,18 @@ public abstract class MainWindowBuilder {
     public class LoginActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            new LoginWindow(0);
+            LoginWindowLoginBuilder builder = new LoginWindowLoginBuilder();
+            LoginWindowDirector director = new LoginWindowDirector(builder);
+            director.constructLoginWindow();
             mainWindow.setVisible(false);
         }
     }
     public class RegisterActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            new LoginWindow(1);
+            LoginWindowRegisterBuilder builder = new LoginWindowRegisterBuilder();
+            LoginWindowDirector director = new LoginWindowDirector(builder);
+            director.constructLoginWindow();
             mainWindow.setVisible(false);
         }
     }

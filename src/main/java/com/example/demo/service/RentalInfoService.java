@@ -30,8 +30,6 @@ public class RentalInfoService {
     private final MemberRepository memberRepository;
     private final BookRepository bookRepository;
 
-
-
     @Transactional
     public RentalInfo saveRentalInfo(Long memberId, Long bookId){
         Optional<Member> member = memberRepository.findOne(memberId);
@@ -70,7 +68,7 @@ public class RentalInfoService {
     }
 
     //대출하기
-    public void checkout( Member loginedMember, Book searchedBook) {
+    public void checkout( Member loginedMember, Book searchedBook, JFrame window) {
         if (loginedMember.getRole() == Role.STUDENT) {
             if ((loginedMember.getLibrary().getId() == searchedBook.getLibrary().getId()) || loginedMember.isExternalLibraryPermission()) {
                 saveRentalInfo(loginedMember.getId(), searchedBook.getId());
@@ -81,14 +79,14 @@ public class RentalInfoService {
             MainWindowUserBuilder builder = new MainWindowUserBuilder();
             MainWindowDirector director = new MainWindowDirector(builder, loginedMember);
             director.constructMainWindow();
-//            new MainWindow(loginedMember);
-//            setVisible(false); 창 닫기 안됨
+            window.setVisible(false);
         } else if (loginedMember.getRole() == Role.PROFESSOR) {
 
         }
     }
 
-    public void return_book( Member loginedMember, Book searchedBook) {
+    @Transactional
+    public void return_book( Member loginedMember, Book searchedBook, JFrame window) {
         if (loginedMember.getRole() == Role.STUDENT) {
             returnBook(loginedMember.getId(), searchedBook.getId());
             JOptionPane.showMessageDialog(null, "반납이 완료되었습니다.");
@@ -96,8 +94,7 @@ public class RentalInfoService {
             MainWindowUserBuilder builder = new MainWindowUserBuilder();
             MainWindowDirector director = new MainWindowDirector(builder, loginedMember);
             director.constructMainWindow();
-//            new MainWindow(loginedMember);
-//            setVisible(false); 창 닫기 안됨
+            window.setVisible(false);
         }
         else if(loginedMember.getRole() == Role.PROFESSOR){
 

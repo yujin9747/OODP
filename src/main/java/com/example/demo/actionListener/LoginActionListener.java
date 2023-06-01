@@ -2,7 +2,11 @@ package com.example.demo.actionListener;
 
 import com.example.demo.builder.builder.LoginWindowBuilder;
 import com.example.demo.builder.concreteLoginBuilder.LoginWindowLoginBuilder;
+import com.example.demo.builder.concreteMainBuilder.MainWindowAdminBuilder;
+import com.example.demo.builder.concreteMainBuilder.MainWindowNullBuilder;
+import com.example.demo.builder.concreteMainBuilder.MainWindowUserBuilder;
 import com.example.demo.builder.director.LoginWindowDirector;
+import com.example.demo.builder.director.MainWindowDirector;
 import com.example.demo.domain.Admin;
 import com.example.demo.domain.Library;
 import com.example.demo.domain.Role;
@@ -31,7 +35,10 @@ public class LoginActionListener implements ActionListener {
         String id = loginWindow.getStudentIdField().getText();
         String password = loginWindow.getPasswordField().getText();
         if (command.equals("<")) {
-            new MainWindow(null);
+            MainWindowNullBuilder builder = new MainWindowNullBuilder();
+            MainWindowDirector director = new MainWindowDirector(builder, null);
+            director.constructMainWindow();
+            loginWindow.setVisible(false);
         } else {
             if (command.equals("학생으로 Login") || command.equals("학생으로 Register")) {
                 loginWindow.setLoginOrRegisterRole(Role.STUDENT);
@@ -89,7 +96,7 @@ public class LoginActionListener implements ActionListener {
                     LoginWindowBuilder loginWindowBuilder = new LoginWindowLoginBuilder();
                     LoginWindowDirector loginWindowDirector = new LoginWindowDirector(loginWindowBuilder);
                     loginWindowDirector.constructLoginWindow();
-    //                setVisible(false);
+                    loginWindow.setVisible(false);
                 }
             }
         }
@@ -113,8 +120,10 @@ public class LoginActionListener implements ActionListener {
 
                     if(loginOrRegister == 0){
                         if (studentList.get(i).getPassword().equals(password)) {
-                            new MainWindow(studentList.get(i));
-//                            setVisible(false);
+                            MainWindowUserBuilder builder = new MainWindowUserBuilder();
+                            MainWindowDirector director = new MainWindowDirector(builder, studentList.get(i));
+                            director.constructMainWindow();
+                            loginWindow.setVisible(false);
 
                             JOptionPane.showMessageDialog(null, "로그인 성공");
                             System.out.println("성공");
@@ -144,8 +153,10 @@ public class LoginActionListener implements ActionListener {
 
                     if(loginOrRegister == 0){
                         if (adminList.get(i).getPassword().equals(password)) {
-                            new MainWindow(adminList.get(i));
-//                            setVisible(false);
+                            MainWindowAdminBuilder builder = new MainWindowAdminBuilder();
+                            MainWindowDirector director = new MainWindowDirector(builder, adminList.get(i));
+                            director.constructMainWindow();
+                            loginWindow.setVisible(false);
 
                             JOptionPane.showMessageDialog(null, "로그인 성공");
                             System.out.println("성공");

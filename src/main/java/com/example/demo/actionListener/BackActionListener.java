@@ -8,8 +8,6 @@ import java.awt.event.ActionListener;
 public class BackActionListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
-//
-//        new MainWindow(loginedMember);
-//        setVisible(false);
+
     }
 }
