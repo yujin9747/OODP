@@ -4,12 +4,10 @@ import com.example.demo.builder.builder.SearchWindowBuilder;
 import com.example.demo.builder.concreteSearchBuilder.SearchWindowAdminBuilder;
 import com.example.demo.builder.concreteSearchBuilder.SearchWindowUserBuilder;
 import com.example.demo.builder.concreteSearchBuilder.SearchWindowUserNullBuilder;
-import com.example.demo.builder.director.MainWindowDirector;
 import com.example.demo.builder.director.SearchWindowDirector;
 import com.example.demo.domain.Book;
 import com.example.demo.domain.Member;
 import com.example.demo.domain.Role;
-import com.example.demo.jframe.Main;
 import com.example.demo.jframe.MainWindow;
 import com.example.demo.service.BookService;
 

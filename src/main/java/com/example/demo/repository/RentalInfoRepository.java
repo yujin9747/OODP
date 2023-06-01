@@ -40,7 +40,7 @@ public class RentalInfoRepository {
     }
 
     public List<RentalInfo> findRentalInfosByMemberId(Long memberId){
-        return em.createQuery("select r from RentalInfo r where member.id = :memberId", RentalInfo.class)
+        return em.createQuery("select r from RentalInfo r where member.id = :memberId and r.isReturned = false", RentalInfo.class)
                 .setParameter("memberId", memberId)
                 .getResultList();
     }

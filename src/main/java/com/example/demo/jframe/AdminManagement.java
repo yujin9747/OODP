@@ -95,10 +95,10 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
             new UserManageWindow(new DefaultListModel(), "", loginedMember, null, null);
             setVisible(false);
         }
-        else if(e.getSource() == bookManageBTN){
+        else if(e.getSource() == bookManageBTN && selectedIdx != null){
             SearchWindowBuilder searchWindowBuilder;
             searchWindowBuilder = new SearchWindowAdminBuilder();
-            SearchWindowDirector searchWindowDirector = new SearchWindowDirector(searchWindowBuilder, loginedMember, selectedBook, 0);
+            SearchWindowDirector searchWindowDirector = new SearchWindowDirector(searchWindowBuilder, loginedMember, selectedBook, beforePage);
             searchWindowDirector.constructSearchWindow();
             setVisible(false);
         }

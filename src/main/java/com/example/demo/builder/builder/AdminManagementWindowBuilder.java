@@ -73,7 +73,7 @@ public abstract class AdminManagementWindowBuilder {
             adminManagementWindow.setSelectedBook(adminManagementWindow.getBookService().findBookByTitle(selectedTitle).get());
 
             AdminManagementSelectedBookBuilder builder = new AdminManagementSelectedBookBuilder();
-            AdminManagementWindowDirector director = new AdminManagementWindowDirector(builder, adminManagementWindow.getLoginedMember(), adminManagementWindow.getSelectedBook(), adminManagementWindow.getSelectedIdx());
+            AdminManagementWindowDirector director = new AdminManagementWindowDirector(builder, adminManagementWindow.getLoginedMember(), adminManagementWindow.getSelectedBook(), list.getSelectedIndex());
             adminManagementWindow.setVisible(false);
             director.constructAdminManagementWindow();
         });

@@ -39,7 +39,7 @@ public class EditFinishCommand implements Command{
         Optional<Book> book = bookService.updateBook(searchedBook.getTitle(), bookUpdateForm);
 
         SearchWindowAdminBuilder builder = new SearchWindowAdminBuilder();
-        SearchWindowDirector director = new SearchWindowDirector(builder, loginedMember, book.get(), 1);
+        SearchWindowDirector director = new SearchWindowDirector(builder, loginedMember, book.get(), beforePage);
         searchWindow.setVisible(false);
         director.constructSearchWindow();
         searchWindow.setVisible(false);

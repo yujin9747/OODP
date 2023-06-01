@@ -77,17 +77,22 @@ public class UserPageWindow extends JFrame {
         int i = 0;
         for (Iterator it = rentalInfoContainer.getIterator(); it.hasNext();) {
             RentalInfo rentalInfo = (RentalInfo) it.next();
-            Book book = rentalInfo.getBook();
-//            if(!rentalInfo.isReturned()) {
-            if(!rentalInfoService.isTheBookBorrowed(book)){
-//                Book book = rentalInfo.getBook();
-                String returnDueDate = rentalInfo.getReturnDueDate().toString();
+            String returnDueDate = rentalInfo.getReturnDueDate().toString();
 
-                data[i] = new Object[]{book.getTitle(), returnDueDate};
-                i += 1;
-            } else {
-                it.remove();
-            }
+            data[i] = new Object[]{rentalInfo.getBook().getTitle(), returnDueDate};
+            i += 1;
+//            RentalInfo rentalInfo = (RentalInfo) it.next();
+//            Book book = rentalInfo.getBook();
+////            if(!rentalInfo.isReturned()) {
+//            if(!rentalInfoService.isTheBookBorrowed(book)){
+////                Book book = rentalInfo.getBook();
+//                String returnDueDate = rentalInfo.getReturnDueDate().toString();
+//
+//                data[i] = new Object[]{book.getTitle(), returnDueDate};
+//                i += 1;
+//            } else {
+//                it.remove();
+//            }
         }
         for (; i < rentalInfoList.size(); i++) {
             data[i] = new Object[]{"", ""};
