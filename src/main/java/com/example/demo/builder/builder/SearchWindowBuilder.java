@@ -140,6 +140,7 @@ public abstract class SearchWindowBuilder {
         searchWindow.getBackBTN().addActionListener(new AdminSearchActionListener(searchWindow));
         searchWindow.add(searchWindow.getBackBTN());
         searchWindow.add(new JLabel(" "));
+        searchWindow.setVisible(false);
     }
     public abstract void buildBackButton();
     public abstract void buildFunctionButton();
