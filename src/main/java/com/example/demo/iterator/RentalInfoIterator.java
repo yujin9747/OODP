@@ -1,6 +1,7 @@
-package com.example.demo.domain;
+package com.example.demo.iterator;
 
-import java.util.Iterator;
+import com.example.demo.domain.RentalInfo;
+
 import java.util.List;
 
 public class RentalInfoIterator implements Iterator {
