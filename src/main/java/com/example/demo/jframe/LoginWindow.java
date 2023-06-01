@@ -1,6 +1,10 @@
 package com.example.demo.jframe;
 
 import com.example.demo.BeanUtil;
+import com.example.demo.builder.concreteMainBuilder.MainWindowAdminBuilder;
+import com.example.demo.builder.concreteMainBuilder.MainWindowNullBuilder;
+import com.example.demo.builder.concreteMainBuilder.MainWindowUserBuilder;
+import com.example.demo.builder.director.MainWindowDirector;
 import com.example.demo.domain.*;
 import com.example.demo.service.*;
 
@@ -94,7 +98,10 @@ public class LoginWindow extends JFrame {
                 loginOrRegisterRole = Role.ADMIN;
             }
             else if(command.equals("<")){
-                new MainWindow(null);
+                MainWindowNullBuilder builder = new MainWindowNullBuilder();
+                MainWindowDirector director = new MainWindowDirector(builder, null);
+                director.constructMainWindow();
+//                new MainWindow(null);
                 setVisible(false);
             }
 
@@ -171,7 +178,10 @@ public class LoginWindow extends JFrame {
 
                         if(loginOrRegister == 0){
                             if (studentList.get(i).getPassword().equals(password)) {
-                                new MainWindow(studentList.get(i));
+                                MainWindowUserBuilder builder = new MainWindowUserBuilder();
+                                MainWindowDirector director = new MainWindowDirector(builder, studentList.get(i));
+                                director.constructMainWindow();
+//                                new MainWindow(studentList.get(i));
                                 setVisible(false);
 
                                 JOptionPane.showMessageDialog(null, "로그인 성공");
@@ -202,7 +212,10 @@ public class LoginWindow extends JFrame {
 
                         if(loginOrRegister == 0){
                             if (adminList.get(i).getPassword().equals(password)) {
-                                new MainWindow(adminList.get(i));
+                                MainWindowAdminBuilder builder = new MainWindowAdminBuilder();
+                                MainWindowDirector director = new MainWindowDirector(builder, adminList.get(i));
+                                director.constructMainWindow();
+//                                new MainWindow(adminList.get(i));
                                 setVisible(false);
 
                                 JOptionPane.showMessageDialog(null, "로그인 성공");

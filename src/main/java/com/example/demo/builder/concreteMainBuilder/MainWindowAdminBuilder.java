@@ -1,4 +1,4 @@
-package com.example.demo.builder.concreteBuilder;
+package com.example.demo.builder.concreteMainBuilder;
 
 import com.example.demo.builder.builder.MainWindowBuilder;
 import com.example.demo.domain.Role;
@@ -12,6 +12,7 @@ public class MainWindowAdminBuilder extends MainWindowBuilder{
         mainWindow.setLogoutBTN(new Button("Logout"));
         mainWindow.getLogoutBTN().setBounds(300, 300, 70, 30);
         mainWindow.getLogoutBTN().addActionListener(new LogoutActionListener());
+        mainWindow.add(mainWindow.getLogoutBTN());
         mainWindow.setAdminPageBTN(new Button("Admin Page"));
         mainWindow.getAdminPageBTN().setBounds(300, 350, 70, 30);
         mainWindow.add(mainWindow.getAdminPageBTN());
