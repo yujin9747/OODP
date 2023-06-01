@@ -2,10 +2,14 @@ package com.example.demo.jframe;
 
 import com.example.demo.BeanUtil;
 import com.example.demo.builder.builder.SearchWindowBuilder;
+import com.example.demo.builder.builder.UserManageWindowBuilder;
 import com.example.demo.builder.concreteAdminBuilder.AdminManagementDefaultBuilder;
 import com.example.demo.builder.concreteSearchBuilder.SearchWindowAdminBuilder;
+import com.example.demo.builder.concreteUserManageBuilder.UserManageWindowDefaultBuilder;
+import com.example.demo.builder.concreteUserManageBuilder.UserManageWindowPermitBuilder;
 import com.example.demo.builder.director.AdminManagementWindowDirector;
 import com.example.demo.builder.director.SearchWindowDirector;
+import com.example.demo.builder.director.UserManageWindowDirector;
 import com.example.demo.domain.Book;
 import com.example.demo.domain.Library;
 import com.example.demo.domain.Member;
@@ -86,7 +90,11 @@ public class AdminManagement extends JFrame implements MouseListener,KeyListener
             JOptionPane.showMessageDialog(null, selectedBook.getTitle() + "책 삭제가 완료되었습니다.");
         }
         else if(e.getSource() == userManageBTN){
-            new UserManageWindow(new DefaultListModel(), "", loginedMember, null, null);
+            UserManageWindowBuilder builder = new UserManageWindowDefaultBuilder();
+            UserManageWindowDirector director = new UserManageWindowDirector(loginedMember, null, null);
+            director.setBuilder(builder);
+            director.setModel(null);
+            director.constructUserManageWindow();
             setVisible(false);
         }
         else if(e.getSource() == bookManageBTN && selectedIdx != null){

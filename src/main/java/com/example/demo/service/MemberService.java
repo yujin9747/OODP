@@ -57,11 +57,13 @@ public class MemberService {
         return memberRepository.findByStudentId(selectedUserId);
     }
 
+    @Transactional
     public void permitExternalLibrary(Long memberId) {
         Member member = memberRepository.findOne(memberId).get();
         memberRepository.permitById(member.getId());
     }
 
+    @Transactional
     public void banExternalLibrary(Long memberId) {
         Member member = memberRepository.findOne(memberId).get();
         memberRepository.banById(member.getId());
