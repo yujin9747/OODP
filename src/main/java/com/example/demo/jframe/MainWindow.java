@@ -1,8 +1,20 @@
 package com.example.demo.jframe;
 
+import com.example.demo.BeanUtil;
+import com.example.demo.builder.builder.LoginWindowBuilder;
+import com.example.demo.builder.builder.SearchWindowBuilder;
+import com.example.demo.builder.director.LoginWindowDirector;
+
 import com.example.demo.builder.builder.AdminManagementWindowBuilder;
 import com.example.demo.builder.concreteAdminBuilder.AdminManagementDefaultBuilder;
 import com.example.demo.builder.director.AdminManagementWindowDirector;
+
+import com.example.demo.builder.director.SearchWindowDirector;
+import com.example.demo.builder.concreteLoginBuilder.LoginWindowLoginBuilder;
+import com.example.demo.builder.concreteLoginBuilder.LoginWindowRegisterBuilder;
+import com.example.demo.domain.Book;
+import com.example.demo.domain.Role;
+
 import com.example.demo.domain.Member;
 import com.example.demo.service.*;
 import lombok.Getter;
@@ -12,6 +24,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+
 @Setter
 @Getter
 public class MainWindow extends JFrame{
@@ -130,14 +144,18 @@ public class MainWindow extends JFrame{
     private class LoginActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            new LoginWindow(0);
+            LoginWindowBuilder loginWindowBuilder = new LoginWindowLoginBuilder();
+            LoginWindowDirector loginWindowDirector = new LoginWindowDirector(loginWindowBuilder);
+            loginWindowDirector.constructLoginWindow();
             setVisible(false);
         }
     }
     private class RegisterActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            new LoginWindow(1);
+            LoginWindowBuilder loginWindowBuilder = new LoginWindowRegisterBuilder();
+            LoginWindowDirector loginWindowDirector = new LoginWindowDirector(loginWindowBuilder);
+            loginWindowDirector.constructLoginWindow();
             setVisible(false);
         }
     }

@@ -13,16 +13,20 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.List;
 import java.util.Optional;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 public class LoginWindow extends JFrame {
 
-    private final MemberService memberService;
-    private final LibraryService libraryService;
-    private final BookService bookService;
+    private MemberService memberService;
+    private LibraryService libraryService;
+    private BookService bookService;
 
-    private final RentalInfoService rentalInfoService;
+    private RentalInfoService rentalInfoService;
 
-    private final ReservationInfoService reservationInfoService;
+    private ReservationInfoService reservationInfoService;
 
 
     Button studentBTN;
@@ -35,52 +39,52 @@ public class LoginWindow extends JFrame {
 
     Optional<Library> loginLibrary;   // login하려는 도서관 -> 한동대학교로 상정하고 개발함
 
-    public LoginWindow(int loginOrRegister) { //생성자를 만든다.
-        this.memberService = BeanUtil.get(MemberService.class);
-        this.libraryService = BeanUtil.get(LibraryService.class);
-        this.bookService = BeanUtil.get(BookService.class);
-        this.rentalInfoService = BeanUtil.get(RentalInfoService.class);
-        this.reservationInfoService = BeanUtil.get(ReservationInfoService.class);
-
-        loginLibrary = libraryService.findOne(1L);
-
-        this.loginOrRegister = loginOrRegister;
-
-        if ((loginOrRegister == 0)) {
-            setTitle("Login");
-        } else {
-            setTitle("Register");
-        }//창 제목
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLayout(null);
-        Container c = getContentPane();
-
-        c.setLayout(new FlowLayout());
-
-        studentBTN = (loginOrRegister == 0) ? new Button("학생으로 Login") : new Button("학생으로 Register");
-        studentBTN.setBounds(20, 5, 70, 30);
-
-        adminBTN = (loginOrRegister == 0) ? new Button("관리자로 Login") : new Button("관리자로 Register");
-        adminBTN.setBounds(20, 5, 70, 30);
-
-        backBTN = new Button("<");
-
-        studentBTN.addActionListener(new ActionListener());
-        adminBTN.addActionListener(new ActionListener());
-        backBTN.addActionListener(new ActionListener());
-
-        add(backBTN);
-        add(studentIdField);
-        add(passwordField);
-        add(studentBTN);
-        add(adminBTN);
-
-
-        setSize(600, 600); //창 사이즈
-
-        setVisible(true); //보이기
-
-    }
+//    public LoginWindow(int loginOrRegister) { //생성자를 만든다.
+//        this.memberService = BeanUtil.get(MemberService.class);
+//        this.libraryService = BeanUtil.get(LibraryService.class);
+//        this.bookService = BeanUtil.get(BookService.class);
+//        this.rentalInfoService = BeanUtil.get(RentalInfoService.class);
+//        this.reservationInfoService = BeanUtil.get(ReservationInfoService.class);
+//
+//        loginLibrary = libraryService.findOne(1L);
+//
+//        this.loginOrRegister = loginOrRegister;
+//
+//        if ((loginOrRegister == 0)) {
+//            setTitle("Login");
+//        } else {
+//            setTitle("Register");
+//        }//창 제목
+//        setDefaultCloseOperation(EXIT_ON_CLOSE);
+//        setLayout(null);
+//        Container c = getContentPane();
+//
+//        c.setLayout(new FlowLayout());
+//
+//        studentBTN = (loginOrRegister == 0) ? new Button("학생으로 Login") : new Button("학생으로 Register");
+//        studentBTN.setBounds(20, 5, 70, 30);
+//
+//        adminBTN = (loginOrRegister == 0) ? new Button("관리자로 Login") : new Button("관리자로 Register");
+//        adminBTN.setBounds(20, 5, 70, 30);
+//
+//        backBTN = new Button("<");
+//
+//        studentBTN.addActionListener(new ActionListener());
+//        adminBTN.addActionListener(new ActionListener());
+//        backBTN.addActionListener(new ActionListener());
+//
+//        add(backBTN);
+//        add(studentIdField);
+//        add(passwordField);
+//        add(studentBTN);
+//        add(adminBTN);
+//
+//
+//        setSize(600, 600); //창 사이즈
+//
+//        setVisible(true); //보이기
+//
+//    }
 
     private class ActionListener implements java.awt.event.ActionListener {
 
@@ -154,7 +158,7 @@ public class LoginWindow extends JFrame {
                     }
                     JOptionPane.showMessageDialog(null, "회원가입 성공");
                     System.out.println("성공 - 새로운 Id로 회원가입 완료");
-                    new LoginWindow(0);
+//                    new LoginWindow(0);
                     setVisible(false);
                 }
             }
