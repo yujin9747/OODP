@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import com.example.demo.builder.concreteMainBuilder.MainWindowNullBuilder;
+import com.example.demo.builder.director.MainWindowDirector;
 import com.example.demo.jframe.MainWindow;
 import com.example.demo.service.*;
 import jakarta.annotation.PostConstruct;
@@ -30,7 +32,9 @@ public class DemoApplication {
         System.setProperty("java.awt.headless", "false"); //Disables headless
 
         SwingUtilities.invokeLater(() -> {
-            new MainWindow(null);
+            MainWindowNullBuilder builder = new MainWindowNullBuilder();
+            MainWindowDirector director = new MainWindowDirector(builder, null);
+            director.constructMainWindow();
         });
     }
 

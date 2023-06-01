@@ -1,8 +1,15 @@
 package com.example.demo.builder.builder;
 
 import com.example.demo.BeanUtil;
+import com.example.demo.actionListener.AdminSearchActionListener;
 import com.example.demo.actionListener.BackActionListener;
 import com.example.demo.actionListener.SearchActionListener;
+import com.example.demo.builder.concreteAdminBuilder.AdminManagementSelectedBookBuilder;
+import com.example.demo.builder.director.AdminManagementWindowDirector;
+import com.example.demo.command.BackCommand;
+import com.example.demo.command.ButtonWithCommand;
+import com.example.demo.command.Command;
+import com.example.demo.command.InitCommand;
 import com.example.demo.domain.Admin;
 import com.example.demo.domain.Book;
 import com.example.demo.domain.Member;
@@ -61,15 +68,14 @@ public abstract class AdminManagementWindowBuilder {
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);	//하나만 선택 될 수 있도록
         list.setCellRenderer(new ColoredListCellRenderer());
 
-        list.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                String selectedTitle = list.getSelectedValue().toString();
-                adminManagementWindow.setSelectedBook(adminManagementWindow.getBookService().findBookByTitle(selectedTitle).get());
+        list.addListSelectionListener(e -> {
+            String selectedTitle = list.getSelectedValue().toString();
+            adminManagementWindow.setSelectedBook(adminManagementWindow.getBookService().findBookByTitle(selectedTitle).get());
 
-                new AdminManagement(adminManagementWindow.getLoginedMember(), adminManagementWindow.getSelectedBook(), list.getSelectedIndex());
-                adminManagementWindow.setVisible(false);
-            }
+            AdminManagementSelectedBookBuilder builder = new AdminManagementSelectedBookBuilder();
+            AdminManagementWindowDirector director = new AdminManagementWindowDirector(builder, adminManagementWindow.getLoginedMember(), adminManagementWindow.getSelectedBook(), adminManagementWindow.getSelectedIdx());
+            adminManagementWindow.setVisible(false);
+            director.constructAdminManagementWindow();
         });
 
         adminManagementWindow.setScrolled(new JScrollPane(list));
@@ -89,7 +95,10 @@ public abstract class AdminManagementWindowBuilder {
         adminManagementWindow.setUserManageBTN(new Button("학생 정보 관리"));
         adminManagementWindow.setBookManageBTN(new Button("책 정보 관리"));
         adminManagementWindow.setBackBTN(new Button("<")); //뒤로가기 버튼
-        adminManagementWindow.getBackBTN().addActionListener(new BackActionListener());
+        ButtonWithCommand buttonWithCommand = new ButtonWithCommand(new InitCommand());
+        Command backCommand = new BackCommand(adminManagementWindow.getBeforePage(), adminManagementWindow.getLoginedMember(), adminManagementWindow);
+        buttonWithCommand.setCommand(backCommand);
+        adminManagementWindow.getBackBTN().addActionListener(new AdminSearchActionListener(buttonWithCommand));
     }
 
     public void buildListener(){
