@@ -1,6 +1,9 @@
 package com.example.demo.jframe;
 
 import com.example.demo.BeanUtil;
+import com.example.demo.builder.builder.AdminManagementWindowBuilder;
+import com.example.demo.builder.concreteAdminBuilder.AdminManagementDefaultBuilder;
+import com.example.demo.builder.director.AdminManagementWindowDirector;
 import com.example.demo.domain.Admin;
 import com.example.demo.domain.Member;
 import com.example.demo.domain.Student;
@@ -204,7 +207,9 @@ public class UserManageWindow extends JFrame {
                 setVisible(false);
             }
             else if(command.equals("<")){
-                new AdminManagement(loginedMember, null, null);
+                AdminManagementDefaultBuilder builder = new AdminManagementDefaultBuilder();
+                AdminManagementWindowDirector director = new AdminManagementWindowDirector(builder, loginedMember, null, null);
+                director.constructAdminManagementWindow();
                 setVisible(false);
             }
         }
