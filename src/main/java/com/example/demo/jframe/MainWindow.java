@@ -13,16 +13,20 @@ import com.example.demo.domain.Book;
 import com.example.demo.domain.Role;
 import com.example.demo.domain.Member;
 import com.example.demo.service.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Optional;
-
+@Setter
+@Getter
 public class MainWindow extends JFrame{
 
-    private final MemberService memberService;
-    private final BookService bookService;
+    private MemberService memberService;
+    private BookService bookService;
 
     final int GUEST = -1;
     Button searchBTN;
@@ -37,7 +41,7 @@ public class MainWindow extends JFrame{
     Long memberId;
     Member loginedMember = null;
 
-    public MainWindow(Member loginedMember) {
+    public MainWindow(Member loginedMember){
         this.memberService = BeanUtil.get(MemberService.class);
         this.bookService = BeanUtil.get(BookService.class);
         this.loginedMember = loginedMember;
