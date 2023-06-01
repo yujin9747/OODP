@@ -151,9 +151,9 @@ public abstract class SearchWindowBuilder {
         searchWindow.add(searchWindow.getPublisherInput());
     }
 
-    public void buildBackButtonBuilder(){
+    public void buildBackButtonBuilder(int beforePage){
         ButtonWithCommand buttonWithCommand = new ButtonWithCommand(new InitCommand());
-        Command backCommand = new BackCommand(searchWindow.getBeforePage(), searchWindow.getLoginedMember(), searchWindow);
+        Command backCommand = new BackCommand(beforePage, searchWindow.getLoginedMember(), searchWindow);
         buttonWithCommand.setCommand(backCommand);
         searchWindow.setBackBTN(new Button("<"));
         searchWindow.getBackBTN().addActionListener(new AdminSearchActionListener(buttonWithCommand));

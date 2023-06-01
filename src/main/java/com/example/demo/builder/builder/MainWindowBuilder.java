@@ -28,7 +28,6 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 public abstract class MainWindowBuilder {
 
     protected MainWindow mainWindow;
-    private Member loginedMember;
     public MainWindow getMainWindow(){
         return mainWindow;
     }
@@ -72,7 +71,7 @@ public abstract class MainWindowBuilder {
         @Override
         public void actionPerformed(ActionEvent e) {
             AdminManagementDefaultBuilder builder = new AdminManagementDefaultBuilder();
-            AdminManagementWindowDirector director = new AdminManagementWindowDirector(builder, loginedMember, null, null);
+            AdminManagementWindowDirector director = new AdminManagementWindowDirector(builder, mainWindow.getLoginedMember(), null, null);
             director.constructAdminManagementWindow();
             mainWindow.setVisible(false);
         }

@@ -13,7 +13,7 @@ public class SearchWindowAdminBuilder extends SearchWindowBuilder {
 
     @Override
     public void buildBackButton() {
-        super.buildBackButtonBuilder();
+        super.buildBackButtonBuilder(searchWindow.getBeforePage());
     }
 
     @Override
