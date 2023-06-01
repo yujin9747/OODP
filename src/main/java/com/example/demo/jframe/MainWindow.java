@@ -1,11 +1,13 @@
 package com.example.demo.jframe;
 
 import com.example.demo.BeanUtil;
+import com.example.demo.builder.builder.AdminManagementWindowBuilder;
 import com.example.demo.builder.builder.SearchWindowBuilder;
-import com.example.demo.builder.concreteBuilder.SearchWindowAdminBuilder;
-import com.example.demo.builder.concreteBuilder.SearchWindowAdminEditBuilder;
-import com.example.demo.builder.concreteBuilder.SearchWindowUserBuilder;
-import com.example.demo.builder.concreteBuilder.SearchWindowUserNullBuilder;
+import com.example.demo.builder.concreteAdminBuilder.AdminManagementDefaultBuilder;
+import com.example.demo.builder.concreteSearchBuilder.SearchWindowAdminBuilder;
+import com.example.demo.builder.concreteSearchBuilder.SearchWindowUserBuilder;
+import com.example.demo.builder.concreteSearchBuilder.SearchWindowUserNullBuilder;
+import com.example.demo.builder.director.AdminManagementWindowDirector;
 import com.example.demo.builder.director.SearchWindowDirector;
 import com.example.demo.domain.Book;
 import com.example.demo.domain.Role;
@@ -104,14 +106,11 @@ public class MainWindow extends JFrame{
                 JOptionPane.showMessageDialog(null, "일치하는 책 정보가 없습니다.");
             }
             else{
-                System.out.println("in");
-                SearchWindowBuilder searchWindowBuilder;
+                SearchWindowBuilder searchWindowBuilder = new SearchWindowUserNullBuilder();
                 if(loginedMember != null){
                     if(loginedMember.getRole() == Role.ADMIN) searchWindowBuilder = new SearchWindowAdminBuilder();
+                    else if(loginedMember.getRole() == Role.STUDENT) searchWindowBuilder = new SearchWindowUserBuilder();
                 }
-//                searchWindowBuilder = new SearchWindowAdminBuilder();
-//                searchWindowBuilder = new SearchWindowAdminEditBuilder();
-                searchWindowBuilder = new SearchWindowUserNullBuilder();
                 SearchWindowDirector searchWindowDirector = new SearchWindowDirector(searchWindowBuilder, loginedMember, searchedBook.get(), 0);
                 searchWindowDirector.constructSearchWindow();
 //                new SearchWindow(searchedBook.get(), loginedMember, 0, false);
@@ -122,7 +121,9 @@ public class MainWindow extends JFrame{
     private class AdminPageActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            new AdminManagement(loginedMember, null, null);
+            AdminManagementWindowBuilder builder = new AdminManagementDefaultBuilder();
+            AdminManagementWindowDirector director = new AdminManagementWindowDirector(builder, loginedMember, null, null);
+            director.constructAdminManagementWindow();
             setVisible(false);
         }
     }
